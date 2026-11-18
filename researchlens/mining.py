@@ -12,7 +12,8 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, E
 from sklearn.preprocessing import normalize
 
 TOKEN = re.compile(r"(?u)\b[a-zA-Z][a-zA-Z0-9_-]+\b")
-RECOMMEND_METHODS = ("content", "graph", "hybrid", "popular", "cocitation")
+RECOMMEND_METHODS = ("fusion", "content", "graph", "hybrid", "popular", "cocitation")
+RRF_K = 60
 
 
 def tokens(text: str) -> list[str]:
@@ -90,6 +91,29 @@ def eligible_ranking(scores, eligible):
 def co_citation_ranking(witnesses):
     """Candidate ids with the most witnesses first, ties broken by id."""
     return sorted(witnesses, key=lambda pid: (-len(witnesses[pid]), pid))
+
+
+def rank_positions(order):
+    """Map each item of an ordered sequence to its 1-based rank."""
+    return {item: rank for rank, item in enumerate(order, start=1)}
+
+
+def reciprocal_rank_fusion(rankings, size):
+    """Sum 1 / (RRF_K + rank) over the rankings that hold each index, scaled so the best is 1 as MMR expects."""
+    fused = np.zeros(size)
+    for ranking in rankings:
+        for i, rank in ranking.items():
+            fused[i] += 1 / (RRF_K + rank)
+    return unit(fused)
+
+
+def fusion_reason(hybrid_rank, cocitation_rank, citers):
+    """Name the content/graph rank and the co-citation rank that were fused."""
+    suffix = f"reciprocal rank fusion k={RRF_K}."
+    if cocitation_rank is None:
+        return f"Content/graph rank {hybrid_rank}, not co-cited with a saved paper, {suffix}"
+    papers = "1 paper cites" if citers == 1 else f"{citers} papers cite"
+    return f"Co-citation rank {cocitation_rank} ({papers} it with a saved paper) + content/graph rank {hybrid_rank}, {suffix}"
 
 
 class MiningEngine:
@@ -260,7 +284,7 @@ class MiningEngine:
             return f"Content 0.7 × {content[i]:.3f} + personalized PageRank 0.3 × {graph[i]:.3f}."
         return f"Global PageRank {self.pr[i]:.5f}."
 
-    def recommend(self, seeds, limit=12, method="hybrid", diversity=0.15):
+    def recommend(self, seeds, limit=12, method="fusion", diversity=0.15):
         seeds = list(dict.fromkeys(seeds))
         if method not in RECOMMEND_METHODS:
             raise ValueError("Unknown recommendation method")
@@ -272,32 +296,44 @@ class MiningEngine:
             ordered = np.argsort(-self.pr, kind="stable")[:limit]
             reason = "Cold start: influential within this corpus."
             return {"cold_start": True, "items": [dict(self.summary(i, float(self.pr[i])), reason=reason) for i in ordered]}
+        witnesses = self.co_citation_witnesses(seeds)
+        cocitation_order = co_citation_ranking(witnesses)
         if method == "cocitation":
-            witnesses = self.co_citation_witnesses(seeds)
-            ranked = co_citation_ranking(witnesses)[:limit]
-            return {"cold_start": False, "items": [self.co_citation_item(pid, witnesses[pid]) for pid in ranked]}
+            items = [self.co_citation_item(pid, witnesses[pid]) for pid in cocitation_order[:limit]]
+            return {"cold_start": False, "items": items}
 
         eligible = np.array([pid not in seeds for pid in self.ids])
         content, graph = self.content_graph_scores(seeds, eligible)
+        hybrid = 0.7 * content + 0.3 * graph
+        hybrid_rank = rank_positions(eligible_ranking(hybrid, eligible))
+        cocitation_rank = rank_positions(self.pos[pid] for pid in cocitation_order)
         scores = {
             "content": content,
             "graph": graph,
-            "hybrid": 0.7 * content + 0.3 * graph,
+            "hybrid": hybrid,
             "popular": unit(self.pr),
+            "fusion": reciprocal_rank_fusion([hybrid_rank, cocitation_rank], len(self.ids)),
         }[method]
         seed_terms = set(tokens(" ".join(self.texts[self.pos[s]] for s in seeds)))
         items = []
         for i in self.mmr_select(scores, eligible, limit, diversity):
+            pid = self.ids[i]
             shared = set(tokens(self.texts[i])) & seed_terms
-            words = [x["term"] for x in self.keywords(self.ids[i], 20) if x["term"] in shared][:4]
-            reason = self.score_reason(method, i, content, graph)
-            if words and method in {"content", "hybrid"}:
+            words = [x["term"] for x in self.keywords(pid, 20) if x["term"] in shared][:4]
+            item = dict(self.summary(i, float(scores[i])), content_score=float(content[i]),
+                        graph_score=float(graph[i]), shared_terms=words)
+            if method == "fusion":
+                evidence = witnesses.get(pid, [])
+                item.update(co_citation_count=len(evidence), witnesses=self.titled_witnesses(evidence))
+                reason = fusion_reason(hybrid_rank[i], cocitation_rank.get(i), len(evidence))
+            else:
+                reason = self.score_reason(method, i, content, graph)
+            if words and method in {"content", "hybrid", "fusion"}:
                 reason += " Shared terms: " + ", ".join(words) + "."
             if diversity:
                 reason += f" Diversity reranking enabled (weight {diversity:g})."
-            summary = self.summary(i, float(scores[i]))
-            items.append(dict(summary, content_score=float(content[i]), graph_score=float(graph[i]),
-                              shared_terms=words, reason=reason))
+            item["reason"] = reason
+            items.append(item)
         return {"cold_start": False, "items": items}
 
     def subgraph(self, pid=None, limit=70):

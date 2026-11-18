@@ -28,7 +28,7 @@ class TextInput(BaseModel):
     text: str=Field(min_length=1,max_length=30000)
 class RecommendationInput(BaseModel):
     seeds: list[str]=Field(default_factory=list,max_length=10000)
-    method: Literal['content','graph','hybrid','popular','cocitation']='hybrid'
+    method: Literal['fusion','content','graph','hybrid','popular','cocitation']='fusion'
     diversity: float=Field(default=.15,ge=0,le=1)
     limit: int=Field(default=12,ge=1,le=50)
 

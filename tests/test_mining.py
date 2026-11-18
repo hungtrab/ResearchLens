@@ -96,7 +96,7 @@ def test_subgraph_contains_focus_and_correct_edges(engine):
         engine.subgraph("missing")
 
 
-@pytest.mark.parametrize("method", ["content", "graph", "hybrid", "popular"])
+@pytest.mark.parametrize("method", ["fusion", "content", "graph", "hybrid", "popular"])
 def test_recommendation_excludes_seeds_and_returns_finite_explanations(engine, method):
     result = engine.recommend(["P1", "P1"], limit=99, method=method)
     assert not result["cold_start"]
