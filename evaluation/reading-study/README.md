@@ -26,16 +26,14 @@ Thí nghiệm số 1 đưa mục tiêu, seed, tiêu đề và abstract cho mô h
 
 Đã chạy **Laya Typed-Decisions** trên đủ 43 cặp. Năm lựa chọn khớp nhãn trợ lý ở 12/43, so với 15/43 nếu luôn chọn lớp đông nhất. Khi chỉ hỏi lưu/bỏ qua, mô hình khớp 19/41 cặp có nhãn 0–3, so với baseline 21/41. Quy tắc chuyển cho người đọc kích hoạt tương ứng 43/43 và 30/43 lần. Không dùng hai kết quả này để công bố độ chính xác trên người dùng hoặc để tự động ẩn paper.
 
-Hai cách chạy độc lập. Jev chính hãng yêu cầu key TypeSafe và chưa có kết quả inference trong bản bàn giao. Khi chạy Jev script gửi mục tiêu thí nghiệm và metadata paper công khai tới API. Các phiếu người chấm luôn ở local. [TypeSafe Choice](https://docs.typesafe.ai/primitives/choice) · [Laya model card](https://huggingface.co/convaiinnovations/laya-typed-decisions)
+Script chạy Laya hoàn toàn ở local. Các phiếu người chấm luôn ở local. [Laya model card](https://huggingface.co/convaiinnovations/laya-typed-decisions)
 
 ```bash
 # Môi trường ML riêng: Laya 0.3.0, transformers 4.57.6, tokenizers 0.22.2, torch 2.10.0.
-python scripts/reading_decisions.py --provider laya --question graded --output /tmp/reading-laya.json
-python scripts/reading_decisions.py --provider laya --question save --output /tmp/reading-laya-save.json
-# Có TYPESAFE_API_KEY trong môi trường server:
-uv run python scripts/reading_decisions.py --provider jev --question save --output /tmp/reading-jev.json
+python scripts/reading_decisions.py --question graded --output /tmp/reading-laya.json
+python scripts/reading_decisions.py --question save --output /tmp/reading-laya-save.json
 ```
 
-Weights Laya dùng revision 1a793eb568e6718f15941d08f85432581df534e3. Hai file laya_results.json và laya_save_results.json chứa xác suất từng lựa chọn. Cột confidence do provider trả về, không phải độ chính xác đo thực tế. Đánh giá hai mô hình với cùng bộ phiếu độc lập là bước tiếp theo khi có key Jev và nhãn người thật.
+Weights Laya dùng revision 1a793eb568e6718f15941d08f85432581df534e3. Hai file laya_results.json và laya_save_results.json chứa xác suất từng lựa chọn. Cột confidence do mô hình trả về, không phải độ chính xác đo thực tế. Bước tiếp theo là chấm lại bằng nhãn người thật.
 
 Thử nghiệm tiếp theo đã hiệu chỉnh quyết định trên nhãn chuyên gia CSFCube và kiểm tra tác dụng của từng tín hiệu. [Kết quả, trọng số và cách chạy](../decision-study/README.md).

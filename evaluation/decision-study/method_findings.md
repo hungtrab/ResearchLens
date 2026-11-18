@@ -35,7 +35,7 @@ Trên chỉ tiêu chính, fusion giúp 23 câu từ trượt thành đạt và k
 
 ## Cho decision model chọn lại từ cùng 20 bài
 
-Thí nghiệm bổ sung dùng Laya Typed-Decisions và cùng 20 bài của fusion trên mỗi truy vấn ACL-ARC và CSFCube. Mô hình nhận câu đang đọc và văn bản ứng viên, trả về một điểm cho câu hỏi liệu bài có mô tả kỹ thuật, dữ liệu hoặc thí nghiệm cụ thể phù hợp hay không. Dùng điểm để xếp hạng, giữ thứ tự fusion khi bằng điểm. Có 700 cặp được chấm. Câu hỏi được cố định trước lượt chạy Laya, sau khi đã xem kết quả năm phương án đầu. Đây là checkpoint nguồn mở Laya. Dịch vụ Jev của TypeSafe chưa được đo. [Protocol bổ sung](method_decision_protocol.md) · [Laya](https://huggingface.co/convaiinnovations/laya-typed-decisions) · [Giao diện câu hỏi của TypeSafe](https://docs.typesafe.ai/primitives/choice)
+Thí nghiệm bổ sung dùng Laya Typed-Decisions và cùng 20 bài của fusion trên mỗi truy vấn ACL-ARC và CSFCube. Mô hình nhận câu đang đọc và văn bản ứng viên, trả về một điểm cho câu hỏi liệu bài có mô tả kỹ thuật, dữ liệu hoặc thí nghiệm cụ thể phù hợp hay không. Dùng điểm để xếp hạng, giữ thứ tự fusion khi bằng điểm. Có 700 cặp được chấm. Câu hỏi được cố định trước lượt chạy Laya, sau khi đã xem kết quả năm phương án đầu. Đây là checkpoint nguồn mở Laya. [Protocol bổ sung](method_decision_protocol.md) · [Laya](https://huggingface.co/convaiinnovations/laya-typed-decisions)
 
 | Ba kết quả đầu | Fusion | Cross-encoder | Laya |
 |---|---:|---:|---:|

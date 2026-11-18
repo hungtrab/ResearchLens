@@ -62,7 +62,7 @@ uv pip install --python .venv-decision/bin/python 'torch==2.10.0' 'transformers=
 
 Nhãn, ID CSFCube và thứ hạng SPECTER được phân phối lại theo [CC BY-NC 4.0](CSFCube_LICENSE.md). Nhóm ResearchLens trích riêng phần phương pháp, tính thêm bốn đặc trưng và đánh giá lại trên fold 1. Bản trích không chứa toàn văn paper. [Nguồn dữ liệu cố định](https://github.com/iesl/CSFCube/tree/7ffe012c1d92c470f185fc086086caf5b8e05ef3)
 
-Checkpoint nguồn mở là Laya Typed-Decisions và all-MiniLM-L6-v2. Jev chính hãng chưa được đo trong thí nghiệm này. [Laya](https://huggingface.co/convaiinnovations/laya-typed-decisions) · [MiniLM](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) · [Giao diện TypeSafe Choice](https://docs.typesafe.ai/primitives/choice)
+Checkpoint nguồn mở là Laya Typed-Decisions và all-MiniLM-L6-v2. [Laya](https://huggingface.co/convaiinnovations/laya-typed-decisions) · [MiniLM](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
 
 ## Tìm từ một câu trong trình đọc
 
