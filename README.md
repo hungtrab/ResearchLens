@@ -2,9 +2,9 @@
 
 **Intelligent Research Paper Search and Discovery System** — đồ án IT4868E, HUST, học kỳ 2026.1.
 
-Hệ thống chạy local với **129.596 bản ghi hội nghị (2020–2026)** và tìm kiếm OpenAlex trực tuyến. Snapshot thí nghiệm riêng gồm **3.595 paper, 13.481 cạnh citation, 1.320 scored reviews duy nhất**. Trọng tâm capstone là link analysis, opinion mining và recommendation; search là tầng truy cập.
+Hệ thống chạy local với **129.596 bản ghi hội nghị (2020–2026)** và tìm kiếm OpenAlex trực tuyến. Snapshot thí nghiệm riêng gồm **3.595 paper, 13.481 cạnh citation, 1.320 scored reviews duy nhất**. Bài toán chính: từ các bài đã lưu, gợi ý bài nên đọc tiếp. Search là cách lưu bài đầu tiên, review là bằng chứng cạnh gợi ý.
 
-**Kết quả audit capstone.** My library có gợi ý bằng đồng trích dẫn, kèm bài nguồn để kiểm tra từng kết quả. Trên 219 bài test sau mốc 2020, nDCG@10 đạt 0,173 (PPR 0,121). Xem [audit, điều kiện thí nghiệm và kịch bản demo](docs/CAPSTONE_AUDIT.md).
+**Kết quả chính.** My library mặc định dùng fusion: cộng nghịch đảo hạng đồng trích dẫn và hạng hybrid, k=60. Trên 219 bài test sau mốc 2020, fusion đạt nDCG@10 0,207, đồng trích dẫn 0,173, hybrid 0,143. Trên split che ngẫu nhiên 120 bài, fusion 0,259 vẫn hơn hybrid 0,112 nhưng kém đồng trích dẫn 0,305. Xem [audit, điều kiện thí nghiệm và kịch bản demo](docs/CAPSTONE_AUDIT.md).
 
 Phiếu thử “bạn có lưu bài này để đọc tiếp không?” dùng được offline. Xem [phiếu chấm](evaluation/reading-study/annotate.html) và [pilot mô hình quyết định, tình trạng nhãn người thật](evaluation/reading-study/README.md).
 
@@ -46,7 +46,7 @@ Cổng host mặc định 8765; đổi bằng `APP_PORT=8766 docker compose up -
 - **Citation network:** phong cách Obsidian, node kéo thả có lực lò xo kéo các node liên kết cùng chuyển động, pan/zoom, tìm theo tiêu đề, highlight neighborhood, nhóm Louvain, bật/tắt nhãn; hướng cạnh citing → cited.
 - **Motion:** chuyển cảnh/panel nhẹ, graph xuất hiện có giới hạn; hỗ trợ reduced motion. Áp dụng hướng dẫn UI/UX từ evondevKit; provenance và quyết định thiết kế ở [`docs/WORKSPACE_DESIGN.md`](docs/WORKSPACE_DESIGN.md).
 - **Review insights:** review thật từ PeerRead, rating-derived polarity, TF-IDF + logistic regression, aspect lexicon với câu evidence và xử lý phủ định cục bộ.
-- **My library:** lưu bền theo profile trình duyệt, xuất BibTeX/JSON; content/PPR/hybrid/popularity recommendations, MMR diversity, cold start, lý do gợi ý.
+- **My library:** lưu bền theo profile trình duyệt, xuất BibTeX/JSON; fusion (mặc định)/content/PPR/hybrid/co-citation/popularity recommendations, MMR diversity, cold start, lý do gợi ý.
 - **Observatory:** thống kê dữ liệu, kết quả thí nghiệm thật, phạm vi và giới hạn của từng metric.
 
 PDF reader cần mạng và trình duyệt hỗ trợ PDF; metadata/search vẫn chạy offline. Bookmark là trang do người đọc nhập, không tự theo dõi scroll. Notes lưu trong SQLite; draft lỗi lưu localStorage với khóa theo profile/paper.
@@ -92,7 +92,8 @@ Dùng core `researchlens` riêng: script index **thay toàn bộ dữ liệu c�
 | Tác vụ | Phương pháp | Kết quả |
 |---|---|---:|
 | SciFact retrieval, 300 test queries | TF-IDF / BM25 | nDCG@10 0,621 / **0,651** |
-| Reference recovery, 120 profiles | Content / PPR / Hybrid / Hybrid+MMR | nDCG@10 0,063 / **0,174** / 0,112 / 0,129 |
+| Reference recovery sau 2020, 219 bài | Hybrid / Đồng trích dẫn / Fusion | nDCG@10 0,143 / 0,173 / **0,207** |
+| Reference recovery ngẫu nhiên, 120 profiles | Content / PPR / Hybrid / Hybrid+MMR | nDCG@10 0,063 / **0,174** / 0,112 / 0,129 |
 | PeerRead, 115 test reviews | Majority / Lexicon / Logistic regression | Macro-F1 0,181 / 0,436 / **0,469** |
 
 Hybrid vượt content (paired nDCG delta 0,0489; bootstrap 95% CI [0,0274; 0,0734]), **chưa vượt PPR**. Review model và lexicon có khoảng tin cậy chồng lấn; không tuyên bố ưu thế có ý nghĩa thống kê. Citation recovery là proxy, chưa đo user satisfaction hoặc dự báo tương lai.
@@ -120,7 +121,7 @@ uv run python scripts/graph_qa.py
 RESEARCHLENS_BASE_URL=http://127.0.0.1:8767 uv run python scripts/discovery_qa.py
 ```
 
-Suite hiện tại có **430 tests đạt**, gồm kiểm thử chỉ mục, thứ hạng, câu trích, phản hồi trang hai và tách tập đánh giá theo bài mẫu. Package researchlens đạt khoảng 99% statement coverage trong lần chạy này. Xem [`docs/TEST_REPORT.md`](docs/TEST_REPORT.md) và [`docs/AUDIT.md`](docs/AUDIT.md). Browser QA kiểm tra desktop/mobile, search, save, details, graph, review analysis, recommendations và export. Browser QA mới kiểm tra Project, PDF arXiv thật, notes tiếng Việt >64 KiB, draft recovery, graph controls và reduced motion. Kết quả nằm ở `artifacts/browser_qa.json` và `artifacts/workspace_qa.json`; ảnh trong `artifacts/screenshots/`.
+Suite hiện tại có **441 tests đạt**, gồm kiểm thử chỉ mục, thứ hạng, câu trích, phản hồi trang hai và tách tập đánh giá theo bài mẫu. Package researchlens đạt khoảng 99% statement coverage trong lần chạy này. Xem [`docs/TEST_REPORT.md`](docs/TEST_REPORT.md) và [`docs/AUDIT.md`](docs/AUDIT.md). Browser QA kiểm tra desktop/mobile, search, save, details, graph, review analysis, recommendations và export. Browser QA mới kiểm tra Project, PDF arXiv thật, notes tiếng Việt >64 KiB, draft recovery, graph controls và reduced motion. Kết quả nằm ở `artifacts/browser_qa.json` và `artifacts/workspace_qa.json`; ảnh trong `artifacts/screenshots/`.
 
 ## Report và slide
 

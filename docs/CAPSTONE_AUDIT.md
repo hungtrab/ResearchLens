@@ -22,7 +22,8 @@ Cắt theo năm 2020 trước khi dựng graph và TF-IDF. Chọn tất cả 219
 | Content | 0,110 | 0,147 |
 | Personalized PageRank | 0,121 | 0,141 |
 | Hybrid | 0,143 | 0,183 |
-| Co-citation | **0,173** | **0,219** |
+| Co-citation | 0,173 | 0,219 |
+| Fusion (co-citation + hybrid, mặc định) | **0,207** | **0,257** |
 
 Mỗi bài trích cả ứng viên và ít nhất một seed được tính một lần. Phương pháp mở rộng phép đếm đồng trích dẫn cổ điển sang tập bài đã lưu. [Small (1973)](https://doi.org/10.1002/asi.4630240406)
 
@@ -30,6 +31,6 @@ Co-citation trả ít nhất một kết quả cho 218/219 tác vụ. Chênh l�
 
 ## Demo và tái lập
 
-Trong My library, chọn Co-citation sau khi lưu một paper. Mở tên bài làm bằng chứng dưới gợi ý để kiểm tra hai reference. Ví dụ thật trong snapshot, bài *Knowledge Transfer for Out-of-Knowledge-Base Entities* (W2963406064) trích cả *Learning Entity and Relation Embeddings for Knowledge Graph Completion* (W2184957013) và *Knowledge Graph Embedding by Translating on Hyperplanes* (W2283196293).
+Trong My library, gợi ý mặc định là fusion; chọn Co-citation để chỉ xem đồng trích dẫn. Mở tên bài làm bằng chứng dưới gợi ý để kiểm tra hai reference. Ví dụ thật trong snapshot, bài *Knowledge Transfer for Out-of-Knowledge-Base Entities* (W2963406064) trích cả *Learning Entity and Relation Embeddings for Knowledge Graph Completion* (W2184957013) và *Knowledge Graph Embedding by Translating on Hyperplanes* (W2283196293).
 
 Chạy `uv run python scripts/evaluate_temporal.py`. Tệp `artifacts/temporal_recovery.json` lưu hash của snapshot, tập seed/target, top 10 và hai metric của từng phương pháp trên từng paper. Phần thử nghiệm theo thời gian không dùng OpenAlex trực tuyến.

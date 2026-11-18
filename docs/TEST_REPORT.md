@@ -6,7 +6,7 @@ Executed on 18 November 2026 with Python 3.11.16 in the project's `uv` environme
 uv run pytest -q --cov=researchlens --cov-report=term-missing --junitxml=artifacts/pytest.xml
 ```
 
-**Result: 430 passed, 0 failed in 16.98 seconds.** One dependency deprecation warning was emitted by Starlette's TestClient about its HTTPX integration; it did not affect the tests.
+**Result: 441 passed, 0 failed in 16.57 seconds.** One dependency deprecation warning was emitted by Starlette's TestClient about its HTTPX integration; it did not affect the tests.
 
 Current machine-readable results are in `artifacts/pytest.xml`; the console and coverage record is `artifacts/test-results.txt`.
 
@@ -26,7 +26,9 @@ The suite uses six base paper records with explicit citation edges, five review 
 | `researchlens/sources.py` | 100% |
 | `researchlens/discovery.py` | 100% |
 | `researchlens/passages.py` | 99% |
-| Total | **99%** (1,056 / 1,065 statements) |
+| Total | **99%** (1,168 / 1,180 statements) |
+
+`tests/test_fusion.py` adds 10 behavior cases for the default fusion recommender: default method in the engine and the API, a candidate strong in both rankings beats one strong in only one, seeds never appear, co-cited items carry witnesses, non-co-cited items still fill the list, and diversity is respected. Expected values are worked out by hand from a small fixture. Seven deliberate code mutations each made at least one fusion test fail.
 
 The method retrieval study adds 33 independent offline regression cases covering BM25, phrase order, reciprocal-rank ties, shortlist stability, graded metrics, source identity, date filtering, masking and Laya scoring. A regression exposed mismatched candidate-vector lengths silently broadcasting during fusion. The evaluator now rejects that input.
 

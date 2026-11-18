@@ -8,7 +8,7 @@ Thời lượng gợi ý: 15–18 phút trình bày + 5 phút demo. Slide 1–23
 | 3–5 | Snapshot 3.595 paper, kiến trúc CPU, giao diện tìm kiếm. |
 | 6 | Kho 129.596 record: coverage từng năm, nguồn và latency riêng. Không gán nDCG cũ cho kho mới. |
 | 7 | OpenAlex live search → import → reader/Project; references phải có bằng chứng. |
-| 8–10 | Hướng citation, PPR/hybrid/MMR, review polarity và evidence. |
+| 8–10 | Hướng citation, đồng trích dẫn, fusion/hybrid/MMR, review polarity và evidence. |
 | 11–12 | Project brief, citation map, PDF thật và notes lưu bền. |
 | 13–18 | Protocol, PPR thắng trên reference recovery, diversity, review, SciFact, latency. |
 | 19 | Phục hồi reference với graph đến năm 2020. |
@@ -21,7 +21,7 @@ Thời lượng gợi ý: 15–18 phút trình bày + 5 phút demo. Slide 1–23
 1. Mở Discover, nhập `graph neural networks`. Đổi BM25, TF-IDF, Hybrid, và Solr nếu đã bật. Dùng `"graph neural networks"`, `graph AND networks`, `graph -neural` để minh họa query processing.
 2. Mở paper, chỉ nguồn, abstract, entities và local/global citations. Lưu 2–3 bài. Không hứa mọi paper đều có review vì join chỉ khớp đúng title chuẩn hóa.
 3. Mở citation neighborhood từ paper. Zoom/pan, click nút để đọc paper khác; nhắc graph chỉ có các cạnh nội bộ quan sát được.
-4. Mở My library. Chọn graph/content/hybrid, đặt diversity=0 để đối chiếu baseline; tăng diversity để xem MMR. Export BibTeX.
+4. Mở My library. Gợi ý mặc định là fusion; mỗi bài ghi hạng đồng trích dẫn, hạng hybrid và bài nhân chứng. Chọn hybrid hoặc co-citation để đối chiếu, tăng diversity để xem MMR. Export BibTeX.
 5. Mở Review insights. Phân tích một review, chỉ đúng câu evidence. Mở Observatory để đối chiếu các chart với JSON thí nghiệm.
 
 ## Câu hỏi thường gặp
@@ -30,7 +30,7 @@ Thời lượng gợi ý: 15–18 phút trình bày + 5 phút demo. Slide 1–23
 
 **Tại sao không dùng RMSE theo hình đặc tả?** Không có user ratings để làm regression. Với ranking, Recall/nDCG/MRR có ý nghĩa; với review classes dùng macro-F1.
 
-**Vì sao graph-only thắng hybrid?** Task khôi phục citation ưu tiên tín hiệu citation. Trọng số content 0,7 chưa tune; một phần paper thiếu abstract. Các giải thích này cần ablation tiếp, chưa phải kết luận nhân quả.
+**Vì sao mặc định là fusion mà không phải đồng trích dẫn?** Fusion thắng trên thí nghiệm cắt năm 2020 (0,207 so với 0,173) và không rỗng khi bài đã lưu chưa có ai trích cùng. Trên split ngẫu nhiên, đồng trích dẫn cao hơn (0,305 so với 0,259), nên so sánh này còn mở. Fusion hơn hybrid trên cả hai.
 
 **Có leakage không?** Loại 442 held-out edges trước mọi graph score; lưu seed/target từng source; review train/dev/test paper-disjoint và exact-text-disjoint. Tuy nhiên graph không time-censor nên không tuyên bố dự báo tương lai.
 
