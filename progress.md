@@ -1,33 +1,45 @@
 # Nhật ký tiến độ ResearchLens
 
-## 18/11/2026 — Bản bàn giao và kết quả nghiên cứu
+## 19/11/2026 — Siết lại bài toán, đổi gợi ý mặc định sang fusion
 
-ResearchLens giúp người làm đề tài quyết định **nên đọc bài nào tiếp theo**. Người dùng có thể bắt đầu bằng brief của project, một bài mẫu hoặc một câu đang đọc, sau đó đối chiếu gợi ý với abstract, trích dẫn và review.
+ResearchLens giải một bài toán: **từ các bài người dùng đã lưu, gợi ý bài nên đọc tiếp**, kèm lý do người dùng tự kiểm tra được. Tìm kiếm là cách lưu bài đầu tiên. Review là bằng chứng hiển thị cạnh gợi ý.
 
-### Hệ thống đã triển khai
+### Câu hỏi nghiên cứu và kết quả
 
-- **Tìm bài.** Đã thu thập 129.596 bản ghi từ ICML, NeurIPS, ICLR, AAAI, EMNLP, NAACL, ACL và CVPR trong giai đoạn 2020–2026. Kho hội nghị dùng SQLite FTS5/BM25, có lọc theo năm và hội nghị. Người dùng có thể tìm thêm qua OpenAlex rồi nhập bài vào project. Độ phủ được ghi riêng theo từng hội nghị và năm. [Dữ liệu và quy trình thu thập](docs/DISCOVERY.md)
-- **Làm việc theo đề tài.** Tab Projects lưu brief, gợi ý bài liên quan, quản lý tiến độ đọc và hiển thị đồ thị trích dẫn riêng. Paper reading mở PDF trong trình duyệt, lưu ghi chú, bookmark và cho phép chọn một câu để tìm ba bài đọc tiếp. Chỉ mục Reader bao phủ 18.562 câu trong 2.725 bài có abstract. [Hướng dẫn sử dụng](README.md)
-- **Khám phá qua đồ thị.** Đã làm đồ thị phong cách Obsidian với lực lò xo để khi kéo một nút, các nút liên kết cũng chuyển động. Người đọc có thể phóng to, tìm nút, tô sáng các bài lân cận và mở bài trực tiếp. Đã áp dụng hướng dẫn giao diện từ evondevKit, thêm chuyển động nhẹ và hỗ trợ tùy chọn giảm chuyển động. [Quyết định thiết kế và kiểm tra giao diện](docs/WORKSPACE_DESIGN.md)
-- **Khai phá dữ liệu.** Snapshot dùng cho thí nghiệm gồm 3.595 bài, 13.481 cạnh trích dẫn và 1.320 review có điểm. Đã triển khai tìm kiếm BM25/TF-IDF, tích hợp Apache Solr cho snapshot, trích từ khóa và tên phương pháp, phân tích ý kiến trong review kèm câu gốc, và gợi ý qua nội dung, Personalized PageRank, đồng trích dẫn. [Audit chức năng](docs/CAPSTONE_AUDIT.md)
+Phép thử: che một phần ba reference của một bài, dùng phần còn lại làm tập đã lưu, đo xem hệ thống tìm lại được bao nhiêu. Thí nghiệm chính cắt corpus ở năm 2020, nên bài kiểm tra không có mặt trong đồ thị. Mọi phương pháp gọi cùng hàm `MiningEngine.recommend` của ứng dụng.
 
-### Thí nghiệm đã chạy
+| | nDCG@10 trên 219 bài sau 2020 | nDCG@10 trên split ngẫu nhiên 120 bài |
+|---|---:|---:|
+| Content | 0,110 | 0,070 |
+| Personalized PageRank | 0,121 | 0,174 |
+| Hybrid (mặc định cũ) | 0,143 | 0,112 |
+| Đồng trích dẫn | 0,173 | **0,305** |
+| **Fusion (mặc định mới)** | **0,207** | 0,259 |
 
-| Câu hỏi | Kết quả đã đo | Ý nghĩa đối với hệ thống |
-|---|---|---|
-| Có tìm lại được tài liệu tham khảo bằng đồ thị? | Trên 219 bài sau mốc 2020, gợi ý bằng đồng trích dẫn đạt nDCG@10 **0,173**, Personalized PageRank đạt **0,121**. | Trong phép thử này, các bài thường được trích cùng nhau giúp tìm lại tài liệu bị che. |
-| Có tìm được bài nhắc cùng tên kỹ thuật? | Trên 172 câu SciERC, Reader tìm đúng trong top 3 ở **69** câu. Kết hợp với BM25 dùng cả cặp từ liền nhau đạt **83** câu. Mức tăng là **8,1 điểm phần trăm**, khoảng tin cậy 95% từ **2,6 đến 14,0**. | Khi che tên kỹ thuật trong cùng các câu đó, hai cách đạt **20** và **19**. Lợi ích quan sát được phụ thuộc vào tên kỹ thuật còn xuất hiện. |
-| Mô hình quyết định có chọn được bài tốt hơn từ cùng 20 ứng viên? | Laya đã chấm **700 cặp**. Trên 26 câu ACL-ARC, thứ tự kết hợp Reader + BM25 tìm đúng nguồn trong top 3 ở **8** câu, Laya ở **6**, cross-encoder ở **4**. Trên 9 truy vấn CSFCube, số câu có bài hữu ích lần lượt là **6, 5, 4**. | Đã giữ TF-IDF + MiniLM làm mặc định cho Reader. **12/26** nguồn đúng ở ACL-ARC đã vắng trong top 20 trước bước xếp lại. Jev của TypeSafe chưa được đo. |
+- **RQ1.** Trong các tín hiệu đơn, đồng trích dẫn tìm lại tốt nhất trên cả hai protocol.
+- **RQ2.** Fusion vượt hybrid trên cả hai protocol: +0,064, khoảng tin cậy 95% [0,042; 0,087], và +0,147 [0,115; 0,178]. So với đồng trích dẫn đứng riêng, fusion thắng ở thí nghiệm chính (+0,034 [0,016; 0,054]) nhưng thua ở split ngẫu nhiên (−0,046 [−0,083; −0,007]). Vì vậy chưa kết luận được giữa hai cách này.
+- **Vì sao mặc định là fusion.** Fusion thắng trên thí nghiệm chính, và không trả danh sách rỗng khi bài đã lưu chưa có ai trích cùng. Hằng số k=60 lấy từ bài gốc của RRF, không chỉnh trên dữ liệu. Fusion được chọn sau khi đã xem kết quả temporal. Split ngẫu nhiên đã cố định từ trước, và được dùng làm phép kiểm tra lại.
+- Đã thử một giả thuyết cho kết quả trái chiều: nhân chứng là bài xuất bản sau bài nguồn. Giả thuyết không đứng vững. Bỏ các nhân chứng đó thì đồng trích dẫn chỉ giảm từ 0,305 xuống 0,301.
 
-Cũng đã thử ASPIRE và mô phỏng lượt đọc thứ hai sau khi người đọc chọn một bài phù hợp. ASPIRE tăng số vị trí hữu ích từ 19/42 lên 24/42 ở nhóm bối cảnh và kết quả trên bài mẫu mới, nhưng giảm từ 8/27 xuống 7/27 ở nhóm phương pháp đã khảo sát. Số vị trí hữu ích ở lượt đọc thứ hai tăng từ 38/111 lên 42/111 trong mô phỏng, với khoảng tin cậy cho chênh lệch còn chứa 0. [Thí nghiệm Reader](evaluation/decision-study/README.md) · [Phân tích SciERC, ACL-ARC và CSFCube](evaluation/decision-study/method_findings.md) · [Kết quả đồ thị theo mốc thời gian](artifacts/temporal_recovery.json)
+[Report, mục 6.1–6.2](deliverables/ResearchLens_Report.pdf) · [Kết quả temporal từng bài](artifacts/temporal_recovery.json) · [Kiểm tra lại trên split ngẫu nhiên](artifacts/holdout_fusion.json)
 
-### Kiểm chứng và bàn giao
+### Code đã đổi
 
-- Agent audit phát hiện tiêu đề bài nguồn bị lặp trong cả 1.941 bản ghi ACL-ARC và một số bài đích có nhiều tên. Đã bỏ trường tiêu đề lỗi, gộp bản trùng theo ID và tên, rồi tính lại kết quả. Agent dựng lại độc lập **35/35 danh sách top 20** dùng để so sánh Laya với cross-encoder. [Thiết kế phép thử](evaluation/decision-study/method_retrieval_protocol.md)
-- Agent kiểm thử bổ sung 33 ca cho phép đo truy hồi, gồm thứ tự cụm từ, xử lý đồng hạng, che tên đúng ranh giới từ và tránh rò rỉ tiêu đề. Toàn bộ **430/430 test đạt**, với khoảng **99% statement coverage** cho package ứng dụng. [Báo cáo test](docs/TEST_REPORT.md)
-- Đã biên dịch [report LaTeX 41 trang](deliverables/ResearchLens_Report.pdf) và [slide Beamer HUST 32 trang](deliverables/ResearchLens_Slides.pdf), dùng biểu đồ từ số liệu thực nghiệm và ảnh chụp giao diện. [Gói mã nguồn bàn giao](deliverables/ResearchLens_Source.zip) đã được kiểm tra checksum. Server đã tắt theo yêu cầu.
+- `researchlens/mining.py`: `recommend` được tách thành các helper ngắn có tên rõ: `co_citation_witnesses`, `content_graph_scores`, `reciprocal_rank_fusion`, `mmr_select` và `fusion_reason`. Mỗi helper dài tối đa 15 dòng. Năm phương pháp cũ trả kết quả giống hệt bản trước trên 310 ca của corpus thật. Fusion là mặc định ở engine, API và giao diện My library.
+- Mỗi gợi ý fusion ghi hạng đồng trích dẫn, hạng hybrid và tối đa ba bài nhân chứng.
+- Đã xóa nhánh gọi API thương mại chưa từng chạy trong `scripts/reading_decisions.py`.
+- **441/441 test đạt**, 99% statement coverage. `tests/test_fusion.py` có 10 ca kiểm tra hành vi. Bảy lỗi được cố tình cài vào code đều làm ít nhất một ca thất bại.
+
+### Report và slide
+
+- Mục bài toán giờ có một bài toán và hai RQ. Thí nghiệm cắt theo năm là E2, thí nghiệm chính.
+- Đã thêm công thức fusion, kèm trích dẫn Cormack và cộng sự (2009).
+- Các thí nghiệm cho chức năng Reader (CSFCube, SciERC, ACL-ARC, Laya, ASPIRE) đã chuyển xuống phụ lục B của report và phụ lục D của slide, vì chúng thuộc truy hồi và có ít truy vấn.
+- [Report LaTeX 44 trang](deliverables/ResearchLens_Report.pdf), [slide Beamer 35 trang](deliverables/ResearchLens_Slides.pdf) và [gói mã nguồn](deliverables/ResearchLens_Source.zip) đã được build lại. Checksum nằm trong `deliverables/manifest.json`.
+- Thư mục đã có git local. Commit `474dbf8` là trạng thái trước khi sửa, dùng `git diff 474dbf8` để xem toàn bộ thay đổi.
 
 ### Phần còn mở
 
-- Đã tạo phiếu chấm mù cho 43 cặp brief–paper. Các nhãn pilot do trợ lý chấm. Một phiếu người dùng chỉ dùng để thử cách hỏi. Cần lượt chấm độc lập của người đọc để đánh giá gợi ý theo brief và đo mức đồng thuận. [Phiếu và hướng dẫn chấm](evaluation/reading-study/README.md)
-- Hướng thử tiếp theo là mở rộng tập ứng viên bằng đồ thị đồng trích dẫn rồi đo xem tìm lại được bao nhiêu trong 12 nguồn ACL-ARC còn thiếu. Phép đo này chưa chạy.
+- **Gợi ý theo brief của Project chưa có người chấm.** 43 cặp brief–paper mới có nhãn pilot do trợ lý chấm. Cần ít nhất hai người đọc chấm độc lập bằng [phiếu chấm](evaluation/reading-study/annotate.html) để có số liệu và mức đồng thuận.
+- **Fusion và đồng trích dẫn chưa phân xử được.** Bước tiếp theo là lặp phép cắt theo năm trên các mốc khác. Một hướng là cho trọng số của hai hạng phụ thuộc số nhân chứng, chọn trên một mốc rồi khóa trước khi đo mốc khác.
+- `scripts/evaluate.py` (split ngẫu nhiên) vẫn tự tính điểm, không gọi `recommend` của app. Bảng E3 trong report vì vậy chưa có fusion. Phần kiểm tra fusion trên split này nằm ở `scripts/evaluate_holdout_fusion.py`.
