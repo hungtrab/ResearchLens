@@ -1,0 +1,14 @@
+{
+  "laya": [
+    "convaiinnovations/laya-typed-decisions",
+    "1a793eb568e6718f15941d08f85432581df534e3"
+  ],
+  "encoder": [
+    "sentence-transformers/all-MiniLM-L6-v2",
+    "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+  ],
+  "data_revision": "7ffe012c1d92c470f185fc086086caf5b8e05ef3",
+  "feature_script_sha256": "28b975aab4a48b278d19f9c76005607ed2205ae011ecd1e14388fba763cf38c6",
+  "corpus_sha256": "d5441933d4b020494eb5c7a61574bf0d8fda285b12a2271a93726a3011d9d85b",
+  "features_sha256": "e2a8e31b5aca291c02bdc4060a915472c3af14ef203754d7bd09a158978b8136"
+}

@@ -1,0 +1,45 @@
+{
+  "version": "9.9.0",
+  "indexed": 3595,
+  "checks": [
+    {
+      "query": "",
+      "filters": {},
+      "total": 3595,
+      "first": "Temporal credit assignment in reinforcement learning"
+    },
+    {
+      "query": "graph neural networks",
+      "filters": {},
+      "total": 1541,
+      "first": "Network In Graph Neural Network"
+    },
+    {
+      "query": "\"graph neural networks\"",
+      "filters": {},
+      "total": 420,
+      "first": "Graph neural network"
+    },
+    {
+      "query": "graph AND networks",
+      "filters": {
+        "year_min": 2020,
+        "open_access": true
+      },
+      "total": 301,
+      "first": "Network In Graph Neural Network"
+    },
+    {
+      "query": "-graph",
+      "filters": {},
+      "total": 2742,
+      "first": "Making Neural Programming Architectures Generalize via Recursion"
+    },
+    {
+      "query": "graph -neural",
+      "filters": {},
+      "total": 380,
+      "first": "Specifying Knowledge Graph with Data Graph, Information Graph, Knowledge Graph, and Wisdom Graph"
+    }
+  ]
+}

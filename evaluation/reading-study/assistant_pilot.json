@@ -1,0 +1,179 @@
+{
+  "study": "d27a859f2ae80ff4a58cf20ca14638c6f97c784b71b4aa763b3b176d6ea91165",
+  "reviewer": "Codex",
+  "kind": "assistant_pilot",
+  "answers": {
+    "MF-8f6dc017": {
+      "grade": "1",
+      "reason": "Short source summary discusses limits of the Netflix challenge. Useful framing, little detail on fitting a factor model."
+    },
+    "MF-22801cc4": {
+      "grade": "1",
+      "reason": "SVD of sparse term–document matrices transfers a mathematical idea but the studied prediction task uses text rather than user interactions."
+    },
+    "AB-6744f5fe": {
+      "grade": "2",
+      "reason": "Sentiment-sensitive word representations could feed an aspect classifier. The described supervision is at document level and does not link individual opinions to product aspects."
+    },
+    "MF-44e8e9cf": {
+      "grade": "0",
+      "reason": "The parser extracts a subject and polarity from text. There is no user–item prediction objective."
+    },
+    "MF-13875792": {
+      "grade": "U",
+      "reason": "Handbook title alone does not identify a chapter or baseline for this brief."
+    },
+    "KG-67793f82": {
+      "grade": "3",
+      "reason": "TransR gives relations their own representation space and directly addresses link prediction and differences among relation types."
+    },
+    "LR-14135702": {
+      "grade": "3",
+      "reason": "The discriminative IR model learns from features and one training procedure optimizes average precision directly."
+    },
+    "KG-d0e03b2c": {
+      "grade": "3",
+      "reason": "Local margins for translation models supply a concrete way to change the KG embedding loss."
+    },
+    "LR-68092b2b": {
+      "grade": "2",
+      "reason": "The SVM and maximum entropy comparison on ad-hoc retrieval supplies competing scoring models, with less focus on a graded query-ranking protocol."
+    },
+    "LR-7ad9e9c8": {
+      "grade": "0",
+      "reason": "The comparison concerns delayed reward in reinforcement learning rather than relevance ordering for documents."
+    },
+    "MF-42f878e5": {
+      "grade": "2",
+      "reason": "Datasets and accuracy measures for collaborative filtering help evaluate a user–item baseline; learning the latent factors is outside the described focus."
+    },
+    "MF-e33f08ef": {
+      "grade": "1",
+      "reason": "The survey organizes content, collaborative and hybrid approaches. It helps position the project, but the abstract gives little implementable detail."
+    },
+    "AB-accd82dc": {
+      "grade": "0",
+      "reason": "The stated task is analogical reasoning in LLMs."
+    },
+    "KG-accd82dc": {
+      "grade": "0",
+      "reason": "The title describes analogical reasoning rather than learning or scoring knowledge graph triples."
+    },
+    "MF-7ad9e9c8": {
+      "grade": "0",
+      "reason": "Temporal credit assignment in RL addresses delayed reward, not a sparse user–item matrix."
+    },
+    "KG-0c572331": {
+      "grade": "0",
+      "reason": "The experiment measures false-belief reasoning, with no graph-completion task."
+    },
+    "LR-d3325691": {
+      "grade": "2",
+      "reason": "Per-document language models tested with queries and test collections are a useful retrieval baseline; the described models do not learn from graded relevance lists."
+    },
+    "KG-7ad9e9c8": {
+      "grade": "0",
+      "reason": "The learning signal is delayed reward; the proposed brief asks for triple scoring."
+    },
+    "AB-44e8e9cf": {
+      "grade": "2",
+      "reason": "Links polarity-bearing expressions to a subject via parsing and a lexicon. Its evaluation uses web pages and news rather than product-review aspects."
+    },
+    "LR-44e8e9cf": {
+      "grade": "0",
+      "reason": "The system extracts polarity toward subjects; it does not order documents for a query."
+    },
+    "AB-8a008376": {
+      "grade": "3",
+      "reason": "The target is precisely the aspects and polarities in reviews. Sentence compression addresses noisy syntax in that setting."
+    },
+    "LR-d5866bb7": {
+      "grade": "2",
+      "reason": "The title directly covers learning to rank in IR and NLP. The record lacks abstract detail on evaluation and datasets."
+    },
+    "LR-b82611c5": {
+      "grade": "2",
+      "reason": "The survey describes query-conditioned ranking with supervised features and learned representations. It gives useful model families for the brief."
+    },
+    "KG-0b79dddc": {
+      "grade": "0",
+      "reason": "The paper's stated goal is control through reinforcement learning."
+    },
+    "MF-7852ee31": {
+      "grade": "3",
+      "reason": "The title specifies bounded matrix factorization for recommender systems, a concrete factor-model baseline to investigate. Assessment here relies on the title."
+    },
+    "KG-8b78d005": {
+      "grade": "3",
+      "reason": "ConvE scores missing KG links with a multi-layer convolutional embedding and evaluates on established datasets."
+    },
+    "AB-7ad9e9c8": {
+      "grade": "0",
+      "reason": "The experiments concern reinforcement learning rather than opinions about aspects."
+    },
+    "AB-0b79dddc": {
+      "grade": "0",
+      "reason": "The title concerns control with deep RL, with no sentiment or aspect task."
+    },
+    "MF-0b79dddc": {
+      "grade": "0",
+      "reason": "The stated problem is agent control rather than collaborative filtering."
+    },
+    "MF-9757c7d7": {
+      "grade": "3",
+      "reason": "Compares SVD with collaborative filtering both for predicting explicit ratings and for top-N recommendations using purchases."
+    },
+    "AB-6d97144d": {
+      "grade": "U",
+      "reason": "Title supports review sentiment classification, but does not resolve whether the unit is a whole review or an aspect."
+    },
+    "AB-d1cbe41d": {
+      "grade": "3",
+      "reason": "The book explicitly covers aspect-based sentiment analysis, providing the problem formulation and methodology needed for the brief. See linked publisher record."
+    },
+    "LR-7b5e564b": {
+      "grade": "1",
+      "reason": "The book surveys IR broadly. The abstract gives background rather than a particular learning-to-rank experiment."
+    },
+    "MF-012883f3": {
+      "grade": "3",
+      "reason": "The title names a parallel factorization method for recommender systems, a relevant candidate baseline. The snapshot does not describe its implementation."
+    },
+    "KG-f6da7d16": {
+      "grade": "3",
+      "reason": "Gaussian embeddings explicitly model uncertainty in entities and relations for knowledge graph representation."
+    },
+    "LR-491dadda": {
+      "grade": "3",
+      "reason": "This tutorial distinguishes pointwise, pairwise and listwise training for ranking according to relevance."
+    },
+    "KG-44e8e9cf": {
+      "grade": "0",
+      "reason": "Semantic relations between sentiment expressions and subjects are different from predicting missing KG triples."
+    },
+    "AB-0c572331": {
+      "grade": "0",
+      "reason": "The false-belief benchmarks do not assign polarity to product aspects."
+    },
+    "AB-3635227b": {
+      "grade": "1",
+      "reason": "Sentence and tweet sentiment with convolutional models supplies a background classifier. The label applies to the whole short text."
+    },
+    "AB-6563ecb9": {
+      "grade": "2",
+      "reason": "Sentiment-specific word vectors can help distinguish opposite-polarity terms needed by an aspect model. No aspect association is described."
+    },
+    "LR-0b79dddc": {
+      "grade": "0",
+      "reason": "Agent control does not provide document relevance data or query-ranking evaluation."
+    },
+    "KG-118032fc": {
+      "grade": "3",
+      "reason": "The title identifies dynamic mapping matrices for KG embedding, a direct alternative for modeling relations. Evidence here is limited to the bibliographic record."
+    },
+    "MF-a67b6cfa": {
+      "grade": "1",
+      "reason": "E-commerce examples explain recommendation applications; they provide context for a shopping dataset but no specified factorization baseline."
+    }
+  }
+}

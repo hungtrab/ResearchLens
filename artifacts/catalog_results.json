@@ -1,0 +1,1006 @@
+{
+  "generated_at": "2026-10-14T11:20:45.346703+00:00",
+  "source_sha256": "02bcc466ef86f72cef48f0c95daf7f793671c05de6955d84889f3a2513517a98",
+  "papers": 129596,
+  "coverage": [
+    {
+      "conference": "ICML",
+      "year": 2020,
+      "papers": 1144
+    },
+    {
+      "conference": "ICML",
+      "year": 2021,
+      "papers": 1256
+    },
+    {
+      "conference": "ICML",
+      "year": 2022,
+      "papers": 1233
+    },
+    {
+      "conference": "ICML",
+      "year": 2023,
+      "papers": 1828
+    },
+    {
+      "conference": "ICML",
+      "year": 2024,
+      "papers": 2610
+    },
+    {
+      "conference": "ICML",
+      "year": 2025,
+      "papers": 3330
+    },
+    {
+      "conference": "ICML",
+      "year": 2026,
+      "papers": 6552
+    },
+    {
+      "conference": "NeurIPS",
+      "year": 2020,
+      "papers": 1909
+    },
+    {
+      "conference": "NeurIPS",
+      "year": 2021,
+      "papers": 2367
+    },
+    {
+      "conference": "NeurIPS",
+      "year": 2022,
+      "papers": 2928
+    },
+    {
+      "conference": "NeurIPS",
+      "year": 2023,
+      "papers": 3584
+    },
+    {
+      "conference": "NeurIPS",
+      "year": 2024,
+      "papers": 4538
+    },
+    {
+      "conference": "NeurIPS",
+      "year": 2025,
+      "papers": 5907
+    },
+    {
+      "conference": "NeurIPS",
+      "year": 2026,
+      "papers": 6567
+    },
+    {
+      "conference": "ICLR",
+      "year": 2020,
+      "papers": 720
+    },
+    {
+      "conference": "ICLR",
+      "year": 2021,
+      "papers": 918
+    },
+    {
+      "conference": "ICLR",
+      "year": 2022,
+      "papers": 1095
+    },
+    {
+      "conference": "ICLR",
+      "year": 2023,
+      "papers": 1584
+    },
+    {
+      "conference": "ICLR",
+      "year": 2024,
+      "papers": 2296
+    },
+    {
+      "conference": "ICLR",
+      "year": 2025,
+      "papers": 3830
+    },
+    {
+      "conference": "ICLR",
+      "year": 2026,
+      "papers": 5468
+    },
+    {
+      "conference": "AAAI",
+      "year": 2020,
+      "papers": 1864
+    },
+    {
+      "conference": "AAAI",
+      "year": 2021,
+      "papers": 2330
+    },
+    {
+      "conference": "AAAI",
+      "year": 2022,
+      "papers": 1619
+    },
+    {
+      "conference": "AAAI",
+      "year": 2023,
+      "papers": 2021
+    },
+    {
+      "conference": "AAAI",
+      "year": 2024,
+      "papers": 2866
+    },
+    {
+      "conference": "AAAI",
+      "year": 2025,
+      "papers": 3486
+    },
+    {
+      "conference": "AAAI",
+      "year": 2026,
+      "papers": 4913
+    },
+    {
+      "conference": "EMNLP",
+      "year": 2020,
+      "papers": 1256
+    },
+    {
+      "conference": "EMNLP",
+      "year": 2021,
+      "papers": 1322
+    },
+    {
+      "conference": "EMNLP",
+      "year": 2022,
+      "papers": 1491
+    },
+    {
+      "conference": "EMNLP",
+      "year": 2023,
+      "papers": 2249
+    },
+    {
+      "conference": "EMNLP",
+      "year": 2024,
+      "papers": 2453
+    },
+    {
+      "conference": "EMNLP",
+      "year": 2025,
+      "papers": 3498
+    },
+    {
+      "conference": "EMNLP",
+      "year": 2026,
+      "papers": 0
+    },
+    {
+      "conference": "NAACL",
+      "year": 2020,
+      "papers": 0
+    },
+    {
+      "conference": "NAACL",
+      "year": 2021,
+      "papers": 563
+    },
+    {
+      "conference": "NAACL",
+      "year": 2022,
+      "papers": 747
+    },
+    {
+      "conference": "NAACL",
+      "year": 2023,
+      "papers": 0
+    },
+    {
+      "conference": "NAACL",
+      "year": 2024,
+      "papers": 958
+    },
+    {
+      "conference": "NAACL",
+      "year": 2025,
+      "papers": 1378
+    },
+    {
+      "conference": "NAACL",
+      "year": 2026,
+      "papers": 0
+    },
+    {
+      "conference": "ACL",
+      "year": 2020,
+      "papers": 873
+    },
+    {
+      "conference": "ACL",
+      "year": 2021,
+      "papers": 1252
+    },
+    {
+      "conference": "ACL",
+      "year": 2022,
+      "papers": 1110
+    },
+    {
+      "conference": "ACL",
+      "year": 2023,
+      "papers": 2156
+    },
+    {
+      "conference": "ACL",
+      "year": 2024,
+      "papers": 2013
+    },
+    {
+      "conference": "ACL",
+      "year": 2025,
+      "papers": 3364
+    },
+    {
+      "conference": "ACL",
+      "year": 2026,
+      "papers": 4823
+    },
+    {
+      "conference": "CVPR",
+      "year": 2020,
+      "papers": 1475
+    },
+    {
+      "conference": "CVPR",
+      "year": 2021,
+      "papers": 1678
+    },
+    {
+      "conference": "CVPR",
+      "year": 2022,
+      "papers": 2095
+    },
+    {
+      "conference": "CVPR",
+      "year": 2023,
+      "papers": 2381
+    },
+    {
+      "conference": "CVPR",
+      "year": 2024,
+      "papers": 2748
+    },
+    {
+      "conference": "CVPR",
+      "year": 2025,
+      "papers": 2908
+    },
+    {
+      "conference": "CVPR",
+      "year": 2026,
+      "papers": 4042
+    }
+  ],
+  "abstracts": 94691,
+  "index_build_s": 7.73430075898068,
+  "index_bytes": 551485440,
+  "source_bytes": 251212258,
+  "latency": {
+    "queries": 100,
+    "p50_ms": 44.17752000153996,
+    "p95_ms": 153.22477509034792,
+    "max_ms": 183.64999699406326
+  },
+  "measurements": [
+    {
+      "query": "graph neural networks",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 80.42429201304913,
+      "total": 26606
+    },
+    {
+      "query": "large language models",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 182.11048701778054,
+      "total": 67523
+    },
+    {
+      "query": "information retrieval",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 74.59819101495668,
+      "total": 23965
+    },
+    {
+      "query": "diffusion models",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 152.3261769907549,
+      "total": 55674
+    },
+    {
+      "query": "reinforcement learning",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 125.77658001100644,
+      "total": 44828
+    },
+    {
+      "query": "machine translation",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 30.090078013017774,
+      "total": 9268
+    },
+    {
+      "query": "object detection",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 40.85909103741869,
+      "total": 12663
+    },
+    {
+      "query": "semantic segmentation",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 40.264541981741786,
+      "total": 12171
+    },
+    {
+      "query": "speech recognition",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 20.89438500115648,
+      "total": 5878
+    },
+    {
+      "query": "causal inference",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 39.52431899961084,
+      "total": 12280
+    },
+    {
+      "query": "federated learning",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 128.0698999762535,
+      "total": 44913
+    },
+    {
+      "query": "domain adaptation",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 48.79260901361704,
+      "total": 12886
+    },
+    {
+      "query": "question answering",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 25.241041963454336,
+      "total": 6745
+    },
+    {
+      "query": "contrastive learning",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 130.6359869777225,
+      "total": 45628
+    },
+    {
+      "query": "adversarial robustness",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 35.74396698968485,
+      "total": 10274
+    },
+    {
+      "query": "knowledge graphs",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 59.35510701965541,
+      "total": 17433
+    },
+    {
+      "query": "image generation",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 89.42658302839845,
+      "total": 28742
+    },
+    {
+      "query": "vision transformers",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 39.058265974745154,
+      "total": 11698
+    },
+    {
+      "query": "sentiment analysis",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 45.146167976781726,
+      "total": 13460
+    },
+    {
+      "query": "recommendation systems",
+      "conference": null,
+      "repeat": 0,
+      "elapsed_ms": 35.1476069772616,
+      "total": 9728
+    },
+    {
+      "query": "graph neural networks",
+      "conference": "ICML",
+      "repeat": 1,
+      "elapsed_ms": 80.8647780213505,
+      "total": 1855
+    },
+    {
+      "query": "large language models",
+      "conference": "NeurIPS",
+      "repeat": 1,
+      "elapsed_ms": 170.29813898261636,
+      "total": 13631
+    },
+    {
+      "query": "information retrieval",
+      "conference": "ICLR",
+      "repeat": 1,
+      "elapsed_ms": 69.10456501645967,
+      "total": 2187
+    },
+    {
+      "query": "diffusion models",
+      "conference": "AAAI",
+      "repeat": 1,
+      "elapsed_ms": 139.31361900176853,
+      "total": 8220
+    },
+    {
+      "query": "reinforcement learning",
+      "conference": "EMNLP",
+      "repeat": 1,
+      "elapsed_ms": 116.77158396923915,
+      "total": 3107
+    },
+    {
+      "query": "machine translation",
+      "conference": "NAACL",
+      "repeat": 1,
+      "elapsed_ms": 29.176973970606923,
+      "total": 327
+    },
+    {
+      "query": "object detection",
+      "conference": "ACL",
+      "repeat": 1,
+      "elapsed_ms": 38.82307099411264,
+      "total": 1108
+    },
+    {
+      "query": "semantic segmentation",
+      "conference": "CVPR",
+      "repeat": 1,
+      "elapsed_ms": 41.645542019978166,
+      "total": 3128
+    },
+    {
+      "query": "speech recognition",
+      "conference": "ICML",
+      "repeat": 1,
+      "elapsed_ms": 19.778330984991044,
+      "total": 120
+    },
+    {
+      "query": "causal inference",
+      "conference": "NeurIPS",
+      "repeat": 1,
+      "elapsed_ms": 38.49948098650202,
+      "total": 3166
+    },
+    {
+      "query": "federated learning",
+      "conference": "ICLR",
+      "repeat": 1,
+      "elapsed_ms": 113.9708049595356,
+      "total": 6500
+    },
+    {
+      "query": "domain adaptation",
+      "conference": "AAAI",
+      "repeat": 1,
+      "elapsed_ms": 41.37232096400112,
+      "total": 2561
+    },
+    {
+      "query": "question answering",
+      "conference": "EMNLP",
+      "repeat": 1,
+      "elapsed_ms": 23.416341980919242,
+      "total": 1586
+    },
+    {
+      "query": "contrastive learning",
+      "conference": "NAACL",
+      "repeat": 1,
+      "elapsed_ms": 119.76656701881438,
+      "total": 799
+    },
+    {
+      "query": "adversarial robustness",
+      "conference": "ACL",
+      "repeat": 1,
+      "elapsed_ms": 36.18625900708139,
+      "total": 1105
+    },
+    {
+      "query": "knowledge graphs",
+      "conference": "CVPR",
+      "repeat": 1,
+      "elapsed_ms": 55.46856898581609,
+      "total": 1857
+    },
+    {
+      "query": "image generation",
+      "conference": "ICML",
+      "repeat": 1,
+      "elapsed_ms": 80.3580170031637,
+      "total": 902
+    },
+    {
+      "query": "vision transformers",
+      "conference": "NeurIPS",
+      "repeat": 1,
+      "elapsed_ms": 37.58911299519241,
+      "total": 2860
+    },
+    {
+      "query": "sentiment analysis",
+      "conference": "ICLR",
+      "repeat": 1,
+      "elapsed_ms": 40.091188973747194,
+      "total": 1620
+    },
+    {
+      "query": "recommendation systems",
+      "conference": "AAAI",
+      "repeat": 1,
+      "elapsed_ms": 30.844703025650233,
+      "total": 2342
+    },
+    {
+      "query": "graph neural networks",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 81.15628198720515,
+      "total": 26606
+    },
+    {
+      "query": "large language models",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 183.64999699406326,
+      "total": 67523
+    },
+    {
+      "query": "information retrieval",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 74.42445697961375,
+      "total": 23965
+    },
+    {
+      "query": "diffusion models",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 150.72514198254794,
+      "total": 55674
+    },
+    {
+      "query": "reinforcement learning",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 119.57037704996765,
+      "total": 44828
+    },
+    {
+      "query": "machine translation",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 30.31971800373867,
+      "total": 9268
+    },
+    {
+      "query": "object detection",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 41.496865975204855,
+      "total": 12663
+    },
+    {
+      "query": "semantic segmentation",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 40.27646599570289,
+      "total": 12171
+    },
+    {
+      "query": "speech recognition",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 21.54995099408552,
+      "total": 5878
+    },
+    {
+      "query": "causal inference",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 40.63545697135851,
+      "total": 12280
+    },
+    {
+      "query": "federated learning",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 117.7754410309717,
+      "total": 44913
+    },
+    {
+      "query": "domain adaptation",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 43.70854399167001,
+      "total": 12886
+    },
+    {
+      "query": "question answering",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 23.65024102618918,
+      "total": 6745
+    },
+    {
+      "query": "contrastive learning",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 120.84607605356723,
+      "total": 45628
+    },
+    {
+      "query": "adversarial robustness",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 33.75604096800089,
+      "total": 10274
+    },
+    {
+      "query": "knowledge graphs",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 55.965400009881705,
+      "total": 17433
+    },
+    {
+      "query": "image generation",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 85.40442900266498,
+      "total": 28742
+    },
+    {
+      "query": "vision transformers",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 37.21677395515144,
+      "total": 11698
+    },
+    {
+      "query": "sentiment analysis",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 44.64649601140991,
+      "total": 13460
+    },
+    {
+      "query": "recommendation systems",
+      "conference": null,
+      "repeat": 2,
+      "elapsed_ms": 33.40404498158023,
+      "total": 9728
+    },
+    {
+      "query": "graph neural networks",
+      "conference": "ICML",
+      "repeat": 3,
+      "elapsed_ms": 74.72353102639318,
+      "total": 1855
+    },
+    {
+      "query": "large language models",
+      "conference": "NeurIPS",
+      "repeat": 3,
+      "elapsed_ms": 173.11272502411157,
+      "total": 13631
+    },
+    {
+      "query": "information retrieval",
+      "conference": "ICLR",
+      "repeat": 3,
+      "elapsed_ms": 71.32144802017137,
+      "total": 2187
+    },
+    {
+      "query": "diffusion models",
+      "conference": "AAAI",
+      "repeat": 3,
+      "elapsed_ms": 142.9647770128213,
+      "total": 8220
+    },
+    {
+      "query": "reinforcement learning",
+      "conference": "EMNLP",
+      "repeat": 3,
+      "elapsed_ms": 113.0563779734075,
+      "total": 3107
+    },
+    {
+      "query": "machine translation",
+      "conference": "NAACL",
+      "repeat": 3,
+      "elapsed_ms": 27.776890026871115,
+      "total": 327
+    },
+    {
+      "query": "object detection",
+      "conference": "ACL",
+      "repeat": 3,
+      "elapsed_ms": 38.71254296973348,
+      "total": 1108
+    },
+    {
+      "query": "semantic segmentation",
+      "conference": "CVPR",
+      "repeat": 3,
+      "elapsed_ms": 42.54678601864725,
+      "total": 3128
+    },
+    {
+      "query": "speech recognition",
+      "conference": "ICML",
+      "repeat": 3,
+      "elapsed_ms": 19.085889973212034,
+      "total": 120
+    },
+    {
+      "query": "causal inference",
+      "conference": "NeurIPS",
+      "repeat": 3,
+      "elapsed_ms": 36.93984501296654,
+      "total": 3166
+    },
+    {
+      "query": "federated learning",
+      "conference": "ICLR",
+      "repeat": 3,
+      "elapsed_ms": 118.0677930242382,
+      "total": 6500
+    },
+    {
+      "query": "domain adaptation",
+      "conference": "AAAI",
+      "repeat": 3,
+      "elapsed_ms": 40.8589220023714,
+      "total": 2561
+    },
+    {
+      "query": "question answering",
+      "conference": "EMNLP",
+      "repeat": 3,
+      "elapsed_ms": 22.03380799619481,
+      "total": 1586
+    },
+    {
+      "query": "contrastive learning",
+      "conference": "NAACL",
+      "repeat": 3,
+      "elapsed_ms": 110.45025003841147,
+      "total": 799
+    },
+    {
+      "query": "adversarial robustness",
+      "conference": "ACL",
+      "repeat": 3,
+      "elapsed_ms": 34.23333802493289,
+      "total": 1105
+    },
+    {
+      "query": "knowledge graphs",
+      "conference": "CVPR",
+      "repeat": 3,
+      "elapsed_ms": 51.69216700596735,
+      "total": 1857
+    },
+    {
+      "query": "image generation",
+      "conference": "ICML",
+      "repeat": 3,
+      "elapsed_ms": 78.55191401904449,
+      "total": 902
+    },
+    {
+      "query": "vision transformers",
+      "conference": "NeurIPS",
+      "repeat": 3,
+      "elapsed_ms": 37.09194698603824,
+      "total": 2860
+    },
+    {
+      "query": "sentiment analysis",
+      "conference": "ICLR",
+      "repeat": 3,
+      "elapsed_ms": 42.71984804654494,
+      "total": 1620
+    },
+    {
+      "query": "recommendation systems",
+      "conference": "AAAI",
+      "repeat": 3,
+      "elapsed_ms": 30.283577973023057,
+      "total": 2342
+    },
+    {
+      "query": "graph neural networks",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 82.15964504051954,
+      "total": 26606
+    },
+    {
+      "query": "large language models",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 177.88095702417195,
+      "total": 67523
+    },
+    {
+      "query": "information retrieval",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 76.2552620144561,
+      "total": 23965
+    },
+    {
+      "query": "diffusion models",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 150.48842399846762,
+      "total": 55674
+    },
+    {
+      "query": "reinforcement learning",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 127.08169198594987,
+      "total": 44828
+    },
+    {
+      "query": "machine translation",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 31.737476005218923,
+      "total": 9268
+    },
+    {
+      "query": "object detection",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 43.1788070127368,
+      "total": 12663
+    },
+    {
+      "query": "semantic segmentation",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 40.97555699991062,
+      "total": 12171
+    },
+    {
+      "query": "speech recognition",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 23.485138022806495,
+      "total": 5878
+    },
+    {
+      "query": "causal inference",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 42.94547700555995,
+      "total": 12280
+    },
+    {
+      "query": "federated learning",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 125.51911902846768,
+      "total": 44913
+    },
+    {
+      "query": "domain adaptation",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 45.21887900773436,
+      "total": 12886
+    },
+    {
+      "query": "question answering",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 24.957810004707426,
+      "total": 6745
+    },
+    {
+      "query": "contrastive learning",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 132.11287901503965,
+      "total": 45628
+    },
+    {
+      "query": "adversarial robustness",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 38.05556398583576,
+      "total": 10274
+    },
+    {
+      "query": "knowledge graphs",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 59.3441579840146,
+      "total": 17433
+    },
+    {
+      "query": "image generation",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 88.88495195424184,
+      "total": 28742
+    },
+    {
+      "query": "vision transformers",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 39.98613200383261,
+      "total": 11698
+    },
+    {
+      "query": "sentiment analysis",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 44.736112002283335,
+      "total": 13460
+    },
+    {
+      "query": "recommendation systems",
+      "conference": null,
+      "repeat": 4,
+      "elapsed_ms": 35.454628989100456,
+      "total": 9728
+    }
+  ],
+  "environment": {
+    "python": "3.11.16",
+    "sqlite": "3.53.1",
+    "platform": "Linux-6.8.0-142-generic-x86_64-with-glibc2.39",
+    "cpu": "x86_64"
+  },
+  "protocol": "Single process, fresh disk index, 20 fixed topical queries warmed once then five rounds; alternate unfiltered and conference-filtered rounds. Full search includes count, BM25 ranking and top20 JSON decoding. Excludes HTTP/browser/network and startup. Descriptive coverage/latency only; no relevance labels for this expanded corpus."
+}

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "javascript_errors": [],
+  "base_url": "http://127.0.0.1:8765",
+  "neighbor_displacement_during_drag": 91.36652715062822,
+  "checks": [
+    "direct and second-hop neighbors move",
+    "dragged node stays pinned",
+    "release settles and stops",
+    "zoomed drag uses correct coordinates",
+    "reset restores layout",
+    "reduced motion has no inertia",
+    "detached graph stops"
+  ]
+}

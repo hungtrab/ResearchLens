@@ -1,0 +1,15 @@
+.venv
+.git
+data/raw
+data/scifact
+slides
+report
+tests
+*.zip
+*.pdf
+artifacts/screenshots
+artifacts/figures
+__pycache__
+data/*.db*
+data/conferences/raw
+**/*.sqlite*

@@ -1,0 +1,39 @@
+graph neural networks 1 200
+graph neural networks 2 400
+information retrieval 1 600
+information retrieval 2 800
+recommender systems 1 998
+recommender systems 2 1195
+sentiment analysis 1 1395
+sentiment analysis 2 1594
+large language models 1 1790
+large language models 2 1990
+deep learning 1 2188
+deep learning 2 2384
+reinforcement learning 1 2580
+reinforcement learning 2 2780
+knowledge graphs 1 2972
+knowledge graphs 2 3171
+Unique scored reviews: 1320
+{
+  "collected_at": "2026-10-14T09:55:21.565231+00:00",
+  "papers": 3595,
+  "reviews": 1320,
+  "topics": [
+    "graph neural networks",
+    "information retrieval",
+    "recommender systems",
+    "sentiment analysis",
+    "large language models",
+    "deep learning",
+    "reinforcement learning",
+    "knowledge graphs"
+  ],
+  "selection": "First 400 relevance-ranked OpenAlex works per query, English, publication date <= 2025-12-31; union with PeerRead ICLR 2017.",
+  "openalex": "https://api.openalex.org/works",
+  "peerread_commit": "9bb37751781a900cee9e74ec3105997732c8e8e5",
+  "files": {
+    "papers": "d5441933d4b020494eb5c7a61574bf0d8fda285b12a2271a93726a3011d9d85b",
+    "reviews": "9b11667c887cdeeefef31bd6ebe76f30b84cbc03975687bc0bafd853c613ddb1"
+  }
+}

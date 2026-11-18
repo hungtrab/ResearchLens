@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "base_url": "http://127.0.0.1:8765",
+  "catalog_papers": 129596,
+  "benchmark_papers": 3595,
+  "javascript_errors": [],
+  "flows": [
+    "Docker conference search",
+    "coverage",
+    "live OpenAlex search"
+  ]
+}

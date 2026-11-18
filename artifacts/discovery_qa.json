@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "catalog_papers": 129596,
+  "years": [
+    2020,
+    2026
+  ],
+  "imported_id": "W4416967010",
+  "imported_title": "Flow matching for generative modeling in bioinformatics and computational biology",
+  "javascript_errors": [],
+  "live_provider": "OpenAlex",
+  "flows": [
+    "conference BM25",
+    "conference/year filters",
+    "coverage matrix",
+    "pagination",
+    "empty-result online link",
+    "live online search",
+    "import and read",
+    "notes reload",
+    "attach imported paper to project",
+    "project graph membership",
+    "duplicate badge",
+    "mobile layout"
+  ]
+}

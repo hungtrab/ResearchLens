@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "javascript_errors": [],
+  "real_pdf_paper": "W3007332492",
+  "flows": [
+    "project create",
+    "brief suggestions",
+    "paper membership",
+    "project graph",
+    "real public PDF",
+    "page bookmark",
+    "UTF-8 notes over64KiB",
+    "autosave and reload",
+    "failed save draft recovery",
+    "missing PDF fallback",
+    "graph selection and zoom",
+    "graph groups and labels",
+    "graph title search",
+    "mobile overflow",
+    "reduced motion"
+  ],
+  "tested_base_url": "http://127.0.0.1:8765",
+  "deployment": "Docker app + Solr 9.9.0"
+}

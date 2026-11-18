@@ -1,0 +1,14 @@
+{
+  "study": "d27a859f2ae80ff4a58cf20ca14638c6f97c784b71b4aa763b3b176d6ea91165",
+  "reviewer": "reader-01",
+  "kind": "human",
+  "answers": {
+    "AB-6744f5fe": {
+      "grade": "3",
+      "reason": "",
+      "mode": "chat; grade supplied by reader, no rationale supplied"
+    }
+  },
+  "status": "calibration_only",
+  "note": "One grade was supplied in chat. The reader subsequently reported that the instructions were unclear. Excluded from evaluation."
+}

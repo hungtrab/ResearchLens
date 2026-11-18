@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:${APP_PORT:-8765}:8000"
+    environment:
+      RESEARCHLENS_DB: /app/state/researchlens.db
+      SOLR_URL: ${SOLR_URL:-}
+      OPENALEX_API_KEY: ${OPENALEX_API_KEY:-}
+    volumes:
+      - researchlens-state:/app/state
+    restart: unless-stopped
+  solr:
+    image: solr:9.9.0
+    profiles: [solr]
+    ports:
+      - "127.0.0.1:8983:8983"
+    command: [solr-precreate, researchlens]
+    volumes:
+      - researchlens-solr:/var/solr
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS 'http://localhost:8983/solr/researchlens/admin/ping' >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 12
+volumes:
+  researchlens-state:
+  researchlens-solr:

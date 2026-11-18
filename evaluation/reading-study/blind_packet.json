@@ -1,0 +1,435 @@
+{
+  "study": "d27a859f2ae80ff4a58cf20ca14638c6f97c784b71b4aa763b3b176d6ea91165",
+  "cards": [
+    {
+      "code": "MF-8f6dc017",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Recommender systems — beyond matrix completion",
+      "abstract": "The future success of these systems depends on more than a Netflix challenge.",
+      "id": "W2545577367",
+      "url": "https://doi.org/10.1145/2891406"
+    },
+    {
+      "code": "MF-22801cc4",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Using Linear Algebra for Intelligent Information Retrieval",
+      "abstract": "Currently, most approaches to retrieving textual materials from scientific databases depend on a lexical match between words in users’ requests and those in or assigned to documents in a database. Because of the tremendous diversity in the words people use to describe the same document, lexical methods are necessarily incomplete and imprecise. Using the singular value decomposition (SVD), one can take advantage of the implicit higher-order structure in the association of terms with documents by determining the SVD of large sparse term by document matrices. Terms and documents represented by 200–300 of the largest singular vectors are then matched against user queries. We call this retrieval method latent semantic indexing (LSI) because the subspace represents important associative relationships between terms and documents that are not evident in individual documents. LSI is a completely automatic yet intelligent indexing method, widely applicable, and a promising way to improve users’ access to many kinds of textual materials, or to documents and services for which textual descriptions are available. A survey of the computational requirements for managing LSI-encoded databases as well as current and future applications of LSI is presented.",
+      "id": "W2072773380",
+      "url": "https://doi.org/10.1137/1037127"
+    },
+    {
+      "code": "AB-6744f5fe",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Learning Word Vectors for Sentiment Analysis",
+      "abstract": "Unsupervised vector-based approaches to semantics can model rich lexical meanings, but they largely fail to capture sentiment information that is central to many word meanings and important for a wide range of NLP tasks. We present a model that uses a mix of unsupervised and supervised techniques to learn word vectors capturing semantic term–document information as well as rich sentiment content. The proposed model can leverage both continuous and multi-dimensional sentiment information as well as non-sentiment annotations. We instantiate the model to utilize the document-level sentiment polarity annotations present in many online documents (e.g. star ratings). We evaluate the model using small, widely used sentiment and subjectivity corpora and find it out-performs several previously introduced methods for sentiment classification. We also introduce a large dataset of movie reviews to serve as a more robust benchmark for work in this area. recognition, part of speech tagging, and document retrieval (Turney and Pantel, 2010; Collobert and Weston, 2008; Turian et al., 2010). In this paper, we present a model to capture both semantic and sentiment similarities among words. The semantic component of our model learns word vectors via an unsupervised probabilistic model of documents. However, in keeping with linguistic and cognitive research arguing that expressive content and descriptive semantic content are distinct (Kaplan, 1999; Jay, 2000; Potts, 2007), we find that this basic model misses crucial sentiment information. For example, while it learns that wonderful and amazing are semantically close, it doesn’t capture the fact that these are both very strong positive sentiment words, at the opposite end of the spectrum from terrible and awful. Thus, we extend the model with a supervised sentiment component that is capable of embracing many social and attitudinal aspects of meaning (Wilson",
+      "id": "W2113459411",
+      "url": "https://openalex.org/W2113459411"
+    },
+    {
+      "code": "MF-44e8e9cf",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Sentiment analysis",
+      "abstract": "This paper illustrates a sentiment analysis approach to extract sentiments associated with polarities of positive or negative for specific subjects from a document, instead of classifying the whole document into positive or negative.The essential issues in sentiment analysis are to identify how sentiments are expressed in texts and whether the expressions indicate positive (favorable) or negative (unfavorable) opinions toward the subject. In order to improve the accuracy of the sentiment analysis, it is important to properly identify the semantic relationships between the sentiment expressions and the subject. By applying semantic analysis with a syntactic parser and sentiment lexicon, our prototype system achieved high precision (75-95%, depending on the data) in finding sentiments within Web pages and news articles.",
+      "id": "W2148506018",
+      "url": "https://doi.org/10.1145/945645.945658"
+    },
+    {
+      "code": "MF-13875792",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Recommender Systems Handbook",
+      "abstract": "",
+      "id": "W1690919088",
+      "url": "https://doi.org/10.1007/978-0-387-85820-3"
+    },
+    {
+      "code": "KG-67793f82",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Learning Entity and Relation Embeddings for Knowledge Graph Completion",
+      "abstract": "Knowledge graph completion aims to perform link prediction between entities. In this paper, we consider the approach of knowledge graph embeddings. Recently, models such as TransE and TransH build entity and relation embeddings by regarding a relation as translation from head entity to tail entity. We note that these models simply put both entities and relations within the same semantic space. In fact, an entity may have multiple aspects and various relations may focus on different aspects of entities, which makes a common space insufficient for modeling. In this paper, we propose TransR to build entity and relation embeddings in separate entity space and relation spaces. Afterwards, we learn embeddings by first projecting entities from entity space to corresponding relation space and then building translations between projected entities. In experiments, we evaluate our models on three tasks including link prediction, triple classification and relational fact extraction. Experimental results show significant and consistent improvements compared to state-of-the-art baselines including TransE and TransH.",
+      "id": "W2184957013",
+      "url": "https://doi.org/10.1609/aaai.v29i1.9491"
+    },
+    {
+      "code": "LR-14135702",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "Linear discriminant model for information retrieval",
+      "abstract": "This paper presents a new discriminative model for information retrieval (IR), referred to as linear discriminant model (LDM), which provides a flexible framework to incorporate arbitrary features. LDM is different from most existing models in that it takes into account a variety of linguistic features that are derived from the component models of HMM that is widely used in language modeling approaches to IR. Therefore, LDM is a means of melding discriminative and generative models for IR. We present two algorithms of parameter learning for LDM. One is to optimize the average precision (AP) directly using an iterative procedure. The other is a perceptron-based algorithm that minimizes the number of discordant document-pairs in a rank list. The effectiveness of our approach has been evaluated on the task of ad hoc retrieval using six English and Chinese TREC test sets. Results show that (1) in most test sets, LDM significantly outperforms the state-of-the-art language modeling approaches and the classical probabilistic retrieval model; (2) it is more appropriate to train LDM using a measure of AP rather than likelihood if the IR system is graded on AP; and (3) linguistic features (e.g. phrases and dependences) are effective for IR if they are incorporated properly.",
+      "id": "W2030760474",
+      "url": "https://doi.org/10.1145/1076034.1076085"
+    },
+    {
+      "code": "KG-d0e03b2c",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Locally Adaptive Translation for Knowledge Graph Embedding",
+      "abstract": "Knowledge graph embedding aims to represent entities and relations in a large-scale knowledge graph as elements in a continuous vector space. Existing methods, e.g., TransE and TransH, learn embedding representation by defining a global margin-based loss function over the data. However, the optimal loss function is determined during experiments whose parameters are examined among a closed set of candidates. Moreover, embeddings over two knowledge graphs with different entities and relations share the same set of candidate loss functions, ignoring the locality of both graphs. This leads to the limited performance of embedding related applications. In this paper, we propose a locally adaptive translation method for knowledge graph embedding, called TransA, to find the optimal loss function by adaptively determining its margin over different knowledge graphs. Experiments on two benchmark data sets demonstrate the superiority of the proposed method, as compared to the-state-of-the-art ones.",
+      "id": "W2964007976",
+      "url": "https://doi.org/10.1609/aaai.v30i1.10091"
+    },
+    {
+      "code": "LR-68092b2b",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "Discriminative models for information retrieval",
+      "abstract": "Discriminative models have been preferred over generative models in many machine learning problems in the recent past owing to some of their attractive theoretical properties. In this paper, we explore the applicability of discriminative classifiers for IR. We have compared the performance of two popular discriminative models, namely the maximum entropy model and support vector machines with that of language modeling, the state-of-the-art generative model for IR. Our experiments on ad-hoc retrieval indicate that although maximum entropy is significantly worse than language models, support vector machines are on par with language models. We argue that the main reason to prefer SVMs over language models is their ability to learn arbitrary features automatically as demonstrated by our experiments on the home-page finding task of TREC-10.",
+      "id": "W2067802667",
+      "url": "https://doi.org/10.1145/1008992.1009006"
+    },
+    {
+      "code": "LR-7ad9e9c8",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "Temporal credit assignment in reinforcement learning",
+      "abstract": "This dissertation describes computational experiments comparing the performance of a range of reinforcement-learning algorithms. The experiments are designed to focus on aspects of the credit-assignment problem having to do with determining when the behavior that deserves credit occurred. The issues of knowledge representation involved in developing new features or refining existing ones are not addressed. The algorithms considered include some from learning automata theory, mathematical learning theory, early \"cybernetic\" approaches to learning, Samuel's checker-playing program, Michie and Chambers's \"Boxes\" system, and a number of new algorithms. The tasks were selected so as to involve, first in isolation and then in combination, the issues of misleading generalizations, delayed reinforcement, unbalanced reinforcement, and secondary reinforcement. The tasks range from simple, abstract \"two-armed bandit\" tasks to a physically realistic pole-balancing task. The results indicate several areas where the algorithms presented here perform substantially better than those previously studied. An unbalanced distribution of reinforcement, misleading generalizations, and delayed reinforcement can greatly retard learning and in some cases even make it counterproductive. Performance can be substantially improved in the presence of these common problems through the use of mechanisms of reinforcement comparison and secondary reinforcement. We present a new algorithm similar to the \"learning-by-generalization\" algorithm used for altering the static evaluation function in Samuel's checker-playing program. Simulation experiments indicate that the new algorithm performs better than a version of Samuel's algorithm suitably modified for reinforcement learning tasks. Theoretical analysis in terms of an \"ideal reinforcement signal\" sheds light on the relationship between these two algorithms and other temporal credit-assignment algorithms.",
+      "id": "W1569296262",
+      "url": "https://openalex.org/W1569296262"
+    },
+    {
+      "code": "MF-42f878e5",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Evaluating collaborative filtering recommender systems",
+      "abstract": "Recommender systems have been evaluated in many, often incomparable, ways. In this article, we review the key decisions in evaluating collaborative filtering recommender systems: the user tasks being evaluated, the types of analysis and datasets being used, the ways in which prediction quality is measured, the evaluation of prediction attributes other than quality, and the user-based evaluation of the system as a whole. In addition to reviewing the evaluation strategies used by prior researchers, we present empirical results from the analysis of various accuracy metrics on one content domain where all the tested metrics collapsed roughly into three equivalence classes. Metrics within each equivalency class were strongly correlated, while metrics from different equivalency classes were uncorrelated.",
+      "id": "W1971040550",
+      "url": "https://doi.org/10.1145/963770.963772"
+    },
+    {
+      "code": "MF-e33f08ef",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Toward the next generation of recommender systems: a survey of the state-of-the-art and possible extensions",
+      "abstract": "This paper presents an overview of the field of recommender systems and describes the current generation of recommendation methods that are usually classified into the following three main categories: content-based, collaborative, and hybrid recommendation approaches. This paper also describes various limitations of current recommendation methods and discusses possible extensions that can improve recommendation capabilities and make recommender systems applicable to an even broader range of applications. These extensions include, among others, an improvement of understanding of users and items, incorporation of the contextual information into the recommendation process, support for multicriteria ratings, and a provision of more flexible and less intrusive types of recommendations.",
+      "id": "W2171960770",
+      "url": "https://doi.org/10.1109/tkde.2005.99"
+    },
+    {
+      "code": "AB-accd82dc",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Emergent analogical reasoning in large language models",
+      "abstract": "",
+      "id": "W4385430086",
+      "url": "https://doi.org/10.1038/s41562-023-01659-w"
+    },
+    {
+      "code": "KG-accd82dc",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Emergent analogical reasoning in large language models",
+      "abstract": "",
+      "id": "W4385430086",
+      "url": "https://doi.org/10.1038/s41562-023-01659-w"
+    },
+    {
+      "code": "MF-7ad9e9c8",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Temporal credit assignment in reinforcement learning",
+      "abstract": "This dissertation describes computational experiments comparing the performance of a range of reinforcement-learning algorithms. The experiments are designed to focus on aspects of the credit-assignment problem having to do with determining when the behavior that deserves credit occurred. The issues of knowledge representation involved in developing new features or refining existing ones are not addressed. The algorithms considered include some from learning automata theory, mathematical learning theory, early \"cybernetic\" approaches to learning, Samuel's checker-playing program, Michie and Chambers's \"Boxes\" system, and a number of new algorithms. The tasks were selected so as to involve, first in isolation and then in combination, the issues of misleading generalizations, delayed reinforcement, unbalanced reinforcement, and secondary reinforcement. The tasks range from simple, abstract \"two-armed bandit\" tasks to a physically realistic pole-balancing task. The results indicate several areas where the algorithms presented here perform substantially better than those previously studied. An unbalanced distribution of reinforcement, misleading generalizations, and delayed reinforcement can greatly retard learning and in some cases even make it counterproductive. Performance can be substantially improved in the presence of these common problems through the use of mechanisms of reinforcement comparison and secondary reinforcement. We present a new algorithm similar to the \"learning-by-generalization\" algorithm used for altering the static evaluation function in Samuel's checker-playing program. Simulation experiments indicate that the new algorithm performs better than a version of Samuel's algorithm suitably modified for reinforcement learning tasks. Theoretical analysis in terms of an \"ideal reinforcement signal\" sheds light on the relationship between these two algorithms and other temporal credit-assignment algorithms.",
+      "id": "W1569296262",
+      "url": "https://openalex.org/W1569296262"
+    },
+    {
+      "code": "KG-0c572331",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Evaluating large language models in theory of mind tasks",
+      "abstract": "Eleven large language models (LLMs) were assessed using 40 bespoke false-belief tasks, considered a gold standard in testing theory of mind (ToM) in humans. Each task included a false-belief scenario, three closely matched true-belief control scenarios, and the reversed versions of all four. An LLM had to solve all eight scenarios to solve a single task. Older models solved no tasks; Generative Pre-trained Transformer (GPT)-3-davinci-003 (from November 2022) and ChatGPT-3.5-turbo (from March 2023) solved 20% of the tasks; ChatGPT-4 (from June 2023) solved 75% of the tasks, matching the performance of 6-y-old children observed in past studies. We explore the potential interpretation of these results, including the intriguing possibility that ToM-like ability, previously considered unique to humans, may have emerged as an unintended by-product of LLMs' improving language skills. Regardless of how we interpret these outcomes, they signify the advent of more powerful and socially skilled AI-with profound positive and negative implications.",
+      "id": "W4403863303",
+      "url": "https://doi.org/10.1073/pnas.2405460121"
+    },
+    {
+      "code": "LR-d3325691",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "A Language Modeling Approach to Information Retrieval",
+      "abstract": "In today's world, there is no shortage of information. However, for a specific information need, only a small subset of all of the available information will be useful. The field of information retrieval (IR) is the study of methods to provide users with that small subset of information relevant to their needs and to do so in a timely fashion. Information sources can take many forms, but this thesis will focus on text based information systems and investigate problems germane to the retrieval of written natural language documents. Central to these problems is the notion of \"topic.\" In other words, what are documents about? However, topics depend on the semantics of documents and retrieval systems are not endowed with knowledge of the semantics of natural language. The approach taken in this thesis will be to make use of probabilistic language models to investigate text based information retrieval and related problems. One such problem is the prediction of topic shifts in text, the topic segmentation problem. It will be shown that probabilistic methods can be used to predict topic changes in the context of the task of new event detection. Two complementary sets of features are studied individually and then combined into a single language model. The language modeling approach allows this problem to be approached in a principled way without complex semantic modeling. Next, the problem of document retrieval in response to a user query will be investigated. Models of document indexing and document retrieval have been extensively studied over the past three decades. The integration of these two classes of models has been the goal of several researchers but it is a very difficult problem. Much of the reason for this is that the indexing component requires inferences as to the semantics of documents. Instead, an approach to retrieval based on probabilistic language modeling will be presented. Models are estimated for each document individually. The approach to modeling is non-parametric and integrates the entire retrieval process into a single model. One advantage of this approach is that collection statistics, which are used heuristically for the assignment of concept probabilities in other probabilistic models, are used directly in the estimation of language model probabilities in this approach. The language modeling approach has been implemented and tested empirically and performs very well on standard test collections and query sets. In order to improve retrieval effectiveness, IR systems use additional techniques such as relevance feedback, unsupervised query expansion and structured queries. These and other techniques are discussed in terms of the language modeling approach and empirical results are given for several of the techniques developed. These results provide further proof of concept for the use of language models for retrieval tasks.",
+      "id": "W2093390569",
+      "url": "https://doi.org/10.1145/3130348.3130368"
+    },
+    {
+      "code": "KG-7ad9e9c8",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Temporal credit assignment in reinforcement learning",
+      "abstract": "This dissertation describes computational experiments comparing the performance of a range of reinforcement-learning algorithms. The experiments are designed to focus on aspects of the credit-assignment problem having to do with determining when the behavior that deserves credit occurred. The issues of knowledge representation involved in developing new features or refining existing ones are not addressed. The algorithms considered include some from learning automata theory, mathematical learning theory, early \"cybernetic\" approaches to learning, Samuel's checker-playing program, Michie and Chambers's \"Boxes\" system, and a number of new algorithms. The tasks were selected so as to involve, first in isolation and then in combination, the issues of misleading generalizations, delayed reinforcement, unbalanced reinforcement, and secondary reinforcement. The tasks range from simple, abstract \"two-armed bandit\" tasks to a physically realistic pole-balancing task. The results indicate several areas where the algorithms presented here perform substantially better than those previously studied. An unbalanced distribution of reinforcement, misleading generalizations, and delayed reinforcement can greatly retard learning and in some cases even make it counterproductive. Performance can be substantially improved in the presence of these common problems through the use of mechanisms of reinforcement comparison and secondary reinforcement. We present a new algorithm similar to the \"learning-by-generalization\" algorithm used for altering the static evaluation function in Samuel's checker-playing program. Simulation experiments indicate that the new algorithm performs better than a version of Samuel's algorithm suitably modified for reinforcement learning tasks. Theoretical analysis in terms of an \"ideal reinforcement signal\" sheds light on the relationship between these two algorithms and other temporal credit-assignment algorithms.",
+      "id": "W1569296262",
+      "url": "https://openalex.org/W1569296262"
+    },
+    {
+      "code": "AB-44e8e9cf",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Sentiment analysis",
+      "abstract": "This paper illustrates a sentiment analysis approach to extract sentiments associated with polarities of positive or negative for specific subjects from a document, instead of classifying the whole document into positive or negative.The essential issues in sentiment analysis are to identify how sentiments are expressed in texts and whether the expressions indicate positive (favorable) or negative (unfavorable) opinions toward the subject. In order to improve the accuracy of the sentiment analysis, it is important to properly identify the semantic relationships between the sentiment expressions and the subject. By applying semantic analysis with a syntactic parser and sentiment lexicon, our prototype system achieved high precision (75-95%, depending on the data) in finding sentiments within Web pages and news articles.",
+      "id": "W2148506018",
+      "url": "https://doi.org/10.1145/945645.945658"
+    },
+    {
+      "code": "LR-44e8e9cf",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "Sentiment analysis",
+      "abstract": "This paper illustrates a sentiment analysis approach to extract sentiments associated with polarities of positive or negative for specific subjects from a document, instead of classifying the whole document into positive or negative.The essential issues in sentiment analysis are to identify how sentiments are expressed in texts and whether the expressions indicate positive (favorable) or negative (unfavorable) opinions toward the subject. In order to improve the accuracy of the sentiment analysis, it is important to properly identify the semantic relationships between the sentiment expressions and the subject. By applying semantic analysis with a syntactic parser and sentiment lexicon, our prototype system achieved high precision (75-95%, depending on the data) in finding sentiments within Web pages and news articles.",
+      "id": "W2148506018",
+      "url": "https://doi.org/10.1145/945645.945658"
+    },
+    {
+      "code": "AB-8a008376",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Sentence Compression for Aspect-Based Sentiment Analysis",
+      "abstract": "Sentiment analysis, which addresses the computational treatment of opinion, sentiment, and subjectivity in text, has received considerable attention in recent years. In contrast to the traditional coarse-grained sentiment analysis tasks, such as document-level sentiment classification, we are interested in the fine-grained aspect-based sentiment analysis that aims to identify aspects that users comment on and these aspects' polarities. Aspect-based sentiment analysis relies heavily on syntactic features. However, the reviews that this task focuses on are natural and spontaneous, thus posing a challenge to syntactic parsers. In this paper, we address this problem by proposing a framework of adding a sentiment sentence compression (Sent_Comp) step before performing the aspect-based sentiment analysis. Different from the previous sentence compression model for common news sentences, Sent_Comp seeks to remove the sentiment-unnecessary information for sentiment analysis, thereby compressing a complicated sentiment sentence into one that is shorter and easier to parse. We apply a discriminative conditional random field model, with certain special features, to automatically compress sentiment sentences. Using the Chinese corpora of four product domains, Sent_Comp significantly improves the performance of the aspect-based sentiment analysis. The features proposed for Sent_Comp, especially the potential semantic features, are useful for sentiment sentence compression.",
+      "id": "W1501931667",
+      "url": "https://doi.org/10.1109/taslp.2015.2443982"
+    },
+    {
+      "code": "LR-d5866bb7",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "Learning to Rank for Information Retrieval and Natural Language Processing",
+      "abstract": "",
+      "id": "W2009077327",
+      "url": "https://doi.org/10.2200/s00348ed1v01y201104hlt012"
+    },
+    {
+      "code": "LR-b82611c5",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "An Introduction to Neural Information Retrieval",
+      "abstract": "Neural ranking models for information retrieval (IR) use shallow or deep neural networks to rank search results in response to a query. Traditional learning to rank models employ supervised machine learning (ML) techniques—including neural networks—over hand-crafted IR features. By contrast, more recently proposed neural models learn representations of language from raw text that can bridge the gap between query and document vocabulary. Unlike classical learning to rank models and non-neural approaches to IR, these new ML techniques are data-hungry, requiring large scale training data before they can be deployed. This tutorial introduces basic concepts and intuitions behind neural IR models, and places them in the context of classical non-neural approaches to IR. We begin by introducing fundamental concepts of retrieval and different neural and non-neural approaches to unsupervised learning of vector representations of text. We then review IR methods that employ these pre-trained neural vector representations without learning the IR task end-to-end. We introduce the Learning to Rank (LTR) framework next, discussing standard loss functions for ranking. We follow that with an overview of deep neural networks (DNNs), including standard architectures and implementations. Finally, we review supervised neural learning to rank models, including recent DNN architectures trained end-to-end for ranking tasks. We conclude with a discussion on potential future directions for neural IR.",
+      "id": "W2725049817",
+      "url": "https://doi.org/10.1561/1500000061"
+    },
+    {
+      "code": "KG-0b79dddc",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Human-level control through deep reinforcement learning",
+      "abstract": "",
+      "id": "W2145339207",
+      "url": "https://doi.org/10.1038/nature14236"
+    },
+    {
+      "code": "MF-7852ee31",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Bounded matrix factorization for recommender system",
+      "abstract": "",
+      "id": "W1989587875",
+      "url": "https://doi.org/10.1007/s10115-013-0710-2"
+    },
+    {
+      "code": "KG-8b78d005",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Convolutional 2D Knowledge Graph Embeddings",
+      "abstract": "Link prediction for knowledge graphs is the task of predicting missing relationships between entities. Previous work on link prediction has focused on shallow, fast models which can scale to large knowledge graphs. However, these models learn less expressive features than deep, multi-layer models — which potentially limits performance. In this work we introduce ConvE, a multi-layer convolutional network model for link prediction, and report state-of-the-art results for several established datasets. We also show that the model is highly parameter efficient, yielding the same performance as DistMult and R-GCN with 8x and 17x fewer parameters. Analysis of our model suggests that it is particularly effective at modelling nodes with high indegree — which are common in highly-connected, complex knowledge graphs such as Freebase and YAGO3. In addition, it has been noted that the WN18 and FB15k datasets suffer from test set leakage, due to inverse relations from the training set being present in the test set — however, the extent of this issue has so far not been quantified. We find this problem to be severe: a simple rule-based model can achieve state-of-the-art results on both WN18 and FB15k. To ensure that models are evaluated on datasets where simply exploiting inverse relations cannot yield competitive results, we investigate and validate several commonly used datasets — deriving robust variants where necessary. We then perform experiments on these robust datasets for our own and several previously proposed models, and find that ConvE achieves state-of-the-art Mean Reciprocal Rank across all datasets.",
+      "id": "W2728059831",
+      "url": "https://doi.org/10.1609/aaai.v32i1.11573"
+    },
+    {
+      "code": "AB-7ad9e9c8",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Temporal credit assignment in reinforcement learning",
+      "abstract": "This dissertation describes computational experiments comparing the performance of a range of reinforcement-learning algorithms. The experiments are designed to focus on aspects of the credit-assignment problem having to do with determining when the behavior that deserves credit occurred. The issues of knowledge representation involved in developing new features or refining existing ones are not addressed. The algorithms considered include some from learning automata theory, mathematical learning theory, early \"cybernetic\" approaches to learning, Samuel's checker-playing program, Michie and Chambers's \"Boxes\" system, and a number of new algorithms. The tasks were selected so as to involve, first in isolation and then in combination, the issues of misleading generalizations, delayed reinforcement, unbalanced reinforcement, and secondary reinforcement. The tasks range from simple, abstract \"two-armed bandit\" tasks to a physically realistic pole-balancing task. The results indicate several areas where the algorithms presented here perform substantially better than those previously studied. An unbalanced distribution of reinforcement, misleading generalizations, and delayed reinforcement can greatly retard learning and in some cases even make it counterproductive. Performance can be substantially improved in the presence of these common problems through the use of mechanisms of reinforcement comparison and secondary reinforcement. We present a new algorithm similar to the \"learning-by-generalization\" algorithm used for altering the static evaluation function in Samuel's checker-playing program. Simulation experiments indicate that the new algorithm performs better than a version of Samuel's algorithm suitably modified for reinforcement learning tasks. Theoretical analysis in terms of an \"ideal reinforcement signal\" sheds light on the relationship between these two algorithms and other temporal credit-assignment algorithms.",
+      "id": "W1569296262",
+      "url": "https://openalex.org/W1569296262"
+    },
+    {
+      "code": "AB-0b79dddc",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Human-level control through deep reinforcement learning",
+      "abstract": "",
+      "id": "W2145339207",
+      "url": "https://doi.org/10.1038/nature14236"
+    },
+    {
+      "code": "MF-0b79dddc",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Human-level control through deep reinforcement learning",
+      "abstract": "",
+      "id": "W2145339207",
+      "url": "https://doi.org/10.1038/nature14236"
+    },
+    {
+      "code": "MF-9757c7d7",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Application of Dimensionality Reduction in Recommender System - A Case Study",
+      "abstract": "We investigate the use of dimensionality reduction to improve performance for a new class of data analysis software called \"recommender systems\". Recommender systems apply knowledge discovery techniques to the problem of making product recommendations during a live customer interaction. These systems are achieving wide-spread success in E-commerce nowadays, especially with the advent of the Internet. The tremendous growth of customers and products poses three key challenges for recommender systems in the E-commerce domain. These are: producing high quality recommendations, performing many recommendations per second for millions of customers and products, and achieving high coverage in the face of data sparsity. One successful recommender system technology is collaborative filtering, which works by matching customer preferences to other customers in making recommendations. Collaborative filtering has been shown to produce high quality recommendations, but the performance degrades with the number of customers and products. New recommender system technologies are needed that can quickly produce high quality recommendations, even for very large-scale problems.This paper presents two different experiments where we have explored one technology called Singular Value Decomposition (SVD) to reduce the dimensionality of recommender system databases. Each experiment compares the quality of a recommender system using SVD with the quality of a recommender system using collaborative filtering. The first experiment compares the effectiveness of the two recommender systems at predicting consumer preferences based on a database of explicit ratings of products. The second experiment compares the effectiveness of the two recommender systems at producing Top-N lists based on a real-life customer purchase database from an E-Commerce site. Our experience suggests that SVD has the potential to meet many of the challenges of recommender systems, under certain conditions.",
+      "id": "W1832221731",
+      "url": "https://doi.org/10.21236/ada439541"
+    },
+    {
+      "code": "AB-6d97144d",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Classification of Customer Reviews based on Sentiment Analysis",
+      "abstract": "",
+      "id": "W1608357024",
+      "url": "https://doi.org/10.1007/978-3-7091-1142-0_40"
+    },
+    {
+      "code": "AB-d1cbe41d",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Sentiment Analysis and Opinion Mining",
+      "abstract": "",
+      "id": "W4211186029",
+      "url": "https://doi.org/10.2200/s00416ed1v01y201204hlt016"
+    },
+    {
+      "code": "LR-7b5e564b",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "Modern Information Retrieval",
+      "abstract": "Information retrieval (IR) has changed considerably in the last years with the expansion of the Web (World Wide Web) and the advent of modern and inexpensive graphical user interfaces and mass storage devices. As a result, traditional IR textbooks have become quite out-of-date which has led to the introduction of new IR books recently. Nevertheless, we believe that there is still great need of a book that approaches the field in a rigorous and complete way from a computer-science perspective (in opposition to a user-centered perspective). This book is an effort to partially fulfill this gap and should be useful for a first course on information retrieval as well as for a graduate course on the topic. The book",
+      "id": "W1660390307",
+      "url": "https://openalex.org/W1660390307"
+    },
+    {
+      "code": "MF-012883f3",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Parallel matrix factorization for recommender systems",
+      "abstract": "",
+      "id": "W2142466236",
+      "url": "https://doi.org/10.1007/s10115-013-0682-2"
+    },
+    {
+      "code": "KG-f6da7d16",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Learning to Represent Knowledge Graphs with Gaussian Embedding",
+      "abstract": "The representation of a knowledge graph (KG) in a latent space recently has attracted more and more attention. To this end, some proposed models (e.g., TransE) embed entities and relations of a KG into a \"point\" vector space by optimizing a global loss function which ensures the scores of positive triplets are higher than negative ones. We notice that these models always regard all entities and relations in a same manner and ignore their (un)certainties. In fact, different entities and relations may contain different certainties, which makes identical certainty insufficient for modeling. Therefore, this paper switches to density-based embedding and propose KG2E for explicitly modeling the certainty of entities and relations, which learn the representations of KGs in the space of multi-dimensional Gaussian distributions. Each entity/relation is represented by a Gaussian distribution, where the mean denotes its position and the covariance (currently with diagonal covariance) can properly represent its certainty. In addition, compared with the symmetric measures used in point-based methods, we employ the KL-divergence for scoring triplets, which is a natural asymmetry function for effectively modeling multiple types of relations. We have conducted extensive experiments on link prediction and triplet classification with multiple benchmark datasets (WordNet and Freebase). Our experimental results demonstrate that our method can effectively model the (un)certainties of entities and relations in a KG, and it significantly outperforms state-of-the-art methods (including TransH and TransR).",
+      "id": "W2073587810",
+      "url": "https://doi.org/10.1145/2806416.2806502"
+    },
+    {
+      "code": "LR-491dadda",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "Learning to Rank for Information Retrieval",
+      "abstract": "Learning to rank for Information Retrieval (IR) is a task to automatically construct a ranking model using training data, such that the model can sort new objects according to their degrees of relevance, preference, or importance. Many IR problems are by nature ranking problems, and many IR technologies can be potentially enhanced by using learning-to-rank techniques. The objective of this tutorial is to give an introduction to this research direction. Specifically, the existing learning-to-rank algorithms are reviewed and categorized into three approaches: the pointwise, pairwise, and listwise approaches. The advantages and disadvantages with each approach are analyzed, and the relationships between the loss functions used in these approaches and IR evaluation measures are discussed. Then the empirical evaluations on typical learning-to-rank methods are shown, with the LETOR collection as a benchmark dataset, which seems to suggest that the listwise approach be the most effective one among all the approaches. After that, a statistical ranking theory is introduced, which can describe different learning-to-rank algorithms, and be used to analyze their query-level generalization abilities. At the end of the tutorial, we provide a summary and discuss potential future work on learning to rank.",
+      "id": "W2149427297",
+      "url": "https://doi.org/10.1561/1500000016"
+    },
+    {
+      "code": "KG-44e8e9cf",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Sentiment analysis",
+      "abstract": "This paper illustrates a sentiment analysis approach to extract sentiments associated with polarities of positive or negative for specific subjects from a document, instead of classifying the whole document into positive or negative.The essential issues in sentiment analysis are to identify how sentiments are expressed in texts and whether the expressions indicate positive (favorable) or negative (unfavorable) opinions toward the subject. In order to improve the accuracy of the sentiment analysis, it is important to properly identify the semantic relationships between the sentiment expressions and the subject. By applying semantic analysis with a syntactic parser and sentiment lexicon, our prototype system achieved high precision (75-95%, depending on the data) in finding sentiments within Web pages and news articles.",
+      "id": "W2148506018",
+      "url": "https://doi.org/10.1145/945645.945658"
+    },
+    {
+      "code": "AB-0c572331",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Evaluating large language models in theory of mind tasks",
+      "abstract": "Eleven large language models (LLMs) were assessed using 40 bespoke false-belief tasks, considered a gold standard in testing theory of mind (ToM) in humans. Each task included a false-belief scenario, three closely matched true-belief control scenarios, and the reversed versions of all four. An LLM had to solve all eight scenarios to solve a single task. Older models solved no tasks; Generative Pre-trained Transformer (GPT)-3-davinci-003 (from November 2022) and ChatGPT-3.5-turbo (from March 2023) solved 20% of the tasks; ChatGPT-4 (from June 2023) solved 75% of the tasks, matching the performance of 6-y-old children observed in past studies. We explore the potential interpretation of these results, including the intriguing possibility that ToM-like ability, previously considered unique to humans, may have emerged as an unintended by-product of LLMs' improving language skills. Regardless of how we interpret these outcomes, they signify the advent of more powerful and socially skilled AI-with profound positive and negative implications.",
+      "id": "W4403863303",
+      "url": "https://doi.org/10.1073/pnas.2405460121"
+    },
+    {
+      "code": "AB-3635227b",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Deep Convolutional Neural Networks for Sentiment Analysis of Short Texts",
+      "abstract": "Sentiment analysis of short texts such as single sentences and Twitter messages is challenging because of the limited contextual information that they normally contain. Effectively solving this task requires strategies that combine the small text content with prior knowledge and use more than just bag-of-words. In this work we propose a new deep convolutional neural network that exploits from characterto sentence-level information to perform sentiment analysis of short texts. We apply our approach for two corpora of two different domains: the Stanford Sentiment Treebank (SSTb), which contains sentences from movie reviews; and the Stanford Twitter Sentiment corpus (STS), which contains Twitter messages. For the SSTb corpus, our approach achieves state-of-the-art results for single sentence sentiment prediction in both binary positive/negative classification, with 85.7% accuracy, and fine-grained classification, with 48.3% accuracy. For the STS corpus, our approach achieves a sentiment prediction accuracy of 86.4%.",
+      "id": "W2252215182",
+      "url": "https://openalex.org/W2252215182"
+    },
+    {
+      "code": "AB-6563ecb9",
+      "topic": "AB",
+      "brief": "Tôi muốn xác định thái độ của người viết review đối với từng khía cạnh sản phẩm. Tôi cần cách gắn từ hoặc câu đánh giá với khía cạnh và suy ra polarity cho khía cạnh đó.",
+      "seed": "A Hierarchical Model of Reviews for Aspect-based Sentiment Analysis",
+      "title": "Sentiment Embeddings with Applications to Sentiment Analysis",
+      "abstract": "We propose learning sentiment-specific word embeddings dubbed sentiment embeddings in this paper. Existing word embedding learning algorithms typically only use the contexts of words but ignore the sentiment of texts. It is problematic for sentiment analysis because the words with similar contexts but opposite sentiment polarity, such asgoodandbad, are mapped to neighboring word vectors. We address this issue by encoding sentiment information of texts (e.g., sentences and words) together with contexts of words in sentiment embeddings. By combining context and sentiment level evidences, the nearest neighbors in sentiment embedding space are semantically similar and it favors words with the same sentiment polarity. In order to learn sentiment embeddings effectively, we develop a number of neural networks with tailoring loss functions, and collect massive texts automatically with sentiment signals like emoticons as the training data. Sentiment embeddings can be naturally used as word features for a variety of sentiment analysis tasks without feature engineering. We apply sentiment embeddings to word-level sentiment analysis, sentence level sentiment classification, and building sentiment lexicons. Experimental results show that sentiment embeddings consistently outperform context-based embeddings on several benchmark datasets of these tasks. This work provides insights on the design of neural networks for learning task-specific word embeddings in other natural language processing tasks.",
+      "id": "W2242874043",
+      "url": "https://doi.org/10.1109/tkde.2015.2489653"
+    },
+    {
+      "code": "LR-0b79dddc",
+      "topic": "LR",
+      "brief": "Tôi muốn đánh giá mô hình learning-to-rank cho tìm kiếm tài liệu theo query. Tôi cần dữ liệu có nhãn relevance hoặc phương pháp huấn luyện và đánh giá thứ tự kết quả.",
+      "seed": "LETOR: Benchmark Dataset for Research on Learning to Rank for Information Retrieval",
+      "title": "Human-level control through deep reinforcement learning",
+      "abstract": "",
+      "id": "W2145339207",
+      "url": "https://doi.org/10.1038/nature14236"
+    },
+    {
+      "code": "KG-118032fc",
+      "topic": "KG",
+      "brief": "Tôi muốn dự đoán liên kết còn thiếu trong knowledge graph. Tôi cần mô hình embedding chấm điểm bộ ba (head, relation, tail), nhất là cách xử lý các loại quan hệ.",
+      "seed": "Knowledge Graph Embedding by Translating on Hyperplanes",
+      "title": "Knowledge Graph Embedding via Dynamic Mapping Matrix",
+      "abstract": "Guoliang Ji, Shizhu He, Liheng Xu, Kang Liu, Jun Zhao. Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing (Volume 1: Long Papers). 2015.",
+      "id": "W2250342289",
+      "url": "https://doi.org/10.3115/v1/p15-1067"
+    },
+    {
+      "code": "MF-a67b6cfa",
+      "topic": "MF",
+      "brief": "Tôi muốn xây hệ gợi ý từ ma trận tương tác user–item thưa. Tôi cần cách học nhân tố ẩn hoặc một baseline có thể triển khai để so sánh dự đoán/xếp hạng.",
+      "seed": "Matrix Factorization Techniques for Recommender Systems",
+      "title": "Recommender systems in e-commerce",
+      "abstract": "Recommender systems are changing from novelties used by a few E-commerce sites, to serious business tools that are re-shaping the world of E-commerce.Many of the largest commerce Web sites are already using recommender systems to help their customers find products to purchase.A recommender system learns from a customer and recommends products that she will find most valuable from among the available products.In this paper we present an explanation of how recommender systems help Ecommerce sites increase sales, and analyze six sites that use recommender systems including several sites that use more than one recommender system.Based on the examples, we create a taxonomy of recommender systems, including the interfaces they present to customers, the technologies used to create the recommendations, and the inputs they need from customers.We conclude with ideas for new applications of recommender systems to E-commerce.",
+      "id": "W1997136459",
+      "url": "https://doi.org/10.1145/336992.337035"
+    }
+  ]
+}

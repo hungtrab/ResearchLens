@@ -1,0 +1,33 @@
+........................................................................ [ 16%]
+........................................................................ [ 33%]
+........................................................................ [ 50%]
+........................................................................ [ 66%]
+........................................................................ [ 83%]
+......................................................................   [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /home/hungchan/Work/20261/webmining/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.11.16-final-0 _______________
+
+Name                         Stmts   Miss  Cover   Missing
+----------------------------------------------------------
+researchlens/__init__.py         0      0   100%
+researchlens/api.py            171      2    99%   173-174
+researchlens/catalog.py         62      0   100%
+researchlens/discovery.py       92      0   100%
+researchlens/evaluation.py      25      0   100%
+researchlens/mining.py         188      1    99%   193
+researchlens/passages.py       138      2    99%   149, 187
+researchlens/pdf.py             36      0   100%
+researchlens/reviews.py         33      3    91%   31-33
+researchlens/solr.py            27      0   100%
+researchlens/sources.py         72      0   100%
+researchlens/store.py           82      1    99%   90
+researchlens/workspace.py      139      0   100%
+----------------------------------------------------------
+TOTAL                         1065      9    99%
+430 passed, 1 warning in 16.98s

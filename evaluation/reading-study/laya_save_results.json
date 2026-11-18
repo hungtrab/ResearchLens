@@ -1,0 +1,502 @@
+{
+  "study": "d27a859f2ae80ff4a58cf20ca14638c6f97c784b71b4aa763b3b176d6ea91165",
+  "provider": "laya",
+  "model": "convaiinnovations/laya-typed-decisions@1a793eb568e6718f15941d08f85432581df534e3",
+  "question": {
+    "reading": {
+      "type": "choice",
+      "instructions": "Would this reader save the candidate to help carry out the stated task?",
+      "criteria": {
+        "save": "Offers a directly useful method, dataset, experiment or component.",
+        "pass": "Only general background or unrelated to the task."
+      }
+    }
+  },
+  "goals": {
+    "MF": "Build a latent-factor recommendation baseline from sparse user-item interactions to predict ratings or rank items.",
+    "KG": "Predict missing knowledge graph links using embeddings that score triples and handle different relation types.",
+    "AB": "Identify sentiment toward each product aspect in reviews by linking evaluation words to the aspect and assigning polarity.",
+    "LR": "Train and evaluate learning-to-rank for query-document retrieval using relevance judgments or ranking methods."
+  },
+  "review_rule": "unclear or max probability below 0.70; exploratory",
+  "pilot_agreement": 19,
+  "n": 43,
+  "n_compared": 41,
+  "ask_reader": 30,
+  "pilot_majority_baseline": 21,
+  "rows": [
+    {
+      "code": "MF-8f6dc017",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6103,
+        "pass": 0.3897
+      },
+      "confidence": 0.0354,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-22801cc4",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7657,
+        "pass": 0.2343
+      },
+      "confidence": 0.2146,
+      "ask_reader": false
+    },
+    {
+      "code": "AB-6744f5fe",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7241,
+        "pass": 0.2759
+      },
+      "confidence": 0.1503,
+      "ask_reader": false
+    },
+    {
+      "code": "MF-44e8e9cf",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7233,
+        "pass": 0.2767
+      },
+      "confidence": 0.1491,
+      "ask_reader": false
+    },
+    {
+      "code": "MF-13875792",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.5097,
+        "pass": 0.4903
+      },
+      "confidence": 0.0003,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-67793f82",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7363,
+        "pass": 0.2637
+      },
+      "confidence": 0.1677,
+      "ask_reader": false
+    },
+    {
+      "code": "LR-14135702",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6237,
+        "pass": 0.3763
+      },
+      "confidence": 0.0446,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-d0e03b2c",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7908,
+        "pass": 0.2092
+      },
+      "confidence": 0.2601,
+      "ask_reader": false
+    },
+    {
+      "code": "LR-68092b2b",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6555,
+        "pass": 0.3445
+      },
+      "confidence": 0.071,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-7ad9e9c8",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6361,
+        "pass": 0.3639
+      },
+      "confidence": 0.0541,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-42f878e5",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6108,
+        "pass": 0.3892
+      },
+      "confidence": 0.0357,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-e33f08ef",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6335,
+        "pass": 0.3665
+      },
+      "confidence": 0.052,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-accd82dc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.5751,
+        "pass": 0.4249
+      },
+      "confidence": 0.0163,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-accd82dc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.5682,
+        "pass": 0.4318
+      },
+      "confidence": 0.0135,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-7ad9e9c8",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6769,
+        "pass": 0.3231
+      },
+      "confidence": 0.0923,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-0c572331",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6365,
+        "pass": 0.3635
+      },
+      "confidence": 0.0545,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-d3325691",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6095,
+        "pass": 0.3905
+      },
+      "confidence": 0.0349,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-7ad9e9c8",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6615,
+        "pass": 0.3385
+      },
+      "confidence": 0.0766,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-44e8e9cf",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7624,
+        "pass": 0.2376
+      },
+      "confidence": 0.209,
+      "ask_reader": false
+    },
+    {
+      "code": "LR-44e8e9cf",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6976,
+        "pass": 0.3024
+      },
+      "confidence": 0.1158,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-8a008376",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7755,
+        "pass": 0.2245
+      },
+      "confidence": 0.2317,
+      "ask_reader": false
+    },
+    {
+      "code": "LR-d5866bb7",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6527,
+        "pass": 0.3473
+      },
+      "confidence": 0.0684,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-b82611c5",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6885,
+        "pass": 0.3115
+      },
+      "confidence": 0.1051,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-0b79dddc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6367,
+        "pass": 0.3633
+      },
+      "confidence": 0.0546,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-7852ee31",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6907,
+        "pass": 0.3093
+      },
+      "confidence": 0.1076,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-8b78d005",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7683,
+        "pass": 0.2317
+      },
+      "confidence": 0.219,
+      "ask_reader": false
+    },
+    {
+      "code": "AB-7ad9e9c8",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6858,
+        "pass": 0.3142
+      },
+      "confidence": 0.1021,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-0b79dddc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6351,
+        "pass": 0.3649
+      },
+      "confidence": 0.0533,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-0b79dddc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6478,
+        "pass": 0.3522
+      },
+      "confidence": 0.064,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-9757c7d7",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7355,
+        "pass": 0.2645
+      },
+      "confidence": 0.1665,
+      "ask_reader": false
+    },
+    {
+      "code": "AB-6d97144d",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6481,
+        "pass": 0.3519
+      },
+      "confidence": 0.0642,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-d1cbe41d",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6898,
+        "pass": 0.3102
+      },
+      "confidence": 0.1066,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-7b5e564b",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6439,
+        "pass": 0.3561
+      },
+      "confidence": 0.0606,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-012883f3",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6569,
+        "pass": 0.3431
+      },
+      "confidence": 0.0723,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-f6da7d16",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7737,
+        "pass": 0.2263
+      },
+      "confidence": 0.2285,
+      "ask_reader": false
+    },
+    {
+      "code": "LR-491dadda",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7266,
+        "pass": 0.2734
+      },
+      "confidence": 0.1537,
+      "ask_reader": false
+    },
+    {
+      "code": "KG-44e8e9cf",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6929,
+        "pass": 0.3071
+      },
+      "confidence": 0.1101,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-0c572331",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6523,
+        "pass": 0.3477
+      },
+      "confidence": 0.068,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-3635227b",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.7241,
+        "pass": 0.2759
+      },
+      "confidence": 0.1503,
+      "ask_reader": false
+    },
+    {
+      "code": "AB-6563ecb9",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.756,
+        "pass": 0.244
+      },
+      "confidence": 0.1984,
+      "ask_reader": false
+    },
+    {
+      "code": "LR-0b79dddc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6805,
+        "pass": 0.3195
+      },
+      "confidence": 0.0962,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-118032fc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "pass",
+      "probabilities": {
+        "save": 0.454,
+        "pass": 0.546
+      },
+      "confidence": 0.0061,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-a67b6cfa",
+      "resolved_model": "laya-rl-agent",
+      "choice": "save",
+      "probabilities": {
+        "save": 0.6592,
+        "pass": 0.3408
+      },
+      "confidence": 0.0744,
+      "ask_reader": true
+    }
+  ]
+}

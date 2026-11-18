@@ -1,0 +1,20 @@
+{
+  "verified": true,
+  "papers": 3595,
+  "reviews": 1320,
+  "reference_tasks": 120,
+  "masked_edges": 442,
+  "checks": [
+    "IDs",
+    "orphan reviews",
+    "deduplication",
+    "data hashes",
+    "split disjointness",
+    "target partition",
+    "split hash",
+    "aggregate metrics"
+  ],
+  "conference_papers": 129596,
+  "coverage_cells": 56,
+  "catalog_latency_aggregates": true
+}

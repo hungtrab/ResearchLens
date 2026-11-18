@@ -1,0 +1,18 @@
+{
+  "catalog_id": "PMLR-v267-su25d",
+  "title": "On the Interplay between Graph Structure and Learning Algorithms in Graph Neural Networks",
+  "import": {
+    "id": "W4415238825",
+    "added": true,
+    "warning": null,
+    "workspace_papers": 3598
+  },
+  "pdf_info": {
+    "supported": true,
+    "url": "https://raw.githubusercontent.com/mlresearch/v267/main/assets/su25d/su25d.pdf",
+    "note": "PDF access depends on the publisher. Reading notes stay in this browser profile."
+  },
+  "pdf_status": 200,
+  "pdf_bytes": 571515,
+  "valid_pdf": true
+}

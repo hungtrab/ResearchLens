@@ -1,0 +1,114 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Allen Institute for AI}(2018)]{peerreadrepo}
+{Allen Institute for AI}.
+\newblock Peerread: Public data repository, 2018.
+\newblock URL \url{https://github.com/allenai/PeerRead}.
+\newblock Commit 9bb37751781a900cee9e74ec3105997732c8e8e5; tập ICLR 2017.
+
+\bibitem[{Apache Software Foundation}(2026)]{solr}
+{Apache Software Foundation}.
+\newblock Apache solr reference guide: Solr in docker, 2026.
+\newblock URL
+  \url{https://solr.apache.org/guide/solr/9_9/deployment-guide/solr-in-docker.html}.
+\newblock Triển khai kiểm tra bằng image solr:9.9.0.
+
+\bibitem[Blondel et~al.(2008)Blondel, Guillaume, Lambiotte, and
+  Lefebvre]{blondel2008}
+Vincent~D. Blondel, Jean-Loup Guillaume, Renaud Lambiotte, and Etienne
+  Lefebvre.
+\newblock Fast unfolding of communities in large networks.
+\newblock \emph{Journal of Statistical Mechanics: Theory and Experiment},
+  2008\penalty0 (10):\penalty0 P10008, 2008.
+\newblock \doi{10.1088/1742-5468/2008/10/P10008}.
+
+\bibitem[Carbonell and Goldstein(1998)]{carbonell1998}
+Jaime Carbonell and Jade Goldstein.
+\newblock The use of mmr, diversity-based reranking for reordering documents
+  and producing summaries.
+\newblock In \emph{Proceedings of SIGIR}, pages 335--336, 1998.
+\newblock \doi{10.1145/290941.291025}.
+
+\bibitem[Kang et~al.(2018)Kang, Ammar, Dalvi, van Zuylen, Kohlmeier, Hovy, and
+  Schwartz]{kang2018}
+Dongyeop Kang, Waleed Ammar, Bhavana Dalvi, Madeleine van Zuylen, Sebastian
+  Kohlmeier, Eduard Hovy, and Roy Schwartz.
+\newblock A dataset of peer reviews (peerread): Collection, insights and nlp
+  applications.
+\newblock In \emph{Proceedings of NAACL-HLT}, pages 1647--1661, 2018.
+\newblock URL \url{https://aclanthology.org/N18-1149/}.
+
+\bibitem[Kleinberg(1999)]{kleinberg1999}
+Jon~M. Kleinberg.
+\newblock Authoritative sources in a hyperlinked environment.
+\newblock \emph{Journal of the ACM}, 46\penalty0 (5):\penalty0 604--632, 1999.
+\newblock \doi{10.1145/324133.324140}.
+
+\bibitem[Manning et~al.(2008)Manning, Raghavan, and Schütze]{manning2008}
+Christopher~D. Manning, Prabhakar Raghavan, and Hinrich Schütze.
+\newblock \emph{Introduction to Information Retrieval}.
+\newblock Cambridge University Press, 2008.
+\newblock URL \url{https://nlp.stanford.edu/IR-book/}.
+
+\bibitem[{NetworkX Developers}(2026)]{networkx}
+{NetworkX Developers}.
+\newblock Networkx: Louvain community detection, 2026.
+\newblock URL
+  \url{https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html}.
+
+\bibitem[{OpenAlex}(2026{\natexlab{a}})]{openalex}
+{OpenAlex}.
+\newblock Openalex api: Works and authentication, 2026{\natexlab{a}}.
+\newblock URL \url{https://help.openalex.org/api/}.
+\newblock Truy cập ngày 14/10/2026; dữ liệu lấy qua API và lưu
+  snapshot.
+
+\bibitem[{OpenAlex}(2026{\natexlab{b}})]{openalexsearch}
+{OpenAlex}.
+\newblock Openalex api search, 2026{\natexlab{b}}.
+\newblock URL \url{https://help.openalex.org/api/searching/}.
+\newblock Tìm kiếm metadata trực tuyến; truy cập 14/10/2026.
+
+\bibitem[Page et~al.(1999)Page, Brin, Motwani, and Winograd]{page1999}
+Lawrence Page, Sergey Brin, Rajeev Motwani, and Terry Winograd.
+\newblock The pagerank citation ranking: Bringing order to the web.
+\newblock Technical report, Stanford InfoLab, 1999.
+\newblock URL \url{http://ilpubs.stanford.edu:8090/422/}.
+
+\bibitem[Robertson and Zaragoza(2009)]{robertson2009}
+Stephen Robertson and Hugo Zaragoza.
+\newblock The probabilistic relevance framework: Bm25 and beyond.
+\newblock \emph{Foundations and Trends in Information Retrieval}, 3\penalty0
+  (4):\penalty0 333--389, 2009.
+\newblock \doi{10.1561/1500000019}.
+
+\bibitem[{SQLite}(2026)]{fts5}
+{SQLite}.
+\newblock Sqlite fts5 extension, 2026.
+\newblock URL \url{https://www.sqlite.org/fts5.html}.
+\newblock Tài liệu inverted index, unicode61 và BM25; truy cập
+  14/10/2026.
+
+\bibitem[Thakur et~al.(2021)Thakur, Reimers, Rücklé, Srivastava, and
+  Gurevych]{thakur2021}
+Nandan Thakur, Nils Reimers, Andreas Rücklé, Abhishek Srivastava, and Iryna
+  Gurevych.
+\newblock Beir: A heterogeneous benchmark for zero-shot evaluation of
+  information retrieval models.
+\newblock In \emph{NeurIPS Datasets and Benchmarks}, 2021.
+\newblock URL \url{https://arxiv.org/abs/2104.08663}.
+
+\bibitem[Wadden et~al.(2020)Wadden, Lin, Lo, Wang, van Zuylen, Cohan, and
+  Hajishirzi]{wadden2020}
+David Wadden, Shanchuan Lin, Kyle Lo, Lucy~Lu Wang, Madeleine van Zuylen, Arman
+  Cohan, and Hannaneh Hajishirzi.
+\newblock Fact or fiction: Verifying scientific claims.
+\newblock In \emph{Proceedings of EMNLP}, pages 7534--7550, 2020.
+\newblock URL \url{https://aclanthology.org/2020.emnlp-main.609/}.
+
+\end{thebibliography}

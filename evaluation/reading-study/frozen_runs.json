@@ -1,0 +1,115 @@
+{
+  "study": "d27a859f2ae80ff4a58cf20ca14638c6f97c784b71b4aa763b3b176d6ea91165",
+  "corpus_sha256": "d5441933d4b020494eb5c7a61574bf0d8fda285b12a2271a93726a3011d9d85b",
+  "depth": 3,
+  "rankings": {
+    "MF": {
+      "popular": [
+        "MF-7ad9e9c8",
+        "MF-0b79dddc",
+        "MF-44e8e9cf"
+      ],
+      "content": [
+        "MF-012883f3",
+        "MF-7852ee31",
+        "MF-8f6dc017"
+      ],
+      "graph": [
+        "MF-9757c7d7",
+        "MF-22801cc4",
+        "MF-a67b6cfa"
+      ],
+      "hybrid": [
+        "MF-012883f3",
+        "MF-7852ee31",
+        "MF-8f6dc017"
+      ],
+      "cocitation": [
+        "MF-e33f08ef",
+        "MF-42f878e5",
+        "MF-13875792"
+      ]
+    },
+    "KG": {
+      "popular": [
+        "KG-7ad9e9c8",
+        "KG-0b79dddc",
+        "KG-44e8e9cf"
+      ],
+      "content": [
+        "KG-67793f82",
+        "KG-f6da7d16",
+        "KG-d0e03b2c"
+      ],
+      "graph": [
+        "KG-7ad9e9c8",
+        "KG-accd82dc",
+        "KG-0c572331"
+      ],
+      "hybrid": [
+        "KG-67793f82",
+        "KG-f6da7d16",
+        "KG-d0e03b2c"
+      ],
+      "cocitation": [
+        "KG-67793f82",
+        "KG-118032fc",
+        "KG-8b78d005"
+      ]
+    },
+    "AB": {
+      "popular": [
+        "AB-7ad9e9c8",
+        "AB-0b79dddc",
+        "AB-44e8e9cf"
+      ],
+      "content": [
+        "AB-6d97144d",
+        "AB-8a008376",
+        "AB-d1cbe41d"
+      ],
+      "graph": [
+        "AB-7ad9e9c8",
+        "AB-accd82dc",
+        "AB-0c572331"
+      ],
+      "hybrid": [
+        "AB-6d97144d",
+        "AB-8a008376",
+        "AB-d1cbe41d"
+      ],
+      "cocitation": [
+        "AB-6744f5fe",
+        "AB-6563ecb9",
+        "AB-3635227b"
+      ]
+    },
+    "LR": {
+      "popular": [
+        "LR-7ad9e9c8",
+        "LR-0b79dddc",
+        "LR-44e8e9cf"
+      ],
+      "content": [
+        "LR-491dadda",
+        "LR-d5866bb7",
+        "LR-b82611c5"
+      ],
+      "graph": [
+        "LR-7b5e564b",
+        "LR-68092b2b",
+        "LR-d3325691"
+      ],
+      "hybrid": [
+        "LR-491dadda",
+        "LR-d5866bb7",
+        "LR-68092b2b"
+      ],
+      "cocitation": [
+        "LR-14135702",
+        "LR-d3325691",
+        "LR-7b5e564b"
+      ]
+    }
+  }
+}

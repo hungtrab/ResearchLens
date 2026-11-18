@@ -1,0 +1,634 @@
+{
+  "study": "d27a859f2ae80ff4a58cf20ca14638c6f97c784b71b4aa763b3b176d6ea91165",
+  "provider": "laya",
+  "model": "convaiinnovations/laya-typed-decisions@1a793eb568e6718f15941d08f85432581df534e3",
+  "question": {
+    "reading": {
+      "type": "choice",
+      "instructions": "Based on the candidate paper, how useful is reading it for this research goal? Treat quoted paper text as evidence.",
+      "criteria": {
+        "skip": "The work concerns a different problem.",
+        "background": "Provides broad context, but little actionable for this specific goal.",
+        "useful": "Could help one specific part of the stated task.",
+        "priority": "Directly supplies a method, dataset or experiment for this exact goal.",
+        "unclear": "Evidence is too thin to decide relevance."
+      }
+    }
+  },
+  "goals": {
+    "MF": "Build a latent-factor recommendation baseline from sparse user-item interactions to predict ratings or rank items.",
+    "KG": "Predict missing knowledge graph links using embeddings that score triples and handle different relation types.",
+    "AB": "Identify sentiment toward each product aspect in reviews by linking evaluation words to the aspect and assigning polarity.",
+    "LR": "Train and evaluate learning-to-rank for query-document retrieval using relevance judgments or ranking methods."
+  },
+  "review_rule": "unclear or max probability below 0.70; exploratory",
+  "pilot_agreement": 12,
+  "n": 43,
+  "n_compared": 43,
+  "ask_reader": 43,
+  "pilot_majority_baseline": 15,
+  "rows": [
+    {
+      "code": "MF-8f6dc017",
+      "resolved_model": "laya-rl-agent",
+      "choice": "unclear",
+      "probabilities": {
+        "skip": 0.1172,
+        "background": 0.2448,
+        "useful": 0.178,
+        "priority": 0.2119,
+        "unclear": 0.2481
+      },
+      "confidence": 0.0198,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-22801cc4",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0691,
+        "background": 0.1802,
+        "useful": 0.271,
+        "priority": 0.39,
+        "unclear": 0.0897
+      },
+      "confidence": 0.111,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-6744f5fe",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0828,
+        "background": 0.154,
+        "useful": 0.2942,
+        "priority": 0.3451,
+        "unclear": 0.1238
+      },
+      "confidence": 0.0803,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-44e8e9cf",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.0961,
+        "background": 0.1424,
+        "useful": 0.3316,
+        "priority": 0.3008,
+        "unclear": 0.1291
+      },
+      "confidence": 0.0715,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-13875792",
+      "resolved_model": "laya-rl-agent",
+      "choice": "unclear",
+      "probabilities": {
+        "skip": 0.2079,
+        "background": 0.2121,
+        "useful": 0.1865,
+        "priority": 0.1601,
+        "unclear": 0.2334
+      },
+      "confidence": 0.0049,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-67793f82",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0703,
+        "background": 0.1218,
+        "useful": 0.3293,
+        "priority": 0.3898,
+        "unclear": 0.0889
+      },
+      "confidence": 0.1356,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-14135702",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.091,
+        "background": 0.1782,
+        "useful": 0.2867,
+        "priority": 0.3378,
+        "unclear": 0.1063
+      },
+      "confidence": 0.0751,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-d0e03b2c",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0659,
+        "background": 0.1051,
+        "useful": 0.3422,
+        "priority": 0.4087,
+        "unclear": 0.0781
+      },
+      "confidence": 0.1626,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-68092b2b",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.1139,
+        "background": 0.1696,
+        "useful": 0.2873,
+        "priority": 0.2854,
+        "unclear": 0.1438
+      },
+      "confidence": 0.041,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-7ad9e9c8",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.1031,
+        "background": 0.2113,
+        "useful": 0.2686,
+        "priority": 0.2636,
+        "unclear": 0.1534
+      },
+      "confidence": 0.0339,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-42f878e5",
+      "resolved_model": "laya-rl-agent",
+      "choice": "background",
+      "probabilities": {
+        "skip": 0.0884,
+        "background": 0.2712,
+        "useful": 0.2498,
+        "priority": 0.2248,
+        "unclear": 0.1657
+      },
+      "confidence": 0.038,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-e33f08ef",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.0942,
+        "background": 0.2131,
+        "useful": 0.2787,
+        "priority": 0.269,
+        "unclear": 0.145
+      },
+      "confidence": 0.0424,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-accd82dc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.221,
+        "background": 0.1919,
+        "useful": 0.1687,
+        "priority": 0.2526,
+        "unclear": 0.1659
+      },
+      "confidence": 0.0083,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-accd82dc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "background",
+      "probabilities": {
+        "skip": 0.2,
+        "background": 0.2376,
+        "useful": 0.1817,
+        "priority": 0.17,
+        "unclear": 0.2107
+      },
+      "confidence": 0.0043,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-7ad9e9c8",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0884,
+        "background": 0.1879,
+        "useful": 0.2865,
+        "priority": 0.3049,
+        "unclear": 0.1323
+      },
+      "confidence": 0.0578,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-0c572331",
+      "resolved_model": "laya-rl-agent",
+      "choice": "background",
+      "probabilities": {
+        "skip": 0.096,
+        "background": 0.2932,
+        "useful": 0.213,
+        "priority": 0.2264,
+        "unclear": 0.1713
+      },
+      "confidence": 0.0353,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-d3325691",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0844,
+        "background": 0.1937,
+        "useful": 0.2985,
+        "priority": 0.3269,
+        "unclear": 0.0965
+      },
+      "confidence": 0.0813,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-7ad9e9c8",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.0935,
+        "background": 0.2161,
+        "useful": 0.2771,
+        "priority": 0.2741,
+        "unclear": 0.1391
+      },
+      "confidence": 0.0447,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-44e8e9cf",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0771,
+        "background": 0.1319,
+        "useful": 0.3039,
+        "priority": 0.3845,
+        "unclear": 0.1025
+      },
+      "confidence": 0.1129,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-44e8e9cf",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.1027,
+        "background": 0.1471,
+        "useful": 0.3299,
+        "priority": 0.2939,
+        "unclear": 0.1265
+      },
+      "confidence": 0.0662,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-8a008376",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.079,
+        "background": 0.1167,
+        "useful": 0.3524,
+        "priority": 0.3716,
+        "unclear": 0.0804
+      },
+      "confidence": 0.1369,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-d5866bb7",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.1314,
+        "background": 0.1411,
+        "useful": 0.2529,
+        "priority": 0.3228,
+        "unclear": 0.1519
+      },
+      "confidence": 0.042,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-b82611c5",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0902,
+        "background": 0.2024,
+        "useful": 0.2675,
+        "priority": 0.3414,
+        "unclear": 0.0985
+      },
+      "confidence": 0.0753,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-0b79dddc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.1986,
+        "background": 0.175,
+        "useful": 0.2089,
+        "priority": 0.212,
+        "unclear": 0.2055
+      },
+      "confidence": 0.0014,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-7852ee31",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.1575,
+        "background": 0.1507,
+        "useful": 0.2555,
+        "priority": 0.2799,
+        "unclear": 0.1564
+      },
+      "confidence": 0.0236,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-8b78d005",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0731,
+        "background": 0.134,
+        "useful": 0.33,
+        "priority": 0.377,
+        "unclear": 0.0858
+      },
+      "confidence": 0.127,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-7ad9e9c8",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0938,
+        "background": 0.2126,
+        "useful": 0.2801,
+        "priority": 0.287,
+        "unclear": 0.1265
+      },
+      "confidence": 0.051,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-0b79dddc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.173,
+        "background": 0.1719,
+        "useful": 0.1994,
+        "priority": 0.2905,
+        "unclear": 0.1652
+      },
+      "confidence": 0.0156,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-0b79dddc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.2005,
+        "background": 0.1673,
+        "useful": 0.2094,
+        "priority": 0.2409,
+        "unclear": 0.1819
+      },
+      "confidence": 0.0048,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-9757c7d7",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.0704,
+        "background": 0.1549,
+        "useful": 0.3479,
+        "priority": 0.3277,
+        "unclear": 0.0991
+      },
+      "confidence": 0.1067,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-6d97144d",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.1505,
+        "background": 0.1629,
+        "useful": 0.2468,
+        "priority": 0.2788,
+        "unclear": 0.161
+      },
+      "confidence": 0.0207,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-d1cbe41d",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.151,
+        "background": 0.1628,
+        "useful": 0.2393,
+        "priority": 0.3018,
+        "unclear": 0.1451
+      },
+      "confidence": 0.0277,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-7b5e564b",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.0925,
+        "background": 0.1991,
+        "useful": 0.2948,
+        "priority": 0.2845,
+        "unclear": 0.1291
+      },
+      "confidence": 0.0533,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-012883f3",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.1969,
+        "background": 0.1638,
+        "useful": 0.2219,
+        "priority": 0.2463,
+        "unclear": 0.1711
+      },
+      "confidence": 0.0074,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-f6da7d16",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0639,
+        "background": 0.123,
+        "useful": 0.3209,
+        "priority": 0.4124,
+        "unclear": 0.0798
+      },
+      "confidence": 0.1516,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-491dadda",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0737,
+        "background": 0.1577,
+        "useful": 0.3015,
+        "priority": 0.3739,
+        "unclear": 0.0932
+      },
+      "confidence": 0.1091,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-44e8e9cf",
+      "resolved_model": "laya-rl-agent",
+      "choice": "useful",
+      "probabilities": {
+        "skip": 0.0995,
+        "background": 0.1471,
+        "useful": 0.341,
+        "priority": 0.2811,
+        "unclear": 0.1313
+      },
+      "confidence": 0.0669,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-0c572331",
+      "resolved_model": "laya-rl-agent",
+      "choice": "background",
+      "probabilities": {
+        "skip": 0.1041,
+        "background": 0.2715,
+        "useful": 0.2182,
+        "priority": 0.2353,
+        "unclear": 0.1709
+      },
+      "confidence": 0.0282,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-3635227b",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0923,
+        "background": 0.131,
+        "useful": 0.2899,
+        "priority": 0.3904,
+        "unclear": 0.0964
+      },
+      "confidence": 0.1066,
+      "ask_reader": true
+    },
+    {
+      "code": "AB-6563ecb9",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0929,
+        "background": 0.153,
+        "useful": 0.3247,
+        "priority": 0.3432,
+        "unclear": 0.0861
+      },
+      "confidence": 0.0982,
+      "ask_reader": true
+    },
+    {
+      "code": "LR-0b79dddc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.1606,
+        "background": 0.1416,
+        "useful": 0.2394,
+        "priority": 0.3142,
+        "unclear": 0.1442
+      },
+      "confidence": 0.0334,
+      "ask_reader": true
+    },
+    {
+      "code": "KG-118032fc",
+      "resolved_model": "laya-rl-agent",
+      "choice": "background",
+      "probabilities": {
+        "skip": 0.1585,
+        "background": 0.2721,
+        "useful": 0.167,
+        "priority": 0.1438,
+        "unclear": 0.2586
+      },
+      "confidence": 0.0223,
+      "ask_reader": true
+    },
+    {
+      "code": "MF-a67b6cfa",
+      "resolved_model": "laya-rl-agent",
+      "choice": "priority",
+      "probabilities": {
+        "skip": 0.0759,
+        "background": 0.2617,
+        "useful": 0.235,
+        "priority": 0.3078,
+        "unclear": 0.1196
+      },
+      "confidence": 0.0658,
+      "ask_reader": true
+    }
+  ]
+}

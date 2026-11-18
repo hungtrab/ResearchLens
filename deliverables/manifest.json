@@ -1,0 +1,17 @@
+{
+  "files": {
+    "ResearchLens_Report.pdf": {
+      "bytes": 2388676,
+      "sha256": "0518881ece5f6201ba5486e3edfa622bdceaff2694ab956c09d7ea78530bd465"
+    },
+    "ResearchLens_Slides.pdf": {
+      "bytes": 1715943,
+      "sha256": "a1778d8cef16f9d58dd70d68a02cd7d8871d12e490496c7878831deb34f45914"
+    },
+    "ResearchLens_Source.zip": {
+      "bytes": 123231274,
+      "sha256": "7bb6cde75d685b89d60016de4020c8026f5c5d572025f2ceced71ebc4f4cb514"
+    }
+  },
+  "source_files": 718
+}

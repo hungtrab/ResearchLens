@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "javascript_errors": [],
+  "mobile_overflow": false,
+  "screenshots": [
+    "projects-mobile.png",
+    "discover.png",
+    "paper.png",
+    "conference_mobile.png",
+    "projects.png",
+    "conference_coverage.png",
+    "analytics.png",
+    "online_search.png",
+    "reading-mobile.png",
+    "mobile.png",
+    "library.png",
+    "network.png",
+    "reviews.png",
+    "conferences.png",
+    "obsidian-network.png",
+    "reading.png"
+  ],
+  "flows": [
+    "search",
+    "save",
+    "detail",
+    "graph",
+    "opinion",
+    "recommendations",
+    "bibtex export",
+    "analytics",
+    "mobile"
+  ]
+}
