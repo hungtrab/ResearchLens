@@ -11,7 +11,12 @@ from researchlens.mining import MiningEngine
 
 ROOT = Path(__file__).resolve().parents[1]
 CUTOFF = 2020
-METHODS = ("popular", "content", "graph", "hybrid", "cocitation")
+METHODS = ("popular", "content", "graph", "hybrid", "cocitation", "fusion")
+
+
+def paired_delta(observations, treatment, baseline):
+    delta = [t["methods"][treatment]["ndcg"] - t["methods"][baseline]["ndcg"] for t in observations]
+    return dict(mean=float(np.mean(delta)), ci95=bootstrap_mean(delta))
 
 
 def main():
@@ -45,11 +50,13 @@ def main():
         rows = [t["methods"][method] for t in observations]
         summary[method] = {k: float(np.mean([r[k] for r in rows])) for k in ("ndcg", "recall")}
         summary[method]["queries_with_results"] = sum(bool(r["top10"]) for r in rows)
-    delta = [t["methods"]["cocitation"]["ndcg"] - t["methods"]["graph"]["ndcg"] for t in observations]
     result = dict(cutoff_year=CUTOFF, corpus_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
                   historical_papers=len(historical), historical_edges=engine.graph.number_of_edges(),
                   tasks=len(observations), hidden_edges=sum(len(t["targets"]) for t in observations),
-                  summary=summary, paired_cocitation_minus_ppr=dict(mean=float(np.mean(delta)), ci95=bootstrap_mean(delta)),
+                  summary=summary,
+                  paired_cocitation_minus_ppr=paired_delta(observations, "cocitation", "graph"),
+                  paired_fusion_minus_hybrid=paired_delta(observations, "fusion", "hybrid"),
+                  paired_fusion_minus_cocitation=paired_delta(observations, "fusion", "cocitation"),
                   observations=observations)
     (ROOT / "artifacts/temporal_recovery.json").write_text(json.dumps(result, indent=2))
     print(json.dumps({k: v for k, v in result.items() if k != "observations"}, indent=2))
