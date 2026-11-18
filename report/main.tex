@@ -78,11 +78,11 @@ ResearchLens là hệ thống hỗ trợ khám phá tài liệu khoa học bằn
 
 Phần discovery mở rộng có \CatalogCount{} bản ghi từ tám hội nghị AI trong giai đoạn 2020--2026, được tìm kiếm bằng SQLite FTS5/BM25. Tìm kiếm OpenAlex trực tuyến và import có chọn lọc nối kho lớn với Projects, PDF reader và citation graph. Kho này tách khỏi snapshot thực nghiệm để giữ nguyên protocol và kết quả đã đo.
 
-Ba câu hỏi được khảo sát: thông tin liên kết giúp gợi ý tài liệu đến mức nào; việc kết hợp nội dung và đồ thị có vượt từng thành phần hay không; và bộ phân loại tuyến tính có khai thác được tín hiệu đánh giá trong review không. Trên 120 hồ sơ tham chiếu, Personalized PageRank đạt nDCG@10 bằng 0,174, cao nhất trong các phương án khảo sát. Hybrid đạt 0,112, vượt content-only 0,063 nhưng chưa vượt graph-only. MMR đưa nDCG@10 của hybrid lên 0,129 đồng thời tăng độ đa dạng danh sách. Trên 115 review thuộc tập test chính thức của PeerRead ICLR 2017, TF-IDF + logistic regression đạt macro-F1 bằng 0,469; đây là dự đoán nhãn suy từ điểm review, không phải độ chính xác đánh giá chất lượng khoa học. Phần truy hồi bổ trợ được kiểm tra độc lập trên 300 truy vấn SciFact: BM25 đạt nDCG@10 bằng 0,651, so với 0,621 của TF-IDF.
+Bài toán chính là gợi ý bài nên đọc tiếp từ các bài người dùng đã lưu. RQ1 hỏi tín hiệu nào tìm lại tốt nhất các reference bị che. RQ2 hỏi kết hợp tín hiệu có vượt tín hiệu tốt nhất không. Thí nghiệm chính cắt corpus ở năm 2020 và dùng 219 bài xuất bản sau mốc. Đồng trích dẫn là tín hiệu đơn tốt nhất, với nDCG@10 bằng 0,173. Fusion theo thứ hạng giữa đồng trích dẫn và hybrid nội dung--PageRank đạt 0,207, so với 0,143 của hybrid, là mặc định cũ. Chênh lệch với hybrid là +0,064, khoảng bootstrap 95\% [0,042; 0,087]. Trên split che ngẫu nhiên 120 bài, fusion vẫn vượt hybrid (0,259 so với 0,112) nhưng kém đồng trích dẫn đứng riêng (0,305). Vì vậy báo cáo chỉ kết luận fusion tốt hơn hybrid. Ứng dụng dùng fusion làm mặc định. Review là bằng chứng hiển thị cạnh gợi ý. Trên 115 review test của PeerRead ICLR 2017, TF-IDF + logistic regression đạt macro-F1 bằng 0,469 cho nhãn suy từ điểm review. Phần truy hồi bổ trợ được kiểm tra độc lập trên 300 truy vấn SciFact: BM25 đạt nDCG@10 bằng 0,651, so với 0,621 của TF-IDF.
 
-Mã nguồn, snapshot dữ liệu, split thí nghiệm, kết quả từng truy vấn, khoảng tin cậy bootstrap, ảnh giao diện và lệnh tái lập được bàn giao cùng báo cáo. Các kết luận được giới hạn trong tập dữ liệu và protocol đã chạy; chưa có nghiên cứu người dùng, nhãn gold cho trích xuất khía cạnh hoặc đánh giá dự báo theo thời gian.
+Mã nguồn, snapshot dữ liệu, split thí nghiệm, kết quả từng truy vấn, khoảng tin cậy bootstrap, ảnh giao diện và lệnh tái lập được bàn giao cùng báo cáo. Các kết luận được giới hạn trong tập dữ liệu và protocol đã chạy; chưa có nghiên cứu người dùng hoặc nhãn gold cho trích xuất khía cạnh.
 
-\textbf{Từ khóa:} web mining; citation network; Personalized PageRank; opinion mining; paper recommendation; BM25; Apache Solr.
+\textbf{Từ khóa:} web mining; citation network; co-citation; reciprocal rank fusion; Personalized PageRank; opinion mining; paper recommendation; BM25; Apache Solr.
 \section*{Phạm vi và nguồn yêu cầu}
 Báo cáo bám theo hai tệp đầu vào: \texttt{ResearchLens\_Visual\_Spec.pdf} (hai trang, mô tả workflow và phạm vi 2k--5k bài AI/ML) và \texttt{20261\_syllabus.pdf}. Syllabus xác định capstone thuộc link analysis, opinion mining hoặc recommendation systems và loại trừ chủ đề chỉ tập trung information retrieval. Vì vậy, truy hồi được dùng làm tầng truy cập, còn đóng góp thực nghiệm chính nằm ở khai phá liên kết, gợi ý và review. Template \texttt{HUST\_THEME\_BEAMER.zip} được sử dụng cho bộ slide đồng hành và nhận diện bìa.
 \clearpage
@@ -92,18 +92,18 @@ Báo cáo bám theo hai tệp đầu vào: \texttt{ResearchLens\_Visual\_Spec.pd
 \clearpage
 \pagenumbering{arabic}
 \section{Bài toán và mục tiêu}
-\subsection{Từ một truy vấn đến một hướng đọc}
-Một danh sách kết quả theo từ khóa chưa giải quyết trọn vẹn việc đọc nghiên cứu. Người dùng còn cần biết bài nào có ảnh hưởng trong nhóm tài liệu đang xét, công trình nào liên quan tới các bài đã lưu, và nhận xét của người phản biện tập trung vào điểm mạnh hoặc hạn chế nào. Các tín hiệu này có bản chất khác nhau: văn bản mô tả nội dung, trích dẫn mô tả quan hệ, còn review mô tả quan điểm.
+\subsection{Bài toán: từ các bài đã lưu, gợi ý bài nên đọc tiếp}
+Người làm đề tài thường đã có vài bài liên quan và cần biết nên đọc bài nào tiếp theo. ResearchLens nhận tập bài đã lưu $S$ và xếp hạng mọi bài còn lại trong corpus. Bài đã lưu không bao giờ được gợi ý lại. Mỗi gợi ý đi kèm lý do mà người dùng tự kiểm tra được. Lý do gồm các bài trích dẫn cùng lúc gợi ý và một bài đã lưu, các từ chung với hồ sơ nội dung, và review của bài được gợi ý kèm câu gốc.
 
-ResearchLens cung cấp một luồng làm việc liên tục: tìm paper, đọc metadata và abstract, khám phá vùng lân cận trích dẫn, lưu bài vào thư viện, rồi nhận danh sách gợi ý kèm lý do. Mục tiêu không phải thay thế việc đọc paper hay đưa ra phán quyết về chất lượng; mục tiêu là giúp người dùng kiểm tra được cơ sở của từng tín hiệu.
+Tìm kiếm, đồ thị trích dẫn, Projects và trình đọc PDF là các bước quanh bài toán này. Người dùng tìm và lưu bài, nhận gợi ý, rồi mở bài để đọc abstract, review và vùng lân cận trích dẫn trước khi quyết định đọc.
 
 \subsection{Câu hỏi nghiên cứu}
+Chưa có nhật ký người dùng nên báo cáo dùng phép thử thay thế. Che một phần danh mục tham khảo của một bài, dùng phần còn lại làm tập đã lưu, rồi đo xem hệ thống tìm lại được bao nhiêu tài liệu bị che. Thí nghiệm chính cắt corpus ở năm 2020 để bài kiểm tra không có mặt trong đồ thị.
 \begin{enumerate}
-\item \textbf{RQ1 -- Giá trị của liên kết:} khi một phần danh mục tham chiếu bị che, Personalized PageRank có khôi phục được các tham chiếu này tốt hơn popularity và content similarity không?
-\item \textbf{RQ2 -- Kết hợp và đa dạng:} hybrid nội dung--đồ thị và MMR thay đổi relevance, diversity và catalog coverage như thế nào?
-\item \textbf{RQ3 -- Tín hiệu trong review:} mô hình TF-IDF + logistic regression dự đoán nhãn polarity suy từ điểm review tốt hơn majority và lexicon baseline đến đâu?
+\item \textbf{RQ1. Tín hiệu nào tìm lại tốt nhất?} So sánh popularity, nội dung TF-IDF, Personalized PageRank và đồng trích dẫn trên cùng các tác vụ.
+\item \textbf{RQ2. Kết hợp có vượt tín hiệu tốt nhất?} So sánh hybrid tuyến tính nội dung với PageRank, fusion theo thứ hạng giữa đồng trích dẫn và hybrid, và tác động của MMR lên relevance và độ đa dạng.
 \end{enumerate}
-Truy hồi được đánh giá bổ trợ bằng SciFact để kiểm chứng việc triển khai BM25/TF-IDF trên một bộ qrels độc lập; kết quả này không được dùng để thay thế đánh giá capstone về mạng và gợi ý.
+Hai thành phần còn lại được kiểm tra để biết mức tin cậy khi hiển thị. Bộ phân loại review (E4) được đo trên tập test PeerRead vì review là một phần lý do gợi ý. BM25/TF-IDF được kiểm tra trên SciFact (E1) vì tìm kiếm là cách người dùng lưu bài đầu tiên. Các thí nghiệm cho chức năng tìm bài từ một câu trong abstract thuộc về truy hồi, có ít truy vấn, và được đặt ở Phụ lục~\ref{app:reader}.
 
 \subsection{Yêu cầu chức năng và tiêu chí nghiệm thu}
 \begin{table}[htbp]\small\centering
@@ -244,7 +244,15 @@ Cho tập bài đã lưu $S$, profile nội dung là trung bình các vector TF-
 \begin{equation}
 s_{\mathrm{hybrid}}(d\mid S)=0.7\widehat{\cos}(d,S)+0.3\widehat{\mathrm{PPR}}(d\mid S).
 \end{equation}
-Hệ số được cố định, chưa tối ưu theo validation. Khi seed rỗng, hệ thống trả global PageRank và đánh dấu cold start. Saved papers bị loại khỏi gợi ý. Giao diện cho phép chọn content, graph, popularity hoặc hybrid để đối chiếu.
+Hệ số được cố định, chưa tối ưu theo validation. Khi seed rỗng, hệ thống trả global PageRank và đánh dấu cold start. Saved papers bị loại khỏi gợi ý.
+
+\textbf{Đồng trích dẫn.} Nếu paper $w$ trích cả ứng viên $d$ và ít nhất một bài trong $S$, $w$ cho $d$ một phiếu. Mỗi $w$ chỉ cho tối đa một phiếu cho mỗi ứng viên. Ứng viên xếp theo số phiếu, bằng phiếu thì theo ID. Phép đếm mở rộng ý tưởng đồng trích dẫn của \href{https://doi.org/10.1002/asi.4630240406}{Small (1973)} sang tập seed. Ứng viên không có phiếu nào thì không có hạng đồng trích dẫn.
+
+\textbf{Fusion, phương pháp mặc định.} Gọi $r_h(d)$ là hạng của $d$ theo hybrid và $r_c(d)$ là hạng theo đồng trích dẫn, đều tính từ 1. Fusion cộng nghịch đảo hạng (reciprocal rank fusion) với hằng số $k=60$ theo \citet{cormack2009}:
+\begin{equation}
+s_{\mathrm{fusion}}(d\mid S)=\frac{1}{k+r_h(d)}+\frac{\mathbf{1}[d\text{ có phiếu}]}{k+r_c(d)}.
+\end{equation}
+Fusion dùng hạng thay vì điểm, nên không cần đưa số phiếu và điểm hybrid về cùng thang đo. Hằng số $k=60$ lấy từ bài gốc, không chỉnh trên dữ liệu của dự án. Bài được cả hai tín hiệu xếp cao sẽ đứng đầu. Bài chưa có ai trích cùng vẫn được gợi ý nhờ hybrid. Trước khi vào MMR, điểm fusion được chia cho giá trị lớn nhất, giống content và graph, để cùng thang với độ trùng nội dung. Giao diện cho chọn fusion, hybrid, content, đồng trích dẫn, Personalized PageRank hoặc global PageRank để đối chiếu.
 
 MMR \cite{carbonell1998} chọn tuần tự trong 150 ứng viên đầu. Giao diện đặt $\lambda=0$ khi mới mở. Trong thí nghiệm hybrid+MMR và khi gọi API bỏ qua tham số diversity, $\lambda=0.15$. Với $L$ là danh sách đã chọn, công thức là
 \begin{equation}
@@ -265,19 +273,24 @@ Dùng bản SciFact trong BEIR \cite{wadden2020,thakur2021}: 5.183 abstracts, 30
 
 P@10, Recall@10, nDCG@10, AP và MRR được tính theo binary relevance. AP xét toàn bộ tài liệu có điểm lexical dương được truy hồi; relevant document không được truy hồi đóng góp 0. Tie được phá bằng ID tăng dần. Khoảng tin cậy 95\% bootstrap theo query, 2.000 lần lấy mẫu. Kết quả không được diễn giải là chất lượng tìm kiếm trên corpus AI/ML đã thu thập.
 
-\subsection{E2 -- Phục hồi tham chiếu có che cạnh}
+\subsection{E2 -- Khôi phục tham chiếu theo mốc thời gian (thí nghiệm chính)}
+Thí nghiệm này trả lời RQ1 và RQ2. Corpus được cắt ở cuối năm 2020 trước khi dựng đồ thị và TF-IDF, còn 2.520 paper và 7.881 cạnh. Lấy tất cả 219 bài xuất bản sau mốc có ít nhất sáu reference tới các bài cũ. Mỗi bài che phần nguyên của một phần ba reference, dùng phần còn lại làm tập đã lưu. Tổng số reference bị che là 826. Bài kiểm tra vắng mặt hoàn toàn khỏi đồ thị, nên bài đó không thể tự làm nhân chứng đồng trích dẫn cho đáp án của mình.
+
+Cả sáu phương pháp gọi cùng hàm \texttt{MiningEngine.recommend} mà ứng dụng dùng, với MMR tắt và top 10. Đo nDCG@10 và Recall@10, tính cả tác vụ có danh sách rỗng. So sánh ghép cặp dùng 2.000 lần bootstrap theo bài nguồn. Không có tham số nào được chỉnh trên các tác vụ này. Riêng fusion được chọn sau khi đã thấy đồng trích dẫn vượt hybrid, nên E3 kiểm tra lại fusion trên một split khác đã cố định từ trước.
+
+\subsection{E3 -- Che cạnh ngẫu nhiên và MMR}
 Chọn ngẫu nhiên 120 source papers có ít nhất sáu references trong corpus. Với mỗi source có $m$ references, che $\lfloor m/3\rfloor$ cạnh và dùng các references còn lại làm seed profile. Tổng cộng 442 cạnh bị che. Tất cả các cạnh test của mọi source được loại khỏi graph \emph{trước} khi tính lại PageRank, Personalized PageRank và các graph features. Training graph còn 13.039 cạnh.
 
 Cùng một candidate set được dùng cho cả năm phương án: global PageRank, content, personalized graph, hybrid và hybrid + MMR. Source paper và seed papers đều bị loại. Không tạo negative samples dễ; mỗi danh sách được xếp trên toàn bộ candidate corpus còn lại. Paper test vẫn tồn tại như node và có vector văn bản, phù hợp thiết lập transductive; chỉ cạnh target bị che.
 
 Đánh giá Recall@10, nDCG@10, MRR, intra-list diversity và coverage. MMR chỉ thay đổi phần đầu ranking; MRR được tính trên ranking đầy đủ sau rerank. Bootstrap 2.000 lần theo source paper; so sánh hybrid--content dùng hiệu ghép cặp trên cùng source. Đây là random edge holdout, không phải dự báo trích dẫn tương lai: graph chưa được time-censor. Citation recovery là proxy cho gợi ý đọc, chưa đo hài lòng người dùng.
 
-\subsection{E3 -- Review polarity theo paper-disjoint split}
+\subsection{E4 -- Review polarity theo paper-disjoint split}
 Giữ split chính thức của PeerRead: 1.082 train reviews, 123 dev và 115 test sau khử trùng. Kiểm tra không có paper ID hoặc normalized exact review text trùng qua các split. Dev được đánh giá như sanity check; không dùng để chọn tham số. Các baseline là lớp phổ biến nhất trong train và aspect lexicon; phương pháp học là TF-IDF + logistic regression.
 
 Báo cáo accuracy và macro-F1 với tập nhãn cố định critical/mixed/positive. Vì review của cùng paper có tương quan, interval 95\% được lấy bằng cluster bootstrap theo test paper, 1.000 lần. Không bootstrap review như các quan sát độc lập. Confusion matrix dùng thứ tự nhãn cố định. Chưa có gold annotations để đánh giá riêng span extraction hoặc aspect detection; unit tests chỉ kiểm tra hành vi, không phải estimate chất lượng tổng quát.
 
-\subsection{E4 -- Hiệu năng và kiểm chứng hệ thống}
+\subsection{E5 -- Hiệu năng và kiểm chứng hệ thống}
 Tám query đại diện được chạy warm-up rồi lặp mười lần cho mỗi ranking local. Đo in-process gồm lọc, tính điểm, sắp xếp và tạo top-20 summaries; không gồm HTTP/browser và không phải tải nhiều người dùng. Báo cáo p50/p95 thay vì chỉ một lần chạy. Thời gian phụ thuộc máy và phiên bản thư viện; không cam kết SLA.
 
 Kiểm thử độc lập kiểm tra công thức metric, rank semantics, hướng citation, seed exclusion, session isolation, persistent storage, JSONL Unicode, malformed input, upstream failures, escape và export. Browser QA đi qua luồng demo với desktop và viewport mobile, ghi lại screenshot và lỗi JavaScript. Solr được kiểm tra integration riêng với image 9.9.0; benchmark local không được dùng để đại diện hiệu năng Solr.
@@ -293,6 +306,45 @@ R@k &= \frac{1}{|R_q|}\sum_{i=1}^{k}\mathbf{1}[d_i\in R_q],\\
 Nếu không có relevant item được trả về thì RR bằng 0. nDCG dùng gain nhị phân, discount $1/\log_2(i+1)$ và chia cho DCG của ranking lý tưởng. Macro-F1 là trung bình F1 của ba lớp. Diversity của top-$k$ là một trừ cosine trung bình của mọi cặp không lặp; coverage là số paper từng xuất hiện trong top-10 chia cho kích thước corpus. RMSE trong đặc tả ban đầu không được dùng vì hệ thống chưa có user rating regression target; dùng RMSE trên citation/sentiment class sẽ không phù hợp bài toán.
 
 \section{Kết quả và phân tích}
+\subsection{RQ1 và RQ2: fusion dẫn đầu thí nghiệm chính}
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Phương pháp & nDCG@10 & Recall@10\\\midrule
+Global PageRank & 0,032 & 0,058\\
+Content & 0,110 & 0,147\\
+Personalized PageRank & 0,121 & 0,141\\
+Hybrid (mặc định cũ) & 0,143 & 0,183\\
+Đồng trích dẫn & 0,173 & 0,219\\
+\textbf{Fusion (mặc định mới)} & \textbf{0,207} & \textbf{0,257}\\\bottomrule
+\end{tabular}\caption{E2, khôi phục 826 reference bị che của 219 bài xuất bản sau 2020. Mọi phương pháp gọi cùng hàm \texttt{recommend} của ứng dụng.}\label{tab:temporal}\end{table}
+
+\textbf{RQ1.} Đồng trích dẫn là tín hiệu đơn tốt nhất, với nDCG@10 bằng 0,173. Chênh lệch so với Personalized PageRank là +0,052, khoảng bootstrap ghép cặp 95\% [0,029; 0,075]. Content và PageRank cá nhân hóa gần nhau, còn popularity gần như không tìm lại được gì. Đồng trích dẫn trả được gợi ý cho 218/219 bài.
+
+\textbf{RQ2.} Hybrid vượt cả hai thành phần của nó. Fusion vượt mọi phương pháp, với nDCG@10 bằng 0,207. So với hybrid, chênh lệch là +0,064 [0,042; 0,087]: fusion tốt hơn ở 95 bài, kém hơn ở 31 bài và bằng ở 93 bài. So với đồng trích dẫn đứng riêng, chênh lệch là +0,034 [0,016; 0,054]. Chia 219 bài làm hai nửa theo thứ tự ID, fusion vẫn dẫn đầu ở cả hai nửa (0,192 và 0,223). Mỗi bài trong \texttt{artifacts/temporal\_recovery.json} có seed, đáp án, top 10 và điểm của từng phương pháp.
+
+\subsection{Kiểm tra lại trên split che ngẫu nhiên (E3)}
+\begin{table}[htbp]\centering\scriptsize
+\begin{tabular}{@{}lrrrrr@{}}\toprule
+Phương pháp & Recall@10 & nDCG@10 & MRR & Diversity & Coverage\\\midrule
+\tableinput{generated/recommendation_table.tex}
+\bottomrule\end{tabular}\caption{E3, ablation trên 120 hồ sơ tham chiếu do \texttt{scripts/evaluate.py} tính. Bảng này chưa có đồng trích dẫn và fusion, hai phương pháp được kiểm tra riêng ở cuối mục. Diversity và coverage càng cao càng đa dạng/phủ rộng, nhưng không thay thế relevance.}\end{table}
+\fig{recommendation.pdf}{1}{E3: trong năm phương án của \texttt{evaluate.py}, Personalized PageRank dẫn đầu; hybrid vượt content nhưng chưa vượt graph-only.}
+Personalized PageRank đạt Recall@10 0,236 và nDCG@10 0,174. Popularity chỉ đạt nDCG@10 0,038, cho thấy restart theo profile có giá trị hơn chỉ xếp các paper phổ biến. Content-only đạt 0,063; hybrid đạt 0,112. Hiệu ghép cặp hybrid--content là 0,0489 nDCG, CI bootstrap 95\% [0,0274; 0,0734]. Trong sample này, kết hợp graph giúp cải thiện content baseline; kết quả không chứng minh công thức hybrid đang dùng là tối ưu.
+
+Trên split này, PageRank cá nhân hóa vượt hybrid. Protocol dùng trích dẫn làm đáp án nên có lợi cho phương pháp dùng quan hệ trích dẫn. Thêm nội dung với trọng số 0,7 có thể làm loãng tín hiệu đó. Mặt khác, 24,2\% paper không có abstract đầy đủ trong corpus, và title-only vectors có thể tạo cosine cao giữa những tên gần nhau. Đây là các giả thuyết giải thích hợp lý, chưa được xác nhận bằng ablation riêng về missing abstracts.
+
+\fig{diversity.pdf}{.95}{MMR nâng intra-list diversity của hybrid từ 0,406 lên 0,501 và catalog coverage từ 8,46\% lên 9,90\%; nDCG@10 đồng thời tăng trong sample.}
+MMR không chỉ làm danh sách khác nhau về từ vựng: trong kết quả hiện tại, nDCG@10 tăng từ 0,112 lên 0,129. Điều này có thể do giảm các ứng viên trùng nội dung trong top đầu; không nên tổng quát rằng diversity luôn tăng relevance. Graph-only vẫn có nDCG cao hơn hybrid + MMR. Giao diện giữ các chế độ riêng để người dùng đối chiếu.
+
+\textbf{Fusion trên split che ngẫu nhiên.} Fusion được chọn sau khi đã thấy kết quả E2, nên chúng tôi chạy lại các phương pháp gợi ý trên split 120 bài của E3, vốn đã cố định từ trước. Script \texttt{scripts/evaluate\_holdout\_fusion.py} gọi đúng hàm \texttt{recommend} của ứng dụng và loại bài nguồn sau khi xếp hạng. Vì vậy content đạt 0,070, hơi khác 0,063 trong bảng trên.
+\begin{center}\small\begin{tabular}{@{}lrrrrr@{}}\toprule
+ & Content & PPR & Hybrid & Đồng trích dẫn & Fusion\\\midrule
+nDCG@10 & 0,070 & 0,174 & 0,112 & \textbf{0,305} & 0,259\\\bottomrule
+\end{tabular}\end{center}
+Fusion vẫn vượt hybrid rất rõ, +0,147 [0,115; 0,178]. Nhưng ở split này, đồng trích dẫn đứng riêng tốt hơn fusion, chênh lệch $-0{,}046$ [$-0{,}083$; $-0{,}007$]. Kết quả này ngược với E2. Chúng tôi thử một giải thích: split ngẫu nhiên không cắt theo thời gian, nên bài xuất bản sau bài nguồn vẫn làm nhân chứng được. Giải thích này không đứng vững. Chỉ 41/408 reference bị che có toàn bộ nhân chứng mới hơn bài nguồn, và bỏ mọi nhân chứng mới hơn chỉ làm đồng trích dẫn giảm từ 0,305 xuống 0,301. Một khác biệt quan sát được là hybrid ở đây yếu hơn nhiều so với đồng trích dẫn (0,112 so với 0,305). Fusion cộng hai hạng với trọng số bằng nhau, nên một tín hiệu yếu sẽ kéo tín hiệu mạnh xuống.
+
+Kết luận cho RQ2 vì vậy có hai phần. Fusion tốt hơn hybrid trên cả hai protocol. So với đồng trích dẫn đứng riêng, kết quả trái chiều nên chưa kết luận được bên nào hơn. Ứng dụng dùng fusion làm mặc định vì ba lý do. Fusion thắng trên E2, protocol không cho đồ thị thấy bài kiểm tra. Fusion không bao giờ trả danh sách rỗng, trong khi đồng trích dẫn không gợi ý được gì khi bài đã lưu chưa có ai trích cùng, ví dụ một trong 770 nút cô lập hoặc một bài vừa import. Hằng số $k=60$ không được chỉnh trên dữ liệu. Chúng tôi không đổi mặc định sau khi đã xem kết quả của cả hai protocol, vì làm vậy là chọn phương pháp trên tập test.
+
 \subsection{Truy hồi: BM25 cải thiện vị trí, không cải thiện mọi metric}
 \begin{table}[htbp]\centering\small
 \begin{tabular}{@{}lrrrr@{}}\toprule
@@ -302,39 +354,87 @@ Phương pháp & nDCG@10 & MAP & P@10 & Recall@10\\\midrule
 \fig{retrieval.pdf}{.9}{BM25 đạt nDCG@10 cao hơn TF-IDF trên 300 query; error bars là bootstrap 95\%.}
 BM25 đạt nDCG@10 bằng 0,651 và MAP bằng 0,616, cao hơn TF-IDF tương ứng 0,621 và 0,571. Tuy vậy, Recall@10 của BM25 là 0,768, thấp hơn TF-IDF 0,778. Kết quả phù hợp với cách diễn giải rằng BM25 sắp relevant evidence sớm hơn trong ranking, nhưng không thu hồi nhiều relevant evidence hơn trong mọi top-10. Không có cơ sở từ thí nghiệm này để khẳng định mọi task hoặc mọi query đều tốt hơn.
 
-\subsection{Gợi ý: graph-only là phương án mạnh nhất trong proxy task}
-\begin{table}[htbp]\centering\scriptsize
-\begin{tabular}{@{}lrrrrr@{}}\toprule
-Phương pháp & Recall@10 & nDCG@10 & MRR & Diversity & Coverage\\\midrule
-\tableinput{generated/recommendation_table.tex}
-\bottomrule\end{tabular}\caption{Ablation trên 120 hồ sơ tham chiếu. Diversity và coverage càng cao càng đa dạng/phủ rộng, nhưng không thay thế relevance.}\end{table}
-\fig{recommendation.pdf}{1}{Personalized PageRank dẫn đầu trên phục hồi cạnh bị che; hybrid vượt content nhưng chưa vượt graph-only.}
-Personalized PageRank đạt Recall@10 0,236 và nDCG@10 0,174. Popularity chỉ đạt nDCG@10 0,038, cho thấy restart theo profile có giá trị hơn chỉ xếp các paper phổ biến. Content-only đạt 0,063; hybrid đạt 0,112. Hiệu ghép cặp hybrid--content là 0,0489 nDCG, CI bootstrap 95\% [0,0274; 0,0734]. Trong sample này, kết hợp graph giúp cải thiện content baseline; kết quả không chứng minh công thức hybrid đang dùng là tối ưu.
+\subsection{Review: mô hình học có tín hiệu, sai số còn đáng kể}
+\begin{table}[htbp]\centering
+\begin{tabular}{@{}lrr@{}}\toprule
+Phương pháp & Accuracy & Macro-F1\\\midrule
+\tableinput{generated/opinion_table.tex}
+\bottomrule\end{tabular}\caption{Review test: 115 review chưa dùng để huấn luyện; nhãn suy từ điểm reviewer.}\end{table}
+\fig{opinion.pdf}{.95}{Macro-F1 và cluster-bootstrap intervals của ba phương án review polarity. Khoảng tin cậy của lexicon và logistic regression chồng lấn đáng kể.}
+TF-IDF + logistic regression đạt accuracy 0,461 và macro-F1 0,469; lexicon đạt 0,443 và 0,436; majority đạt 0,374 và 0,181. Mô hình học vượt majority rõ về điểm ước lượng, nhưng chênh lệch với lexicon nhỏ và interval còn rộng. Báo cáo không khẳng định ưu thế có ý nghĩa thống kê của logistic regression so với lexicon chỉ dựa vào điểm trung bình.
+\fig{confusion.pdf}{.85}{Confusion matrix của logistic regression trên tập test. Nhãn mixed không đồng nghĩa với một kiểu câu review đơn nhất.}
+Điểm số review phản ánh nhiều yếu tố: novelty, soundness, relevance với venue và kỳ vọng reviewer. Một review có thể khen cách trình bày nhưng vẫn đề nghị từ chối; vì vậy rating-derived polarity không phải nhãn sentiment thuần túy. Kết quả còn thấp là bằng chứng cần giữ evidence câu gốc cạnh dự đoán và tránh biến output model thành verdict.
 
-Graph-only thắng là một kết quả cần giữ nguyên khi báo cáo. Protocol dùng trích dẫn làm đáp án nên ưu tiên tự nhiên cho thuật toán mô hình hóa quan hệ citation; thêm nội dung với trọng số 0,7 có thể làm loãng tín hiệu quan hệ. Mặt khác, 24,2\% paper không có abstract đầy đủ trong corpus, và title-only vectors có thể tạo cosine cao giữa những tên gần nhau. Đây là các giả thuyết giải thích hợp lý, chưa được xác nhận bằng ablation riêng về missing abstracts.
+\subsection{Cấu trúc graph và độ nhạy với sampling}
+Louvain cho modularity 0,766 trên projection vô hướng. Spearman giữa PageRank và local in-degree bằng 0,963, trong khi tương quan với citation count ngoài corpus chỉ 0,625. Hai quan sát gợi ý PageRank trong graph hiện tại phần lớn đi cùng sự phổ biến nội bộ và không tương đương ảnh hưởng toàn cục. Modularity cao không tự chứng minh community đúng chủ đề, vì dữ liệu được thu thập theo các query nhóm lĩnh vực.
 
-\fig{diversity.pdf}{.95}{MMR nâng intra-list diversity của hybrid từ 0,406 lên 0,501 và catalog coverage từ 8,46\% lên 9,90\%; nDCG@10 đồng thời tăng trong sample.}
-MMR không chỉ làm danh sách khác nhau về từ vựng: trong kết quả hiện tại, nDCG@10 tăng từ 0,112 lên 0,129. Điều này có thể do giảm các ứng viên trùng nội dung trong top đầu; không nên tổng quát rằng diversity luôn tăng relevance. Graph-only vẫn có nDCG cao hơn hybrid + MMR. Giao diện giữ các chế độ riêng để người dùng đối chiếu thay vì ép một kết luận ``hybrid tốt nhất''.
+Có 770 nút cô lập và thành phần liên thông yếu lớn nhất gồm 2.798 nút. Khi xem một ego network nhỏ, thiếu cạnh có thể đến từ thiếu metadata hoặc paper bên ngoài snapshot. UI và report vì vậy luôn gọi đây là observed/local graph. Không dùng số community gồm singleton để tuyên bố đã khám phá hàng trăm hướng nghiên cứu mới.
 
-\subsection{Đồng trích dẫn trên đồ thị giới hạn theo năm}
-Nếu paper $w$ trích cả ứng viên $d$ và ít nhất một paper đã lưu, $w$ cho $d$ một phiếu. Mỗi $w$ chỉ cho tối đa một phiếu cho mỗi ứng viên. Phép đếm mở rộng ý tưởng đồng trích dẫn của \href{https://doi.org/10.1002/asi.4630240406}{Small (1973)} sang tập seed. My library xếp theo số phiếu và cho mở tối đa ba bài làm bằng chứng cho mỗi kết quả.
+\subsection{Thời gian xử lý và kiểm thử}
+\begin{table}[htbp]\centering
+\begin{tabular}{@{}lrr@{}}\toprule
+Ranking local & p50 (ms) & p95 (ms)\\\midrule
+\tableinput{generated/latency_table.tex}
+\bottomrule\end{tabular}\caption{Warm in-process latency, 80 lần đo mỗi phương pháp; môi trường chi tiết trong results.json.}\end{table}
+\fig{latency.pdf}{.9}{Phân vị thời gian tìm kiếm local. Không gồm network, browser hoặc tải đồng thời.}
+Bộ test hiện đạt 441/441. Lần chạy này bao phủ 1.168/1.180 statement trong package ứng dụng. Coverage không phải chứng minh không có lỗi; nó cho biết phần code đã được chạy trong suite. Các lỗi phát hiện và sửa gồm đọc JSONL Unicode, seed list bị cắt ở 50, saved IDs cũ sau thay corpus, dữ liệu nhỏ gây lỗi vocabulary, và phân loại lỗi upstream Solr không đúng HTTP status. Audit độc lập xác minh lại các sửa đổi và kiểm tra masking, split, hashes cùng số tổng hợp.
 
-Để kiểm tra khả năng khôi phục thư mục tham khảo của các bài xuất bản sau, chúng tôi cắt corpus ở cuối năm 2020 trước khi dựng graph và TF-IDF. Graph gồm 2.520 paper và 7.881 cạnh. Lấy tất cả 219 bài xuất bản sau mốc có ít nhất sáu reference nội bộ đến các bài cũ. Mỗi bài giữ lại hai phần ba reference làm seed (số che là phần nguyên của một phần ba). Tổng số reference bị che là 826. Bài test hoàn toàn vắng khỏi graph nên không thể tự làm nhân chứng cho đáp án. Cả năm phương pháp dùng cùng hàm gợi ý của ứng dụng với MMR tắt.
+Browser QA xác nhận luồng search, save, paper detail, graph, opinion, recommendation, BibTeX export, dashboard, Project, PDF reader, notes, draft recovery, conference search và live online import; không có JavaScript error trong luồng đã chạy và không có horizontal overflow ở viewport 390\,px. Đây là functional smoke test, chưa là kiểm thử accessibility toàn diện hoặc load test.
 
-\begin{center}\begin{tabular}{lrr}\toprule
-Phương pháp & nDCG@10 & Recall@10\\\midrule
-Global PageRank & 0,032 & 0,058\\
-Content & 0,110 & 0,147\\
-Personalized PageRank & 0,121 & 0,141\\
-Hybrid & 0,143 & 0,183\\
-Đồng trích dẫn & \textbf{0,173} & \textbf{0,219}\\\bottomrule
-\end{tabular}\end{center}
-Đồng trích dẫn trả được gợi ý cho 218/219 bài. Chênh lệch nDCG@10 so với PPR là +0,052, bootstrap ghép cặp 95\% theo bài nguồn [0,029; 0,075]. Tính cả tác vụ có danh sách rỗng. Kết quả phụ thuộc mốc 2020, tiêu chí đủ reference và snapshot thu thập hồi cứu. Tệp \texttt{artifacts/temporal\_recovery.json} lưu seed, đáp án, top 10 và điểm của từng bài.
+\section{Thảo luận, giới hạn và hướng phát triển}
+\subsection{Những gì kết quả hiện tại hỗ trợ}
+Hệ thống đã hiện thực hóa một workflow xuyên suốt và có thể chạy lại từ snapshot. Hai thí nghiệm khôi phục reference cho thấy tín hiệu trích dẫn mạnh hơn nội dung. Đồng trích dẫn là tín hiệu đơn tốt nhất trên cả hai protocol. Fusion vượt hybrid, mặc định cũ, trên cả hai protocol. Review model có tín hiệu hơn majority nhưng còn sai nhiều; việc hiển thị evidence là cần thiết. BM25 là baseline lexical hợp lý trên SciFact, với đánh đổi giữa thứ tự và recall đã được quan sát.
+
+\subsection{Những gì chưa được chứng minh}
+Chưa có log hành vi người dùng thật để đánh giá personalization trong thực tế; chưa có nghiên cứu người dùng hoặc A/B test. Phép cắt theo năm dùng metadata hồi cứu và một mốc duy nhất. Chưa có gold labels cho entity/aspect extraction. Các weights hybrid được đặt trước, chưa tối ưu qua validation. Fusion được chọn sau khi đã thấy E2. So với đồng trích dẫn đứng riêng, fusion thắng trên E2 nhưng thua trên E3, và chưa có protocol thứ ba để phân xử. Gợi ý theo brief của Project mới có nhãn pilot do trợ lý chấm cho 43 cặp. Cần nhãn của người đọc độc lập để đánh giá phần này. Join paper bằng exact normalized title có thể bỏ sót alias hoặc bản hội nghị/tạp chí. HITS và Louvain được kiểm tra hành vi và mô tả cấu trúc, chưa có community gold labels để tính clustering accuracy.
+
+Backend Solr dùng analyzer \texttt{text\_en}, có stemming và field handling khác tokenizer local. Kết quả Solr và local không bắt buộc giống nhau. Cần reindex Solr khi thay corpus; phát hiện stale index mới chỉ bắt các ID lạ trong response, chưa xác minh mọi metadata của cùng ID. Hệ thống hiện là triển khai local cho môn học; profile cookie không thay thế identity, permission và backup của dịch vụ nhiều người dùng.
+
+\subsection{Lộ trình cải thiện có thể kiểm chứng}
+Ưu tiên tiếp theo là annotation set nhỏ nhưng có quy trình: hai người gán relevance/aspect độc lập, đo agreement và adjudicate bất đồng. Với recommendation, lặp phép cắt theo năm trên các mốc khác để phân xử fusion và đồng trích dẫn. Một hướng cụ thể là cho trọng số của hai hạng phụ thuộc số nhân chứng, chọn trên một mốc năm rồi khóa trước khi đo mốc khác. So sánh content embeddings với TF-IDF phải giữ nguyên candidate set và split; điều chỉnh hybrid trên validation riêng rồi khóa tham số trước test. Khi corpus tăng đủ lớn, có thể chuyển ingestion sang job queue, dùng Solr làm backend mặc định và bổ sung benchmark throughput/RSS thực tế thay vì suy từ thời gian single-process hiện tại.
+
+\section{Kết luận}
+ResearchLens gợi ý bài nên đọc tiếp từ các bài đã lưu, kèm lý do kiểm tra được. Đồng trích dẫn là tín hiệu đơn tốt nhất. Fusion giữa đồng trích dẫn và hybrid đạt nDCG@10 bằng 0,207 trên thí nghiệm cắt theo năm 2020, so với 0,143 của hybrid, và trở thành mặc định. Trên split che ngẫu nhiên, đồng trích dẫn đứng riêng vẫn cao hơn fusion, nên so sánh giữa hai cách này còn mở. Review polarity cần được đọc cùng evidence. Projects và PDF reader hỗ trợ quy trình đọc, nhưng hiệu quả với người dùng thật vẫn cần được đánh giá riêng.
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+\clearpage
+\appendix
+\section{Tái lập bản bàn giao}
+\subsection{Khởi chạy và kiểm thử}
+Từ thư mục gốc, Python 3.11+ và \texttt{uv}:
+\begin{lstlisting}
+uv sync --frozen --extra dev
+uv run uvicorn researchlens.api:app --host 127.0.0.1 --port 8765
+# Open http://127.0.0.1:8765
+uv run pytest -q --cov=researchlens --cov-report=term-missing
+\end{lstlisting}
+Snapshot đã có sẵn; không cần API key hay mạng để chạy app local. Muốn thu thập lại:
+\begin{lstlisting}
+uv run python scripts/collect.py --per-topic 400
+uv run python scripts/evaluate.py --tasks 120
+uv run python scripts/figures.py
+make documents
+\end{lstlisting}
+Thu thập mới có thể cho snapshot khác vì OpenAlex cập nhật. Để tái lập số liệu trong báo cáo, giữ normalized JSONL và checksum hiện tại. Benchmark SciFact tải lần đầu từ nguồn BEIR nếu cache chưa có; các lần sau dùng archive/cache.
+
+\subsection{Apache Solr và Docker}
+\begin{lstlisting}
+docker compose --profile solr up -d solr
+uv run python scripts/solr_index.py
+SOLR_URL=http://127.0.0.1:8983/solr/researchlens \
+  uv run uvicorn researchlens.api:app --port 8765
+\end{lstlisting}
+Script index thay toàn bộ nội dung core \texttt{researchlens}; chỉ dùng core riêng cho dự án. Nếu chạy app trong Compose, đặt \texttt{SOLR\_URL=http://solr:8983/solr/researchlens}. Image app dùng requirements lock có hashes. Cổng mặc định chỉ bind loopback.
+
+\section{Thí nghiệm thăm dò cho chức năng Reader}\label{app:reader}
+Các thí nghiệm dưới đây phục vụ chức năng tìm bài từ một câu trong abstract và chức năng ưu tiên đọc theo brief. Chúng thuộc về truy hồi, không trả lời RQ1 và RQ2. Mỗi phép đo có từ 9 đến 172 truy vấn, nên khoảng tin cậy rộng và kết quả chỉ dùng để chọn cấu hình mặc định cho Reader.
 
 \subsection{Thử nghiệm quyết định lưu bài để đọc}
 Bốn mục tiêu đọc và bốn paper xuất phát tạo thành bốn ca. Lấy hợp top 3 của năm phương pháp sau khử trùng cho 43 cặp cần chấm. Phiếu tiếng Việt hỏi người đọc có muốn lưu từng bài và cho mở tóm tắt gốc. Phiếu ẩn tên phương pháp và thứ hạng. Hiện có 43 nhãn pilot do trợ lý đánh giá, gồm hai trường hợp thiếu bằng chứng. Một phản hồi thử cách hỏi của người dùng được loại khỏi đánh giá. Bộ nhãn tham chiếu của người đọc đang chờ thu thập.
 
-Chúng tôi thử mô hình phân loại có đầu ra cố định theo giao diện Choice của \href{https://docs.typesafe.ai/primitives/choice}{TypeSafe}. Lượt chạy thực tế dùng checkpoint mở \href{https://huggingface.co/convaiinnovations/laya-typed-decisions}{Laya Typed-Decisions}. Trên câu hỏi năm lựa chọn, mô hình khớp nhãn pilot 12/43 lần, baseline chọn lớp đông nhất khớp 15/43. Với câu hỏi lưu hay bỏ qua, kết quả là 19/41 so với 21/41 cho baseline. Các số này đo mức khớp với trợ lý trên bốn đề tài. Kết quả hiện tại ủng hộ việc giữ quyết định cuối cho người đọc. Chưa chạy Jev thương mại hoặc đánh giá khả năng dự đoán lựa chọn của người thật.
+Chúng tôi thử checkpoint mở \href{https://huggingface.co/convaiinnovations/laya-typed-decisions}{Laya Typed-Decisions}, một mô hình phân loại trả về một lựa chọn trong danh sách cố định. Trên câu hỏi năm lựa chọn, mô hình khớp nhãn pilot 12/43 lần, baseline chọn lớp đông nhất khớp 15/43. Với câu hỏi lưu hay bỏ qua, kết quả là 19/41 so với 21/41 cho baseline. Các số này đo mức khớp với trợ lý trên bốn đề tài. Kết quả hiện tại ủng hộ việc giữ quyết định cuối cho người đọc. Chưa đánh giá khả năng dự đoán lựa chọn của người thật.
 
 \subsection{Tìm bài cùng phương pháp bằng mô hình quyết định}
 Một người làm đề tài có thể đã có một bài mẫu và muốn tìm bài khác dùng kỹ thuật tương tự. Để đo việc này bằng nhãn chuyên gia, chúng tôi dùng phần \textit{method} của \href{https://openreview.net/forum?id=8Y50dBbmGU}{CSFCube (Mysore và cộng sự, 2021)}. Mỗi truy vấn gồm tiêu đề bài mẫu và các câu trong abstract được bộ dữ liệu nhận diện là mô tả phương pháp. Tám truy vấn dành cho phát triển, chín truy vấn dành cho test theo fold 1 công bố. Loại 42 cặp phát triển có bài trùng với test còn 914 cặp để học. Tập test có 1.218 cặp, trong đó chuyên gia chấm 63 cặp ở mức 2 hoặc 3 trên thang 0--3.
@@ -402,80 +502,6 @@ CSFCube, đúng phương pháp & 6/9 & 6/9 & 4/9 & 5/9\\\bottomrule
 
 \href{https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2}{Cross-encoder MS MARCO} và \href{https://huggingface.co/convaiinnovations/laya-typed-decisions}{Laya Typed-Decisions} nhận đúng cùng 20 ứng viên của fusion. Ở lượt thí nghiệm bổ sung, Laya trả một điểm cho câu hỏi bài đích có kỹ thuật, dữ liệu hoặc thí nghiệm phù hợp với câu đang đọc hay không. Cả 700 cặp dùng cùng một câu hỏi. Trên ACL-ARC, chênh lệch Hit@3 của Laya so với fusion là $-7{,}7$ điểm phần trăm, khoảng 95\% theo bài nguồn [$-22{,}2$; $+7{,}7$]. Trên CSFCube, ba phương án fusion, cross-encoder và Laya cùng có tám vị trí hữu ích trên 27 vị trí, nhưng các vị trí này phân bổ trên số truy vấn khác nhau. Dữ liệu ACL-ARC còn cho thấy một giới hạn sớm hơn trong quy trình: chỉ 14/26 danh sách 20 ứng viên có chứa nguồn cần tìm. Thay mô hình xếp lại sẽ không thể đưa 12 nguồn còn thiếu vào kết quả. Reader tiếp tục dùng cấu hình hiện tại.
 
-\subsection{Review: mô hình học có tín hiệu, sai số còn đáng kể}
-\begin{table}[htbp]\centering
-\begin{tabular}{@{}lrr@{}}\toprule
-Phương pháp & Accuracy & Macro-F1\\\midrule
-\tableinput{generated/opinion_table.tex}
-\bottomrule\end{tabular}\caption{Review test: 115 review chưa dùng để huấn luyện; nhãn suy từ điểm reviewer.}\end{table}
-\fig{opinion.pdf}{.95}{Macro-F1 và cluster-bootstrap intervals của ba phương án review polarity. Khoảng tin cậy của lexicon và logistic regression chồng lấn đáng kể.}
-TF-IDF + logistic regression đạt accuracy 0,461 và macro-F1 0,469; lexicon đạt 0,443 và 0,436; majority đạt 0,374 và 0,181. Mô hình học vượt majority rõ về điểm ước lượng, nhưng chênh lệch với lexicon nhỏ và interval còn rộng. Báo cáo không khẳng định ưu thế có ý nghĩa thống kê của logistic regression so với lexicon chỉ dựa vào điểm trung bình.
-\fig{confusion.pdf}{.85}{Confusion matrix của logistic regression trên tập test. Nhãn mixed không đồng nghĩa với một kiểu câu review đơn nhất.}
-Điểm số review phản ánh nhiều yếu tố: novelty, soundness, relevance với venue và kỳ vọng reviewer. Một review có thể khen cách trình bày nhưng vẫn đề nghị từ chối; vì vậy rating-derived polarity không phải nhãn sentiment thuần túy. Kết quả còn thấp là bằng chứng cần giữ evidence câu gốc cạnh dự đoán và tránh biến output model thành verdict.
-
-\subsection{Cấu trúc graph và độ nhạy với sampling}
-Louvain cho modularity 0,766 trên projection vô hướng. Spearman giữa PageRank và local in-degree bằng 0,963, trong khi tương quan với citation count ngoài corpus chỉ 0,625. Hai quan sát gợi ý PageRank trong graph hiện tại phần lớn đi cùng sự phổ biến nội bộ và không tương đương ảnh hưởng toàn cục. Modularity cao không tự chứng minh community đúng chủ đề, vì dữ liệu được thu thập theo các query nhóm lĩnh vực.
-
-Có 770 nút cô lập và thành phần liên thông yếu lớn nhất gồm 2.798 nút. Khi xem một ego network nhỏ, thiếu cạnh có thể đến từ thiếu metadata hoặc paper bên ngoài snapshot. UI và report vì vậy luôn gọi đây là observed/local graph. Không dùng số community gồm singleton để tuyên bố đã khám phá hàng trăm hướng nghiên cứu mới.
-
-\subsection{Thời gian xử lý và kiểm thử}
-\begin{table}[htbp]\centering
-\begin{tabular}{@{}lrr@{}}\toprule
-Ranking local & p50 (ms) & p95 (ms)\\\midrule
-\tableinput{generated/latency_table.tex}
-\bottomrule\end{tabular}\caption{Warm in-process latency, 80 lần đo mỗi phương pháp; môi trường chi tiết trong results.json.}\end{table}
-\fig{latency.pdf}{.9}{Phân vị thời gian tìm kiếm local. Không gồm network, browser hoặc tải đồng thời.}
-Bộ test hiện đạt 430/430. Lần chạy này bao phủ 1.056/1.065 statement trong package ứng dụng. Coverage không phải chứng minh không có lỗi; nó cho biết phần code đã được chạy trong suite. Các lỗi phát hiện và sửa gồm đọc JSONL Unicode, seed list bị cắt ở 50, saved IDs cũ sau thay corpus, dữ liệu nhỏ gây lỗi vocabulary, và phân loại lỗi upstream Solr không đúng HTTP status. Audit độc lập xác minh lại các sửa đổi và kiểm tra masking, split, hashes cùng số tổng hợp.
-
-Browser QA xác nhận luồng search, save, paper detail, graph, opinion, recommendation, BibTeX export, dashboard, Project, PDF reader, notes, draft recovery, conference search và live online import; không có JavaScript error trong luồng đã chạy và không có horizontal overflow ở viewport 390\,px. Đây là functional smoke test, chưa là kiểm thử accessibility toàn diện hoặc load test.
-
-\section{Thảo luận, giới hạn và hướng phát triển}
-\subsection{Những gì kết quả hiện tại hỗ trợ}
-Hệ thống đã hiện thực hóa một workflow xuyên suốt và có thể chạy lại từ snapshot. Thí nghiệm che cạnh hỗ trợ việc dùng citation proximity cho gợi ý tham chiếu; ablation cho thấy graph signal giúp content baseline. Review model có tín hiệu hơn majority nhưng còn sai nhiều; việc hiển thị evidence là cần thiết. BM25 là baseline lexical hợp lý trên SciFact, với đánh đổi giữa thứ tự và recall đã được quan sát.
-
-\subsection{Những gì chưa được chứng minh}
-Chưa có log hành vi người dùng thật để đánh giá personalization trong thực tế; chưa có nghiên cứu người dùng hoặc A/B test. Phép cắt theo năm dùng metadata hồi cứu và một mốc duy nhất. Chưa có gold labels cho entity/aspect extraction. Các weights hybrid được đặt trước, chưa tối ưu qua validation. Join paper bằng exact normalized title có thể bỏ sót alias hoặc bản hội nghị/tạp chí. HITS và Louvain được kiểm tra hành vi và mô tả cấu trúc, chưa có community gold labels để tính clustering accuracy.
-
-Backend Solr dùng analyzer \texttt{text\_en}, có stemming và field handling khác tokenizer local. Kết quả Solr và local không bắt buộc giống nhau. Cần reindex Solr khi thay corpus; phát hiện stale index mới chỉ bắt các ID lạ trong response, chưa xác minh mọi metadata của cùng ID. Hệ thống hiện là triển khai local cho môn học; profile cookie không thay thế identity, permission và backup của dịch vụ nhiều người dùng.
-
-\subsection{Lộ trình cải thiện có thể kiểm chứng}
-Ưu tiên tiếp theo là annotation set nhỏ nhưng có quy trình: hai người gán relevance/aspect độc lập, đo agreement và adjudicate bất đồng. Với recommendation, lặp phép cắt theo năm trên các mốc khác. So sánh content embeddings với TF-IDF phải giữ nguyên candidate set và split; điều chỉnh hybrid trên validation riêng rồi khóa tham số trước test. Khi corpus tăng đủ lớn, có thể chuyển ingestion sang job queue, dùng Solr làm backend mặc định và bổ sung benchmark throughput/RSS thực tế thay vì suy từ thời gian single-process hiện tại.
-
-\section{Kết luận}
-ResearchLens nối truy hồi, phân tích citation, review mining và gợi ý paper trong một workspace có thể tái lập. Personalized PageRank dẫn đầu trong thí nghiệm che cạnh ngẫu nhiên ban đầu. Đồng trích dẫn dẫn đầu trong thí nghiệm cắt corpus ở năm 2020; hybrid vượt content nhưng chưa vượt graph-only. Review polarity cần được đọc cùng evidence. Projects và PDF reader hỗ trợ quy trình đọc, nhưng hiệu quả với người dùng thật vẫn cần được đánh giá riêng.
-
-\clearpage
-\bibliographystyle{plainnat}
-\bibliography{references}
-\clearpage
-\appendix
-\section{Tái lập bản bàn giao}
-\subsection{Khởi chạy và kiểm thử}
-Từ thư mục gốc, Python 3.11+ và \texttt{uv}:
-\begin{lstlisting}
-uv sync --frozen --extra dev
-uv run uvicorn researchlens.api:app --host 127.0.0.1 --port 8765
-# Open http://127.0.0.1:8765
-uv run pytest -q --cov=researchlens --cov-report=term-missing
-\end{lstlisting}
-Snapshot đã có sẵn; không cần API key hay mạng để chạy app local. Muốn thu thập lại:
-\begin{lstlisting}
-uv run python scripts/collect.py --per-topic 400
-uv run python scripts/evaluate.py --tasks 120
-uv run python scripts/figures.py
-make documents
-\end{lstlisting}
-Thu thập mới có thể cho snapshot khác vì OpenAlex cập nhật. Để tái lập số liệu trong báo cáo, giữ normalized JSONL và checksum hiện tại. Benchmark SciFact tải lần đầu từ nguồn BEIR nếu cache chưa có; các lần sau dùng archive/cache.
-
-\subsection{Apache Solr và Docker}
-\begin{lstlisting}
-docker compose --profile solr up -d solr
-uv run python scripts/solr_index.py
-SOLR_URL=http://127.0.0.1:8983/solr/researchlens \
-  uv run uvicorn researchlens.api:app --port 8765
-\end{lstlisting}
-Script index thay toàn bộ nội dung core \texttt{researchlens}; chỉ dùng core riêng cho dự án. Nếu chạy app trong Compose, đặt \texttt{SOLR\_URL=http://solr:8983/solr/researchlens}. Image app dùng requirements lock có hashes. Cổng mặc định chỉ bind loopback.
-
 \section{Chỉ mục artifact}
 \small
 \begin{longtable}{@{}p{6.7cm}p{8.5cm}@{}}\toprule
@@ -500,7 +526,7 @@ Script index thay toàn bộ nội dung core \texttt{researchlens}; chỉ dùng 
 \item Tìm \texttt{graph neural networks}, đổi BM25/TF-IDF/hybrid và bật lọc open access. Nêu rõ các con số là kết quả trên snapshot.
 \item Mở paper, chỉ ra abstract, keyword, entity spans và sự khác nhau giữa global citations với local citations. Lưu hai hoặc ba paper.
 \item Tạo Project từ brief, thêm paper, mở reader và lưu ghi chú/bookmark. Mở citation neighborhood. Chỉ hướng citing $\rightarrow$ cited, kích thước PageRank và giới hạn thiếu cạnh.
-\item Mở My library; so sánh content, graph, hybrid; thay diversity; xuất BibTeX.
-\item Mở Review insights, đọc review thật và evidence. Kết thúc ở dashboard thí nghiệm: graph-only dẫn đầu proxy task, review model còn hạn chế.
+\item Mở My library. Gợi ý mặc định là fusion, mỗi bài ghi hạng đồng trích dẫn, hạng hybrid và bài nhân chứng. So sánh với hybrid và đồng trích dẫn, thay diversity, xuất BibTeX.
+\item Mở Review insights, đọc review thật và evidence. Kết thúc ở bảng E2: fusion dẫn đầu, đồng trích dẫn là tín hiệu đơn tốt nhất, review model còn hạn chế.
 \end{enumerate}
 \end{document}
