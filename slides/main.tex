@@ -35,22 +35,21 @@
 \end{tikzpicture}
 \end{frame}}
 \section{Bài toán}
-\begin{frame}{Liên kết và review bổ sung điều một query chưa trả lời}
+\begin{frame}{Từ các bài đã lưu, gợi ý bài nên đọc tiếp}
 \begin{columns}[T,onlytextwidth]
 \column{.62\textwidth}
 \par\vspace{.45cm}
-{\Large Paper nào nên đọc tiếp?}\par\par\vspace{.4cm}
+{\Large Đã lưu vài bài. Đọc bài nào tiếp?}\par\par\vspace{.4cm}
 \begin{enumerate}
-\item Citation proximity giúp gợi ý đến đâu?
-\item Hybrid có vượt từng thành phần?
-\item Review chứa tín hiệu đánh giá nào?
+\item[RQ1] Tín hiệu nào tìm lại tốt nhất: popularity, nội dung, PageRank cá nhân hóa hay đồng trích dẫn?
+\item[RQ2] Kết hợp các tín hiệu có vượt tín hiệu tốt nhất?
 \end{enumerate}
 \column{.32\textwidth}
 \par\vspace{.4cm}
 \takeaway{Trọng tâm capstone}\par
-Link analysis\par Opinion mining\par Recommendation
+Recommendation\par Link analysis
 \par\vspace{.25cm}
-{\small Search là tầng truy cập.}
+{\small Review là bằng chứng cạnh gợi ý.\par Search là cách lưu bài đầu tiên.}
 \end{columns}
 \source{Nguồn yêu cầu: 20261\_syllabus.pdf; ResearchLens\_Visual\_Spec.pdf.}
 \end{frame}
@@ -124,6 +123,19 @@ Alias nối citation\par\vspace{.3cm}
 \par\vspace{.4cm}\takeaway{Weights cố định; chưa tune trên test.}
 \source{Page et al. (1999); Carbonell \& Goldstein (1998). MMR: 150 ứng viên đầu, diversity penalty 0,15.}
 \end{frame}
+\begin{frame}{Mặc định: ghép hạng đồng trích dẫn với hạng hybrid}
+\par\vspace{.3cm}
+\[
+ s_{\mathrm{fusion}}(d\mid S)=\frac{1}{60+r_{\mathrm{hybrid}}(d)}+\frac{\mathbf{1}[d\text{ có phiếu}]}{60+r_{\mathrm{co\text{-}cite}}(d)}
+\]
+\par\vspace{.35cm}
+\begin{columns}[T,onlytextwidth]
+\column{.46\textwidth}\textbf{Đồng trích dẫn}\par Bài $w$ trích cả $d$ và một bài đã lưu thì $d$ được một phiếu.\par Người dùng mở được bài $w$.
+\column{.46\textwidth}\textbf{Vì sao dùng hạng}\par Phiếu và điểm hybrid khác thang đo.\par Bài chưa ai trích cùng vẫn có hạng hybrid.
+\end{columns}
+\par\vspace{.4cm}\takeaway{$k=60$ lấy từ bài gốc, không chỉnh trên dữ liệu dự án.}
+\source{Small (1973); Cormack, Clarke \& Buettcher (2009), reciprocal rank fusion.}
+\end{frame}
 \begin{frame}{Review mining giữ câu gốc bên cạnh dự đoán}
 \begin{columns}[T,onlytextwidth]
 \column{.53\textwidth}
@@ -156,44 +168,149 @@ Notes tự lưu; bookmark nhập tay.\par\vspace{.3cm}
 \source{Browser QA đã tải arXiv thật, thử notes UTF-8 >64 KiB và khôi phục draft. Graph hỗ trợ reduced motion.}
 \end{frame}
 \section{Thực nghiệm}
-\begin{frame}{Ba tác vụ sử dụng ba loại đáp án riêng biệt}
+\begin{frame}{Mỗi tác vụ dùng một loại đáp án riêng}
 \par\vspace{.15cm}
 \small
 \renewcommand{\arraystretch}{1.45}
 \begin{tabular}{@{}p{3.5cm}p{4.4cm}p{5.1cm}@{}}\toprule
 Tác vụ & Dữ liệu test & Chống leakage\\\midrule
 Scientific retrieval & SciFact: 300 query / 5.183 abstracts & Qrels độc lập; không tune test\\
-Reference recovery & 120 source papers; 442 cạnh che & Xóa toàn bộ cạnh test trước graph scoring\\
+Gợi ý, thí nghiệm chính & 219 bài sau 2020; 826 reference che & Graph cắt ở 2020; bài test không có trong graph\\
+Gợi ý, kiểm tra lại & 120 source papers; 442 cạnh che & Xóa toàn bộ cạnh test trước graph scoring\\
 Review polarity & 115 review; official test split & Paper-disjoint; khử trùng; fit train-only\\\bottomrule
 \end{tabular}
 \par\vspace{.2cm}\takeaway{Bootstrap 95\% theo query/paper; không gộp thành một ``accuracy hệ thống''.}
 \source{SciFact: Wadden et al. (2020), BEIR: Thakur et al. (2021); PeerRead: Kang et al. (2018). Seed 42.}
 \end{frame}
-\chartslide{Personalized PageRank dẫn đầu phục hồi tham chiếu}{slide_recommendation.pdf}{\bigmetric{0,174}{nDCG@10 của PPR}\par\vspace{.4cm}\small Hybrid: 0,112\par Content: 0,063\par\vspace{.35cm}\par\takeaway{Hybrid chưa thắng graph-only.}}{120 source papers; toàn corpus làm ứng viên, loại seed/source. Error bars: 2.000 bootstrap samples. Nguồn: artifacts/results.json.}
-\chartslide{Hybrid cải thiện content với hiệu ghép cặp dương}{slide_diversity.pdf}{\bigmetric{+0,049}{nDCG: hybrid -- content}\par\vspace{.3cm}\small CI 95\%:\par [0,027; 0,073]\par\vspace{.3cm}\par MMR tăng diversity và coverage của hybrid.}{Hiệu ghép cặp theo cùng source paper. Diversity = 1 -- mean cosine; bubble area theo coverage. Nguồn: artifacts/results.json.}
-\chartslide{Review polarity còn khó dù có tín hiệu học được}{slide_opinion.pdf}{\bigmetric{0,469}{macro-F1 của logreg}\par\vspace{.3cm}\small Lexicon: 0,436\par Majority: 0,181\par\vspace{.3cm}\par\takeaway{CI chồng lấn; chưa khẳng định hơn lexicon.}}{115 test reviews. Cluster bootstrap theo paper, 1.000 samples. Nhãn suy từ rating. Nguồn: PeerRead + artifacts/results.json.}
-\chartslide{BM25 cải thiện nDCG nhưng recall không tăng}{slide_retrieval.pdf}{\bigmetric{0,651}{nDCG@10 của BM25}\par\vspace{.35cm}\small TF-IDF: 0,621\par\vspace{.3cm}\par Recall@10:\par BM25 0,768\par TF-IDF 0,778}{SciFact test (300 queries); benchmark sparse local, không phải số đo Solr. Nguồn: Wadden et al. (2020); artifacts/results.json.}
-\chartslide{Warm local search hoàn thành trong vài mili giây}{slide_latency.pdf}{\small 8 query × 10 lần\par CPU, single process\par\vspace{.4cm}\takeaway{Không gồm HTTP/browser hoặc tải đồng thời.}\par\vspace{.4cm}\small Artifact lưu môi trường và phiên bản.}{Scope: filtering + scoring + ranking + top-20 serialization. Thời gian phụ thuộc máy. Nguồn: artifacts/results.json.}
-
-\begin{frame}{Đồng trích dẫn dẫn đầu trên graph đến 2020}
+\begin{frame}{Fusion dẫn đầu khi graph dừng ở năm 2020}
 \begin{columns}[T,onlytextwidth]
-\column{.48\textwidth}
-\small Graph đến hết 2020\\
-2.520 bài, 7.881 cạnh\\[.25cm]
-219 bài test, 826 reference bị che\\[.25cm]
-Mỗi bài trích cả ứng viên và seed cho một phiếu. Người đọc có thể mở bài đó để kiểm tra.
-\column{.49\textwidth}
+\column{.44\textwidth}
+\small Graph đến hết 2020: 2.520 bài, 7.881 cạnh\\[.2cm]
+219 bài test sau 2020, 826 reference bị che\\[.2cm]
+Cả sáu cách gọi cùng hàm \texttt{recommend} của app\\[.35cm]
+\textbf{RQ1} Đồng trích dẫn là tín hiệu đơn tốt nhất.\\[.15cm]
+\textbf{RQ2} Fusion vượt hybrid +0,064 và vượt đồng trích dẫn +0,034.
+\column{.52\textwidth}
 \small\begin{tabular}{lrr}\toprule
 & nDCG@10 & Recall@10\\\midrule
 Global PR & 0,032 & 0,058\\
 Content & 0,110 & 0,147\\
 PPR & 0,121 & 0,141\\
-Hybrid & 0,143 & 0,183\\
-Đồng trích dẫn & \textbf{0,173} & \textbf{0,219}\\\bottomrule
+Hybrid (cũ) & 0,143 & 0,183\\
+Đồng trích dẫn & 0,173 & 0,219\\
+\textbf{Fusion (mới)} & \textbf{0,207} & \textbf{0,257}\\\bottomrule
 \end{tabular}
 \end{columns}
-\par\vspace{.3cm}\takeaway{So với PPR, nDCG@10 tăng 0,052 trên cùng 219 bài.}
-\source{Bootstrap ghép cặp 95\% [0,029; 0,075]. Một mốc năm, metadata hồi cứu. Nguồn: temporal\_recovery.json; Small (1973).}
+\source{Bootstrap ghép cặp 95\%: fusion -- hybrid [0,042; 0,087]; fusion -- đồng trích dẫn [0,016; 0,054]. Thắng/thua/hòa với hybrid 95/31/93. Nguồn: artifacts/temporal\_recovery.json.}
+\end{frame}
+\begin{frame}{Split ngẫu nhiên: đồng trích dẫn vẫn cao nhất}
+\begin{columns}[T,onlytextwidth]
+\column{.5\textwidth}
+\par\vspace{.3cm}\small Split che ngẫu nhiên 120 bài, cố định từ trước\\[.3cm]
+\begin{tabular}{lr}\toprule
+& nDCG@10\\\midrule
+Content & 0,070\\
+Hybrid & 0,112\\
+PPR & 0,174\\
+Fusion & 0,259\\
+Đồng trích dẫn & \textbf{0,305}\\\bottomrule
+\end{tabular}
+\column{.44\textwidth}
+\par\vspace{.3cm}\small Fusion -- hybrid: +0,147\\
+Fusion -- đồng trích dẫn: $-0{,}046$\\[.3cm]
+Bỏ nhân chứng mới hơn bài nguồn: đồng trích dẫn chỉ giảm 0,305 xuống 0,301.\\[.3cm]
+\takeaway{Mặc định là fusion: thắng thí nghiệm chính và không rỗng khi chưa ai trích cùng.}
+\end{columns}
+\source{scripts/evaluate\_holdout\_fusion.py; artifacts/holdout\_fusion.json. Khoảng 95\% fusion -- đồng trích dẫn [$-0{,}083$; $-0{,}007$].}
+\end{frame}
+\chartslide{Trong 5 cách cũ, PPR dẫn đầu khi che cạnh ngẫu nhiên}{slide_recommendation.pdf}{\bigmetric{0,174}{nDCG@10 của PPR}\par\vspace{.4cm}\small Hybrid: 0,112\par Content: 0,063\par\vspace{.35cm}\par\takeaway{Hybrid chưa thắng graph-only.}}{120 source papers; toàn corpus làm ứng viên, loại seed/source. Error bars: 2.000 bootstrap samples. Nguồn: artifacts/results.json.}
+\chartslide{Hybrid cải thiện content với hiệu ghép cặp dương}{slide_diversity.pdf}{\bigmetric{+0,049}{nDCG: hybrid -- content}\par\vspace{.3cm}\small CI 95\%:\par [0,027; 0,073]\par\vspace{.3cm}\par MMR tăng diversity và coverage của hybrid.}{Hiệu ghép cặp theo cùng source paper. Diversity = 1 -- mean cosine; bubble area theo coverage. Nguồn: artifacts/results.json.}
+\chartslide{Review polarity còn khó dù có tín hiệu học được}{slide_opinion.pdf}{\bigmetric{0,469}{macro-F1 của logreg}\par\vspace{.3cm}\small Lexicon: 0,436\par Majority: 0,181\par\vspace{.3cm}\par\takeaway{CI chồng lấn; chưa khẳng định hơn lexicon.}}{115 test reviews. Cluster bootstrap theo paper, 1.000 samples. Nhãn suy từ rating. Nguồn: PeerRead + artifacts/results.json.}
+\chartslide{BM25 cải thiện nDCG nhưng recall không tăng}{slide_retrieval.pdf}{\bigmetric{0,651}{nDCG@10 của BM25}\par\vspace{.35cm}\small TF-IDF: 0,621\par\vspace{.3cm}\par Recall@10:\par BM25 0,768\par TF-IDF 0,778}{SciFact test (300 queries); benchmark sparse local, không phải số đo Solr. Nguồn: Wadden et al. (2020); artifacts/results.json.}
+\chartslide{Warm local search hoàn thành trong vài mili giây}{slide_latency.pdf}{\small 8 query × 10 lần\par CPU, single process\par\vspace{.4cm}\takeaway{Không gồm HTTP/browser hoặc tải đồng thời.}\par\vspace{.4cm}\small Artifact lưu môi trường và phiên bản.}{Scope: filtering + scoring + ranking + top-20 serialization. Thời gian phụ thuộc máy. Nguồn: artifacts/results.json.}
+
+\section{Kiểm chứng và kết luận}
+\begin{frame}{Audit và test độc lập phát hiện lỗi trước bàn giao}
+\begin{columns}[T,onlytextwidth]
+\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{441/441}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
+\column{.61\textwidth}\par\vspace{.3cm}
+\textbf{Các lỗi đã sửa}\par
+JSONL có line separator Unicode.\par
+Seed bị cắt ở 50; saved IDs cũ.\par
+Lưu notes UTF-8 dài; modal race.\par
+Alias citation; parser program cũ.
+\par\vspace{.25cm}\takeaway{Browser demo và Docker Solr đã chạy trực tiếp.}
+\end{columns}
+\source{docs/AUDIT.md; docs/TEST\_REPORT.md; artifacts/browser\_qa.json; artifacts/solr\_integration.json. Coverage không chứng minh không còn lỗi.}
+\end{frame}
+\begin{frame}{Proxy evaluation chưa thay thế nghiên cứu người dùng}
+\par\vspace{.4cm}
+\begin{columns}[T,onlytextwidth]
+\column{.46\textwidth}\textbf{Giới hạn hiện tại}\par Reference recovery khác sở thích.\par Fusion và đồng trích dẫn trái chiều giữa hai protocol.\par Gợi ý theo brief chưa có người chấm.
+\column{.46\textwidth}\textbf{Bước kiểm chứng tiếp}\par Thử các mốc năm khác.\par Người đọc chấm 43 cặp brief--paper.\par Annotation aspect cho review.
+\end{columns}
+\par\vspace{.7cm}\takeaway{770 isolates và missing abstracts ảnh hưởng kết quả.}
+\source{Phân tích giới hạn từ snapshot và protocol đã thực thi; chưa có user study hoặc A/B test.}
+\end{frame}
+\begin{frame}{Các phương pháp và dữ liệu có nguồn truy xuất}
+\fontsize{8}{11}\selectfont
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+\textbf{Retrieval và graph}\par
+Manning, Raghavan, Schütze (2008). \emph{Introduction to Information Retrieval}. CUP.\par
+Robertson, Zaragoza (2009). \emph{The Probabilistic Relevance Framework: BM25 and Beyond}. FnT IR 3(4), 333--389.\par
+Page et al. (1999). \emph{The PageRank Citation Ranking}. Stanford InfoLab.\par
+Kleinberg (1999). \emph{Authoritative Sources in a Hyperlinked Environment}. JACM 46(5), 604--632.\par
+Blondel et al. (2008). \emph{Fast Unfolding of Communities in Large Networks}. JSTAT P10008.
+\column{.48\textwidth}
+\textbf{Diversity và datasets}\par
+Carbonell, Goldstein (1998). \emph{The Use of MMR, Diversity-Based Reranking}. SIGIR, 335--336.\par
+Kang et al. (2018). \emph{A Dataset of Peer Reviews (PeerRead)}. NAACL, 1647--1661.\par
+Wadden et al. (2020). \emph{Fact or Fiction: Verifying Scientific Claims}. EMNLP, 7534--7550.\par
+Thakur et al. (2021). \emph{BEIR: A Heterogeneous Benchmark}. NeurIPS Datasets and Benchmarks.\par
+OpenAlex API; Apache Solr 9.9 Reference Guide. Truy cập 14/10/2026.
+\end{columns}
+\source{DOI/URL đầy đủ ở report/references.bib. Toàn bộ chart là kết quả đo của dự án; screenshot là bản chạy thật.}
+\end{frame}
+\begin{frame}{Tín hiệu trích dẫn quyết định gợi ý bài đọc tiếp}
+\par\vspace{.25cm}
+{\Large\bfseries Ba kết luận từ bản chạy}\par\par\vspace{.4cm}
+\textbf{01}\quad Đồng trích dẫn là tín hiệu đơn tốt nhất trên cả hai protocol.\par\par\vspace{.18cm}
+\textbf{02}\quad Fusion vượt hybrid trên cả hai protocol và là mặc định mới.\par\par\vspace{.18cm}
+\textbf{03}\quad Review model cần đi cùng evidence và giới hạn.
+\par\vspace{.6cm}
+\takeaway{Demo: \url{http://127.0.0.1:8765}}\par
+{\small Tái lập: README.md\quad |\quad kết quả: artifacts/temporal\_recovery.json}
+\source{ResearchLens · IT4868E · HUST. Bản bàn giao có source, snapshot, tests, LaTeX và HUST Beamer.}
+\end{frame}
+\appendix
+\section{Phụ lục}
+\begin{frame}{Phụ lục A: Che cạnh trước mọi phép tính graph}
+\par\vspace{.3cm}
+\begin{enumerate}
+\item Chọn source có ít nhất 6 local references.
+\item Che $\lfloor m/3\rfloor$ references của từng source.
+\item Xóa hợp tất cả cạnh test: 442 cạnh.
+\item Recompute graph scores trên 13.039 cạnh còn lại.
+\item Dùng references còn lại làm seed; loại source/seed.
+\end{enumerate}
+\par\vspace{.4cm}\takeaway{Paper test còn là node: đây là transductive evaluation.}
+\source{Split cụ thể: artifacts/recommendation\_split.jsonl; SHA-256 lưu trong artifacts/results.json.}
+\end{frame}
+\begin{frame}{Phụ lục B: Nhãn mixed dễ nhầm với cả hai phía}
+\begin{columns}[T,onlytextwidth]\column{.67\textwidth}\includegraphics[width=\linewidth,height=5.3cm,keepaspectratio]{confusion.pdf}\column{.29\textwidth}\par\vspace{.4cm}\small Một review có thể khen cách viết nhưng chê đóng góp.\par\vspace{.4cm}\par Điểm reviewer phản ánh nhiều khía cạnh.\par\vspace{.4cm}\par\takeaway{Không dùng prediction để kết luận accept/reject.}\end{columns}
+\source{Logistic regression, test split PeerRead ICLR 2017. Ma trận lấy trực tiếp từ results.json.}
+\end{frame}
+\begin{frame}{Phụ lục C: Evidence nối review với khía cạnh cụ thể}
+\includegraphics[width=\textwidth,height=5.6cm,keepaspectratio]{reviews.png}
+\source{Ảnh giao diện thật. Review phía trái lấy từ PeerRead; đoạn nhập phía phải là ví dụ demo, không dùng trong benchmark.}
+\end{frame}
+\begin{frame}{Phụ lục D: Thí nghiệm thăm dò cho chức năng Reader}
+\par\vspace{.4cm}
+Tìm bài từ một câu trong abstract thuộc truy hồi, không thuộc RQ1 và RQ2.\par\vspace{.3cm}
+Mỗi phép đo có 9 đến 172 truy vấn, khoảng tin cậy rộng.\par\vspace{.3cm}
+\takeaway{Chỉ dùng để chọn cấu hình mặc định cho Reader.}
+\source{CSFCube, SciERC, ACL-ARC. Chi tiết ở Phụ lục B của báo cáo.}
 \end{frame}
 \chartslide{Thêm Laya cải thiện thứ hạng ở 2 trong 9 truy vấn}{decision_by_query.pdf}{\bigmetric{0,365}{nDCG@10 với TF-IDF + MiniLM}\par\vspace{.34cm}\small Thêm Laya: 0,339.\par\vspace{.30cm}\small Mỗi thanh là một bài mẫu. Thanh bên phải mốc 0 biểu thị top 10 tốt hơn.}{CSFCube, phần phương pháp (Mysore và cộng sự, 2021). 1.218 cặp test do chuyên gia chấm. Chênh lệch trung bình $-0{,}026$, khoảng bootstrap 95\% [$-0{,}056$, $+0{,}007$].}
 
@@ -232,89 +349,13 @@ Cross-encoder MS MARCO & 4/26\\\bottomrule
 \source{ACL-ARC, 26 câu Uses thuộc 21 bài nguồn. Chỉ có tiêu đề ứng viên. Cả hai mô hình xếp lại cùng top 20. Khoảng 95\% của Laya so với fusion [$-22{,}2$; $+7{,}7$] điểm phần trăm.}
 \end{frame}
 
-\section{Kiểm chứng và kết luận}
-\begin{frame}{Audit và test độc lập phát hiện lỗi trước bàn giao}
-\begin{columns}[T,onlytextwidth]
-\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{430/430}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
-\column{.61\textwidth}\par\vspace{.3cm}
-\textbf{Các lỗi đã sửa}\par
-JSONL có line separator Unicode.\par
-Seed bị cắt ở 50; saved IDs cũ.\par
-Lưu notes UTF-8 dài; modal race.\par
-Alias citation; parser program cũ.
-\par\vspace{.25cm}\takeaway{Browser demo và Docker Solr đã chạy trực tiếp.}
-\end{columns}
-\source{docs/AUDIT.md; docs/TEST\_REPORT.md; artifacts/browser\_qa.json; artifacts/solr\_integration.json. Coverage không chứng minh không còn lỗi.}
-\end{frame}
-\begin{frame}{Proxy evaluation chưa thay thế nghiên cứu người dùng}
-\par\vspace{.4cm}
-\begin{columns}[T,onlytextwidth]
-\column{.46\textwidth}\textbf{Giới hạn hiện tại}\par Reference recovery khác sở thích.\par Một mốc cắt theo năm.\par Rating khác sentiment gold.
-\column{.46\textwidth}\textbf{Bước kiểm chứng tiếp}\par Thử các mốc năm khác.\par Annotation relevance/aspect.\par Validation cho weights hybrid.
-\end{columns}
-\par\vspace{.7cm}\takeaway{770 isolates và missing abstracts ảnh hưởng kết quả.}
-\source{Phân tích giới hạn từ snapshot và protocol đã thực thi; chưa có user study hoặc A/B test.}
-\end{frame}
-\begin{frame}{Các phương pháp và dữ liệu có nguồn truy xuất}
-\fontsize{8}{11}\selectfont
-\begin{columns}[T,onlytextwidth]
-\column{.48\textwidth}
-\textbf{Retrieval và graph}\par
-Manning, Raghavan, Schütze (2008). \emph{Introduction to Information Retrieval}. CUP.\par
-Robertson, Zaragoza (2009). \emph{The Probabilistic Relevance Framework: BM25 and Beyond}. FnT IR 3(4), 333--389.\par
-Page et al. (1999). \emph{The PageRank Citation Ranking}. Stanford InfoLab.\par
-Kleinberg (1999). \emph{Authoritative Sources in a Hyperlinked Environment}. JACM 46(5), 604--632.\par
-Blondel et al. (2008). \emph{Fast Unfolding of Communities in Large Networks}. JSTAT P10008.
-\column{.48\textwidth}
-\textbf{Diversity và datasets}\par
-Carbonell, Goldstein (1998). \emph{The Use of MMR, Diversity-Based Reranking}. SIGIR, 335--336.\par
-Kang et al. (2018). \emph{A Dataset of Peer Reviews (PeerRead)}. NAACL, 1647--1661.\par
-Wadden et al. (2020). \emph{Fact or Fiction: Verifying Scientific Claims}. EMNLP, 7534--7550.\par
-Thakur et al. (2021). \emph{BEIR: A Heterogeneous Benchmark}. NeurIPS Datasets and Benchmarks.\par
-OpenAlex API; Apache Solr 9.9 Reference Guide. Truy cập 14/10/2026.
-\end{columns}
-\source{DOI/URL đầy đủ ở report/references.bib. Toàn bộ chart là kết quả đo của dự án; screenshot là bản chạy thật.}
-\end{frame}
-\begin{frame}{Graph signal hữu ích; kết hợp cần được kiểm chứng}
-\par\vspace{.25cm}
-{\Large\bfseries Ba kết luận từ bản chạy}\par\par\vspace{.4cm}
-\textbf{01}\quad PPR dẫn đầu khi che cạnh ngẫu nhiên trong thí nghiệm ban đầu.\par\par\vspace{.18cm}
-\textbf{02}\quad Đồng trích dẫn dẫn đầu khi giới hạn graph đến năm 2020.\par\par\vspace{.18cm}
-\textbf{03}\quad Review model cần đi cùng evidence và giới hạn.
-\par\vspace{.6cm}
-\takeaway{Demo: \url{http://127.0.0.1:8765}}\par
-{\small Tái lập: README.md\quad |\quad kết quả: artifacts/results.json}
-\source{ResearchLens · IT4868E · HUST. Bản bàn giao có source, snapshot, tests, LaTeX và HUST Beamer.}
-\end{frame}
-\appendix
-\section{Phụ lục}
-\begin{frame}{Phụ lục A: Che cạnh trước mọi phép tính graph}
-\par\vspace{.3cm}
-\begin{enumerate}
-\item Chọn source có ít nhất 6 local references.
-\item Che $\lfloor m/3\rfloor$ references của từng source.
-\item Xóa hợp tất cả cạnh test: 442 cạnh.
-\item Recompute graph scores trên 13.039 cạnh còn lại.
-\item Dùng references còn lại làm seed; loại source/seed.
-\end{enumerate}
-\par\vspace{.4cm}\takeaway{Paper test còn là node: đây là transductive evaluation.}
-\source{Split cụ thể: artifacts/recommendation\_split.jsonl; SHA-256 lưu trong artifacts/results.json.}
-\end{frame}
-\begin{frame}{Phụ lục B: Nhãn mixed dễ nhầm với cả hai phía}
-\begin{columns}[T,onlytextwidth]\column{.67\textwidth}\includegraphics[width=\linewidth,height=5.3cm,keepaspectratio]{confusion.pdf}\column{.29\textwidth}\par\vspace{.4cm}\small Một review có thể khen cách viết nhưng chê đóng góp.\par\vspace{.4cm}\par Điểm reviewer phản ánh nhiều khía cạnh.\par\vspace{.4cm}\par\takeaway{Không dùng prediction để kết luận accept/reject.}\end{columns}
-\source{Logistic regression, test split PeerRead ICLR 2017. Ma trận lấy trực tiếp từ results.json.}
-\end{frame}
-\begin{frame}{Phụ lục C: Evidence nối review với khía cạnh cụ thể}
-\includegraphics[width=\textwidth,height=5.6cm,keepaspectratio]{reviews.png}
-\source{Ảnh giao diện thật. Review phía trái lấy từ PeerRead; đoạn nhập phía phải là ví dụ demo, không dùng trong benchmark.}
-\end{frame}
-\begin{frame}{Phụ lục D: Demo theo một luồng đọc có thể lặp lại}
+\begin{frame}{Phụ lục E: Demo theo một luồng đọc có thể lặp lại}
 \par\vspace{.35cm}
 \begin{enumerate}
 \item Tìm ``graph neural networks''; đổi ranking/filter.
 \item Mở paper, kiểm tra nguồn và lưu vào library.
 \item Mở citation neighborhood; chỉ hướng cạnh.
-\item So sánh content, graph, hybrid; xuất BibTeX.
+\item Gợi ý mặc định fusion; mở bài nhân chứng; so với hybrid; xuất BibTeX.
 \item Xem review evidence và dashboard thực nghiệm.
 \end{enumerate}
 \source{Sau phụ lục, quay về slide kết luận khi thảo luận. File metadata chung: report/metadata.tex.}
