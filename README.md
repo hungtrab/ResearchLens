@@ -121,7 +121,7 @@ uv run python scripts/graph_qa.py
 RESEARCHLENS_BASE_URL=http://127.0.0.1:8767 uv run python scripts/discovery_qa.py
 ```
 
-Suite hiện tại có **576 tests đạt**, gồm kiểm thử chỉ mục, kiểm tra mọi con số gợi ý trong report khớp với artifact, thứ hạng, câu trích, phản hồi trang hai và tách tập đánh giá theo bài mẫu. Package researchlens đạt khoảng 99% statement coverage trong lần chạy này. Xem [`docs/TEST_REPORT.md`](docs/TEST_REPORT.md) và [`docs/AUDIT.md`](docs/AUDIT.md). Browser QA kiểm tra desktop/mobile, search, save, details, graph, review analysis, recommendations và export. Browser QA mới kiểm tra Project, PDF arXiv thật, notes tiếng Việt >64 KiB, draft recovery, graph controls và reduced motion. Kết quả nằm ở `artifacts/browser_qa.json` và `artifacts/workspace_qa.json`; ảnh trong `artifacts/screenshots/`.
+Suite hiện tại có **577 tests đạt**, gồm kiểm thử chỉ mục, kiểm tra mọi con số gợi ý trong report khớp với artifact, thứ hạng, câu trích, phản hồi trang hai và tách tập đánh giá theo bài mẫu. Package researchlens đạt khoảng 99% statement coverage trong lần chạy này. Xem [`docs/TEST_REPORT.md`](docs/TEST_REPORT.md) và [`docs/AUDIT.md`](docs/AUDIT.md). Browser QA kiểm tra desktop/mobile, search, save, details, graph, review analysis, recommendations và export. Browser QA mới kiểm tra Project, PDF arXiv thật, notes tiếng Việt >64 KiB, draft recovery, graph controls và reduced motion. Kết quả nằm ở `artifacts/browser_qa.json` và `artifacts/workspace_qa.json`; ảnh trong `artifacts/screenshots/`.
 
 ## Report và slide
 

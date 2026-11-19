@@ -1,5 +1,22 @@
 # Nhật ký tiến độ ResearchLens
 
+## 20/11/2026 — SLM và LLM làm bộ xếp hạng: không vượt decision model
+
+- **Câu hỏi:** để mô hình ngôn ngữ xếp hạng thay decision model có tốt hơn không? Cùng 20 ứng viên của fusion, 589 tác vụ (E2, E2b, E3), decision và fusion chạy lại trên đúng tác vụ đó (khớp `decision_model.json`). Luật đặt trước: thắng decision ở ≥ 2/3 phép thử với CI95 > 0.
+- SLM (Qwen2.5 0.5B/1.5B, llama.cpp CPU): Yes/No cho từng ứng viên. LLM (GLM-5.3-flash, API NVIDIA): xếp cả 20 bài một lần, kiểu RankGPT.
+
+| nDCG@10 | E2 | E2b | E3 | p50 mỗi lượt |
+|---|---:|---:|---:|---:|
+| Fusion | 0,207 | 0,113 | 0,259 | 21 ms |
+| **Decision** | **0,224** | **0,132** | **0,297** | 85 ms |
+| SLM 0.5B | 0,148 | 0,078 | 0,155 | 3,48 s |
+| SLM 1.5B | 0,186 | 0,114 | 0,193 | 6,17 s |
+| LLM GLM-5.3-flash | 0,205 | 0,119 | 0,257 | 110,61 s |
+
+- Không mô hình nào đạt luật. LLM ngang fusion; thấp hơn decision ở cả ba phép thử nhưng CI chứa 0. 12/589 câu trả lời của LLM hết 8.192 token suy luận nên giữ thứ tự fusion; bỏ đi kết luận không đổi.
+- Lỗi tìm ra khi viết SLM ranker: tái dùng KV cache theo prefix dài nhất làm điểm phụ thuộc thứ tự chấm (−0,27 thành −0,18). Sửa: đọc phần thư viện một lần, mỗi ứng viên luôn nối ngay sau.
+- Key API nằm ở `llm_api/.env`, không vào git (`.gitignore`) và không vào gói zip.
+
 ## 19/11/2026 (đêm) — SLM + RAG cho lời giải thích, đo và tối ưu tốc độ
 
 - **Decision model vẫn là phương pháp chính.** SLM chỉ viết lời giải thích khi bấm *Explain with AI*, không đổi thứ tự.

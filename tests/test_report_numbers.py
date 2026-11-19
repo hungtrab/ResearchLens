@@ -207,3 +207,44 @@ def test_slm_latency_row_and_http_numbers_match_artifacts():
     assert f"decision model mất {round(http['recommend_ms']['p50'])}\\,ms ở trung vị" in REPORT
     assert f"trung vị là {s2(http['explain_seconds']['p50'])}\\,s" in REPORT
     assert f"một lượt gợi ý mất {round(LATENCY['decision']['p50_ms'])}\\,ms ở trung vị" in REPORT
+
+
+SLM_RANKER, LLM_RANKER = load("slm_ranker.json"), load("llm_ranker.json")
+
+
+def signed(x):
+    return f"$-{vn(x)}$" if x < 0 else vn(x)
+
+
+def test_language_model_ranker_table_matches_artifacts():
+    """tab:llmrank and its slide: same 20 candidates, decision model and fusion rerun on the same tasks."""
+    base = SLM_RANKER["baselines"]
+    assert base == LLM_RANKER["baselines"]
+    for suite in ("E2", "E2b", "E3"):  # the rerun reproduces the decision model's test numbers
+        assert abs(base[suite]["decision"]["ndcg"] - DECISION["test"][suite]["ndcg"]) < 1e-9
+    suites = ("E2", "E2b", "E3")
+    rows = {"Fusion": [base[s]["fusion"]["ndcg"] for s in suites],
+            "Decision": [base[s]["decision"]["ndcg"] for s in suites]}
+    for name, model in SLM_RANKER["models"].items():
+        size = "0.5B" if "-0.5b-" in name else "1.5B"
+        cells = [model["suites"][s]["ndcg"] for s in suites]
+        seconds = s2(model["seconds_per_request"]["p50"])
+        assert f"SLM {size} & " + " & ".join(map(vn, cells)) + f" & {vn(model['suites']['E2']['hit10'])} & {seconds}\\,s\\\\" in REPORT
+        assert f"SLM {size} & " + " & ".join(map(vn, cells)) + f" & {seconds}\\,s\\\\" in SLIDES
+        assert not model["beats_decision"]
+    llm = [LLM_RANKER["suites"][s]["ndcg"] for s in suites]
+    seconds = s2(LLM_RANKER["seconds_per_request"]["p50"])
+    assert "LLM GLM-5.3-flash & " + " & ".join(map(vn, llm)) + f" & {vn(LLM_RANKER['suites']['E2']['hit10'])} & {seconds}\\,s\\\\" in REPORT
+    assert "LLM GLM-5.3 & " + " & ".join(map(vn, llm)) + f" & {seconds}\\,s\\\\" in SLIDES
+    assert not LLM_RANKER["beats_decision"]
+    for name, cells in rows.items():
+        assert " & ".join(map(vn, cells)) in REPORT.replace("\\textbf{", "").replace("}", "")
+    assert ", ".join(vn(base[s]["pool_recall"]) for s in suites[:2]) + f" và {vn(base['E3']['pool_recall'])} số bài đúng" in REPORT
+    mid = next(m for n, m in SLM_RANKER["models"].items() if "-1.5b-" in n)["suites"]
+    for s in ("E2", "E3"):
+        d = mid[s]["minus_decision"]
+        assert f"{signed(d['mean'])} [{signed(d['ci95'][0])}; {signed(d['ci95'][1])}]" in REPORT
+    assert ", ".join(signed(LLM_RANKER["suites"][s]["minus_fusion"]["mean"]) for s in suites[:2]) in REPORT
+    assert ", ".join(signed(LLM_RANKER["suites"][s]["minus_decision"]["mean"]) for s in suites[:2]) in REPORT
+    empty = sum(r["named"] == 0 for r in LLM_RANKER["rows"])
+    assert f"{empty}/{len(LLM_RANKER['rows'])} câu trả lời" in REPORT
