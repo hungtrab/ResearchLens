@@ -4,9 +4,11 @@ Candidates are the hybrid top 300 plus every paper linked to a saved paper. Each
 A gradient-boosted classifier, trained offline by scripts/decision_model.py, turns them and their ranks inside
 the task into a score."""
 import pickle
+from functools import lru_cache
 
 import numpy as np
 from scipy.stats import rankdata
+from threadpoolctl import threadpool_limits
 
 from researchlens.mining import co_citation_ranking, eligible_ranking, rank_positions, reciprocal_rank_fusion
 
@@ -22,8 +24,10 @@ def year(paper):
     return int(paper.get("year") or 0)
 
 
+@lru_cache(maxsize=4)
 def citation_links(engine):
-    """References and citing papers inside the corpus, keyed by paper id."""
+    """References and citing papers inside the corpus, keyed by paper id. An engine never changes after it is
+    built (an import builds a new one), so the links are computed once per engine."""
     ids = set(engine.ids)
     refs = {p["id"]: set(p.get("references", [])) & ids for p in engine.papers}
     citers = {}
@@ -33,13 +37,24 @@ def citation_links(engine):
     return refs, citers
 
 
-def graph_features(engine, refs, citers, seeds, now, extra=()):
-    """The eight graph and text signals for every candidate; returns candidate ids and one row each.
-    extra adds candidate indices from another retriever, such as a topic query."""
+def base_scores(engine, seeds):
+    """Content, graph and fusion score of every paper, and the co-citation witnesses. recommend() computes the
+    same four for its own methods and passes them in, so a request computes them once."""
     saved = set(seeds)
     eligible = np.array([pid not in saved for pid in engine.ids])
     content, graph = engine.content_graph_scores(seeds, eligible)
     votes = engine.co_citation_witnesses(seeds)
+    hybrid_rank = rank_positions(eligible_ranking(0.7 * content + 0.3 * graph, eligible))
+    cocitation_rank = rank_positions(engine.pos[pid] for pid in co_citation_ranking(votes))
+    return content, graph, reciprocal_rank_fusion([hybrid_rank, cocitation_rank], len(engine.ids)), votes
+
+
+def graph_features(engine, refs, citers, seeds, now, extra=(), base=None):
+    """The eight graph and text signals for every candidate; returns candidate ids and one row each.
+    extra adds candidate indices from another retriever, such as a topic query."""
+    saved = set(seeds)
+    eligible = np.array([pid not in saved for pid in engine.ids])
+    content, graph, _, votes = base or base_scores(engine, seeds)
     saved_refs = {}
     for s in saved:
         for ref in refs.get(s, ()):
@@ -68,22 +83,23 @@ def semantic_features(engine, vectors, ids, seeds):
     return np.column_stack([mine @ profile, (mine @ saved.T).max(axis=1)])
 
 
-def fusion_scores(engine, seeds, ids):
-    """The app's fusion score of each candidate, so the model can start from the default ranking."""
-    saved = set(seeds)
-    eligible = np.array([pid not in saved for pid in engine.ids])
-    content, graph = engine.content_graph_scores(seeds, eligible)
-    hybrid_rank = rank_positions(eligible_ranking(0.7 * content + 0.3 * graph, eligible))
-    votes = engine.co_citation_witnesses(seeds)
-    cocitation_rank = rank_positions(engine.pos[pid] for pid in co_citation_ranking(votes))
-    fused = reciprocal_rank_fusion([hybrid_rank, cocitation_rank], len(engine.ids))
-    return fused[[engine.pos[pid] for pid in ids]]
-
-
 def query_retrieval(engine, query):
     """BM25 and TF-IDF scores of every paper against the reader's topic, and the BM25 top QUERY_POOL indices."""
     bm25, tfidf = engine.lexical_scores(query, "bm25"), engine.lexical_scores(query, "tfidf")
     return bm25 / (bm25.max(initial=0) or 1), tfidf, np.argsort(-bm25, kind="stable")[:QUERY_POOL]
+
+
+def candidate_signals(engine, refs, citers, seeds, now, vectors, query=None, base=None):
+    """Every candidate's signals in FEATURES order (eight graph, two SPECTER, fusion), then with a topic query
+    the two QUERY_FEATURES; BM25 also adds its top QUERY_POOL papers to the candidates."""
+    base = base or base_scores(engine, seeds)
+    bm25, tfidf, extra = query_retrieval(engine, query) if query else (None, None, ())
+    ids, x = graph_features(engine, refs, citers, seeds, now, extra, base)
+    at = [engine.pos[pid] for pid in ids]
+    columns = [x, semantic_features(engine, vectors, ids, seeds), base[2][at]]
+    if query:
+        columns += [bm25[at], tfidf[at]]
+    return ids, np.column_stack(columns)
 
 
 def with_ranks(x):
@@ -113,22 +129,15 @@ class DecisionModel:
         zero = np.zeros(self.dim, np.float32)
         return np.stack([self.table.get(pid, zero) for pid in engine.ids])
 
-    def rank(self, engine, seeds, query=None):
+    def rank(self, engine, seeds, query=None, base=None):
         """Candidate ids, model score, and the signals behind each score. A topic query adds candidates and
-        two signals; it needs a model trained with them."""
+        two signals; it needs a model trained with them. base is base_scores(engine, seeds) if already known."""
         if self.needs_query and not query:
             raise ValueError("This decision model needs a topic query")
-        query = query if self.needs_query else None
-        refs, citers = citation_links(engine)
-        bm25 = tfidf = None
-        extra = ()
-        if query:
-            bm25, tfidf, extra = query_retrieval(engine, query)
-        ids, x = graph_features(engine, refs, citers, seeds, max(year(p) for p in engine.papers), extra)
-        x = np.column_stack([x, semantic_features(engine, self.vectors(engine), ids, seeds),
-                             fusion_scores(engine, seeds, ids)])
-        if query:
-            rows = [engine.pos[pid] for pid in ids]
-            x = np.column_stack([x, bm25[rows], tfidf[rows]])
-        probability = self.model.predict_proba(with_ranks(x[:, self.columns]))[:, 1]
+        ids, x = candidate_signals(engine, *citation_links(engine), seeds, max(year(p) for p in engine.papers),
+                                   self.vectors(engine), query if self.needs_query else None, base)
+        # One OpenMP thread: a few hundred rows gain little from more, and right after the PageRank step the
+        # OpenMP and BLAS pools spin against each other (p50 145 ms with all threads, 78 ms with one).
+        with threadpool_limits(1, user_api="openmp"):
+            probability = self.model.predict_proba(with_ranks(x[:, self.columns]))[:, 1]
         return ids, probability, x

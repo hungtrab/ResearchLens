@@ -158,3 +158,52 @@ def test_hit_table_matches_artifacts():
         row = f"{suite} & " + " & ".join(map(vn, cells)) + "\\\\"
         assert row in REPORT, f"table tab:hit should contain {row!r}"
         assert f"{round(100 * t['hit'])}\\%" in REPORT  # the abstract quotes the topic model in percent
+
+
+SLM = {r: load(f) for r, f in (("1", "explainer_round1.json"), ("2", "explainer_round2.json"), ("3", "explainer.json"))}
+SLM_AUDIT, SLM_AUDIT2 = load("explainer_audit.json"), load("explainer_round2_audit.json")
+LATENCY = load("latency_recommend.json")["summary"]
+SIZES = ("0.5b", "1.5b", "3b")
+
+
+def s2(x):
+    return f"{x:.2f}".replace(".", ",")
+
+
+@pytest.mark.parametrize("round_", ["1", "2", "3"])
+def test_slm_table_row_matches_artifacts(round_):
+    models = SLM[round_]["models"]
+    names = [next(n for n in models if f"-{size}-" in n) for size in SIZES if any(f"-{size}-" in n for n in models)]
+    times = [s2(models[n]["generation_seconds"]["p50"]) for n in names]
+    shown = [f"{round(100 * models[n]['shown'])}\\%" for n in names]
+    if round_ == "3":
+        times[0] = f"\\textbf{{{times[0]}}}"
+    assert " / ".join(times) in REPORT and " / ".join(shown) in REPORT, (round_, times, shown)
+
+
+def test_slm_choice_and_manual_audit_match_artifacts():
+    assert SLM["3"]["chosen"] == SLM_AUDIT["model"] and SLM_AUDIT["passed"]
+    assert f"\\textbf{{{SLM_AUDIT['correct']}/{SLM_AUDIT['read']}}}" in REPORT
+    assert f"{SLM_AUDIT['distinct_papers_correct']}/{SLM_AUDIT['distinct_papers']} bài khác nhau" in REPORT
+    small, mid = (SLM_AUDIT2["models"][n] for n in sorted(SLM_AUDIT2["models"]))
+    assert f"{small['correct']}/{small['read']}; {mid['correct']}/{mid['read']}" in REPORT
+    chosen = SLM["3"]["models"][SLM["3"]["chosen"]]
+    assert f"{s2(chosen['first_token_seconds']['p50'])}\\,s để đọc prompt" in REPORT
+    assert f"(p95 {s2(chosen['generation_seconds']['p95'])}\\,s)" in REPORT
+    assert f"Retrieval mất {round(1000 * SLM['3']['retrieval_seconds']['p50'])}\\,ms" in REPORT
+
+
+@pytest.mark.parametrize("name, label", [("cocitation", "Đồng trích dẫn"), ("hybrid", "Hybrid"), ("fusion", "Fusion"),
+                                         ("decision", "Decision model"), ("decision_topic", "Decision model + đề tài")])
+def test_recommend_latency_row_matches_artifact(name, label):
+    row = LATENCY[name]
+    assert f"{label} & {row['p50_ms']:.1f} & {row['p95_ms']:.1f}\\\\".replace(".", ",") in REPORT
+
+
+def test_slm_latency_row_and_http_numbers_match_artifacts():
+    chosen = SLM["3"]["models"][SLM["3"]["chosen"]]["generation_seconds"]
+    assert f"Giải thích SLM 0.5B (một gợi ý) & {round(1000 * chosen['p50'])} & {round(1000 * chosen['p95'])}\\\\" in REPORT
+    http = load("latency_http.json")
+    assert f"decision model mất {round(http['recommend_ms']['p50'])}\\,ms ở trung vị" in REPORT
+    assert f"trung vị là {s2(http['explain_seconds']['p50'])}\\,s" in REPORT
+    assert f"một lượt gợi ý mất {round(LATENCY['decision']['p50_ms'])}\\,ms ở trung vị" in REPORT

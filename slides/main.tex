@@ -281,6 +281,25 @@ Hit@5, E3 & 57\% & 62\% & \textbf{63\%}\\\bottomrule
 \end{columns}
 \source{nDCG@10 của fusion và decision + đề tài: 0,207 và 0,237; 0,113 và 0,182; 0,259 và 0,304; chênh lệch +0,030 [0,006; 0,055], +0,069 [0,051; 0,087], +0,045 [0,005; 0,087]. Nguồn: artifacts/decision\_query\_model.json.}
 \end{frame}
+\begin{frame}{SLM + RAG viết lý do; decision model vẫn xếp hạng}
+\begin{columns}[T,onlytextwidth]
+\column{.40\textwidth}
+\small Retrieval lấy bằng chứng: abstract bài gợi ý, bài đã lưu gần nhất, dữ kiện đồ thị.\\[.12cm]
+Qwen2.5-0.5B (llama.cpp, CPU) chỉ đọc abstract, viết 1 câu nội dung.\\[.12cm]
+App tự viết quan hệ đồ thị; câu SLM qua kiểm tra mới hiển thị.\\[.12cm]
+\footnotesize Vòng 1--2: đưa nhiều nguồn thì SLM trộn bài, đếm sai.
+\column{.56\textwidth}
+\small\begin{tabular}{lrr}\toprule
+& p50 & Đọc tay đúng\\\midrule
+Vòng 2, 0.5B & 1,64\,s & 3/20\\
+Vòng 3, 0.5B & \textbf{0,36\,s} & \textbf{17/20}\\\midrule
+Decision model & 85\,ms & \\
+Retrieval & 7\,ms & \\\bottomrule
+\end{tabular}\par\vspace{.2cm}
+\takeaway{Tối ưu: decision 222 thành 85 ms; SLM 4,2 thành 0,4 s token đầu.}
+\end{columns}
+\source{Luật chọn đặt trước: qua kiểm tra cao nhất với p50 không quá 3 s. Một người đọc tay. Nguồn: artifacts/explainer*.json, latency\_recommend.json.}
+\end{frame}
 \chartslide{Trong 5 cách cũ, PPR dẫn đầu khi che cạnh ngẫu nhiên}{slide_recommendation.pdf}{\bigmetric{0,174}{nDCG@10 của PPR}\par\vspace{.4cm}\small Hybrid: 0,112\par Content: 0,063\par\vspace{.35cm}\par\takeaway{Hybrid chưa thắng graph-only.}}{120 source papers; toàn corpus làm ứng viên, loại seed/source. Error bars: 2.000 bootstrap samples. Nguồn: artifacts/results.json.}
 \chartslide{Hybrid cải thiện content với hiệu ghép cặp dương}{slide_diversity.pdf}{\bigmetric{+0,049}{nDCG: hybrid -- content}\par\vspace{.3cm}\small CI 95\%:\par [0,027; 0,073]\par\vspace{.3cm}\par MMR tăng diversity và coverage của hybrid.}{Hiệu ghép cặp theo cùng source paper. Diversity = 1 -- mean cosine; bubble area theo coverage. Nguồn: artifacts/results.json.}
 \chartslide{Review polarity còn khó dù có tín hiệu học được}{slide_opinion.pdf}{\bigmetric{0,469}{macro-F1 của logreg}\par\vspace{.3cm}\small Lexicon: 0,436\par Majority: 0,181\par\vspace{.3cm}\par\takeaway{CI chồng lấn; chưa khẳng định hơn lexicon.}}{115 test reviews. Cluster bootstrap theo paper, 1.000 samples. Nhãn suy từ rating. Nguồn: PeerRead + artifacts/results.json.}
@@ -290,7 +309,7 @@ Hit@5, E3 & 57\% & 62\% & \textbf{63\%}\\\bottomrule
 \section{Kiểm chứng và kết luận}
 \begin{frame}{Audit và test độc lập phát hiện lỗi trước bàn giao}
 \begin{columns}[T,onlytextwidth]
-\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{549/549}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
+\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{576/576}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
 \column{.61\textwidth}\par\vspace{.3cm}
 \textbf{Các lỗi đã sửa}\par
 JSONL có line separator Unicode.\par

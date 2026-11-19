@@ -1,0 +1,13 @@
+{
+  "scope": "HTTP on localhost, one client, warm server; library = 1 saved paper W2184957013",
+  "recommend_ms": {
+    "runs": 20,
+    "p50": 53.046980465296656,
+    "max": 152.85279601812363
+  },
+  "explain_seconds": {
+    "runs": 8,
+    "p50": 0.4310270710266195,
+    "max": 0.7085996350506321
+  }
+}

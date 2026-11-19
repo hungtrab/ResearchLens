@@ -1,0 +1,133 @@
+{
+  "reader": "assistant (one reader, no second annotator)",
+  "rule": "correct = every claim about the recommended paper is supported by its abstract and the sentence is not a bare copy of the title",
+  "criterion": "pre-registered: at least 16 of the first 20 shown sentences of the chosen model are correct",
+  "model": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "read": 20,
+  "correct": 17,
+  "distinct_papers": 11,
+  "distinct_papers_correct": 9,
+  "passed": true,
+  "items": [
+    {
+      "paper_id": "W2907492528",
+      "source": "W3123909522",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2116341502",
+      "source": "W3123909522",
+      "sentence": "It proposes a new neural network model, called graph neural network, to represent underlying relationships among data in various scientific and engineering areas [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W4210257598",
+      "source": "W3125664696",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W4210257598",
+      "source": "W3126138172",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2907492528",
+      "source": "W3126138172",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W3129482887",
+      "source": "W3129482887",
+      "sentence": "It proposes a new end-to-end model based on graph neural networks for recommending users and items with a fine-grained user-item relation identification [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W3003265726",
+      "source": "W3129482887",
+      "sentence": "It reviews the knowledge graph covering overall research topics [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2907492528",
+      "source": "W3131262006",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2116341502",
+      "source": "W3131262006",
+      "sentence": "It proposes a new neural network model, called graph neural network, to represent underlying relationships among data in various scientific and engineering areas [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2171960770",
+      "source": "W3133706083",
+      "sentence": "It provides an overview of the field of recommender systems and describes the current generation of recommendation methods [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2019759670",
+      "source": "W3133966466",
+      "sentence": "It provides a comprehensive overview of the last update in the field of sentiment analysis [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W4205184193",
+      "source": "W3135361293",
+      "sentence": "It provides new opportunities and challenges as people now can, and do, find out what other people think [1].",
+      "correct": false
+    },
+    {
+      "paper_id": "W2907492528",
+      "source": "W3136021864",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W4210257598",
+      "source": "W3136021864",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2949972983",
+      "source": "W3138149011",
+      "sentence": "It proposes holographic embeddings (HolE) to learn compositional vector space representations of entire knowledge graphs [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2145544171",
+      "source": "W3138149011",
+      "sentence": "It proposes holographic embeddings (HolE) to learn compositional vector space representations of entire knowledge graphs [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W4210257598",
+      "source": "W3148711710",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2907492528",
+      "source": "W3148711710",
+      "sentence": "It surveys the use of graph neural networks in various machine learning tasks [1].",
+      "correct": true
+    },
+    {
+      "paper_id": "W2097726431",
+      "source": "W3149710971",
+      "sentence": "It presents a new opportunity and challenge for people to actively find out what other people think [1].",
+      "correct": false
+    },
+    {
+      "paper_id": "W4205184193",
+      "source": "W3149710971",
+      "sentence": "It provides new opportunities and challenges as people now can, and do, find out what other people think [1].",
+      "correct": false
+    }
+  ]
+}

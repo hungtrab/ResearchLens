@@ -12,9 +12,9 @@
 \contentsline {figure}{\numberline {12}{\ignorespaces Thư viện cá nhân, xuất BibTeX và điều khiển phương pháp/diversity cho danh sách gợi ý.}}{18}{figure.caption.14}%
 \contentsline {figure}{\numberline {13}{\ignorespaces E3: trong năm phương án của \texttt {evaluate.py}, Personalized PageRank dẫn đầu; hybrid vượt content nhưng chưa vượt graph-only.}}{23}{figure.caption.17}%
 \contentsline {figure}{\numberline {14}{\ignorespaces MMR nâng intra-list diversity của hybrid từ 0,406 lên 0,501 và catalog coverage từ 8,46\% lên 9,90\%; nDCG@10 đồng thời tăng trong sample.}}{24}{figure.caption.18}%
-\contentsline {figure}{\numberline {15}{\ignorespaces BM25 đạt nDCG@10 cao hơn TF-IDF trên 300 query; error bars là bootstrap 95\%.}}{28}{figure.caption.24}%
-\contentsline {figure}{\numberline {16}{\ignorespaces Macro-F1 và cluster-bootstrap intervals của ba phương án review polarity. Khoảng tin cậy của lexicon và logistic regression chồng lấn đáng kể.}}{29}{figure.caption.26}%
-\contentsline {figure}{\numberline {17}{\ignorespaces Confusion matrix của logistic regression trên tập test. Nhãn mixed không đồng nghĩa với một kiểu câu review đơn nhất.}}{30}{figure.caption.27}%
-\contentsline {figure}{\numberline {18}{\ignorespaces Phân vị thời gian tìm kiếm local. Không gồm network, browser hoặc tải đồng thời.}}{31}{figure.caption.29}%
-\contentsline {figure}{\numberline {19}{\ignorespaces Người đọc chọn câu mô tả TransE và TransH. Kết quả đầu trả lại câu nhắc trực tiếp đến cách các mô hình biểu diễn quan hệ bằng phép tịnh tiến.}}{39}{figure.caption.30}%
-\contentsline {figure}{\numberline {20}{\ignorespaces Tìm abstract có cùng tên phương pháp trên SciERC. Hai hàng dùng cùng 172 câu và cùng ứng viên. Hàng dưới thay tên kỹ thuật trong câu truy vấn bằng cụm trung tính.}}{40}{figure.caption.31}%
+\contentsline {figure}{\numberline {15}{\ignorespaces BM25 đạt nDCG@10 cao hơn TF-IDF trên 300 query; error bars là bootstrap 95\%.}}{29}{figure.caption.25}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Macro-F1 và cluster-bootstrap intervals của ba phương án review polarity. Khoảng tin cậy của lexicon và logistic regression chồng lấn đáng kể.}}{30}{figure.caption.27}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Confusion matrix của logistic regression trên tập test. Nhãn mixed không đồng nghĩa với một kiểu câu review đơn nhất.}}{31}{figure.caption.28}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Phân vị thời gian tìm kiếm local. Không gồm network, browser hoặc tải đồng thời.}}{32}{figure.caption.30}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Người đọc chọn câu mô tả TransE và TransH. Kết quả đầu trả lại câu nhắc trực tiếp đến cách các mô hình biểu diễn quan hệ bằng phép tịnh tiến.}}{41}{figure.caption.32}%
+\contentsline {figure}{\numberline {20}{\ignorespaces Tìm abstract có cùng tên phương pháp trên SciERC. Hai hàng dùng cùng 172 câu và cùng ứng viên. Hàng dưới thay tên kỹ thuật trong câu truy vấn bằng cụm trung tính.}}{42}{figure.caption.33}%

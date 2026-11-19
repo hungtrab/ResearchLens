@@ -1,4 +1,4 @@
-.PHONY: install run test collect evaluate figures documents verify solr solr-index docker clean
+.PHONY: install run test collect evaluate figures documents verify solr solr-index docker clean slm
 install:
 	uv sync --frozen --extra dev
 run:
@@ -28,6 +28,11 @@ solr-index:
 	uv run python scripts/solr_index.py
 docker:
 	docker compose up -d --build app
+# Optional SLM + RAG explanations: llama.cpp and Qwen2.5-0.5B-Instruct (Q4_K_M, about 0.4 GB) in the Hugging Face cache.
+slm:
+	uv sync --extra dev --extra slm
+	uv run --with huggingface_hub python -c "from huggingface_hub import hf_hub_download; print(hf_hub_download('Qwen/Qwen2.5-0.5B-Instruct-GGUF', 'qwen2.5-0.5b-instruct-q4_k_m.gguf'))"
+
 clean:
 	latexmk -c -cd report/main.tex
 	latexmk -c -cd slides/main.tex

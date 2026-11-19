@@ -16,6 +16,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from researchlens.mining import MiningEngine, extract, opinion
 from researchlens.decision import DecisionModel
+from researchlens.explain import Explainer, default_model_path, passages
+import importlib.util
 from researchlens.reviews import deduplicate, train_model, predict, rating_label
 from researchlens.store import Store
 from researchlens.passages import PassageIndex
@@ -27,6 +29,9 @@ from researchlens.discovery import discovery_router,resolve_references
 ROOT=Path(__file__).resolve().parents[1]
 class TextInput(BaseModel):
     text: str=Field(min_length=1,max_length=30000)
+class ExplainInput(BaseModel):
+    seeds: list[str]=Field(min_length=1,max_length=10000)
+    paper_id: str=Field(min_length=1,max_length=200)
 class RecommendationInput(BaseModel):
     seeds: list[str]=Field(default_factory=list,max_length=10000)
     method: Literal['fusion','content','graph','hybrid','popular','cocitation','decision']|None=None
@@ -61,6 +66,9 @@ def create_app(data_dir=None,db_path=None):
             app.state.decision=DecisionModel.load(ROOT/'artifacts/decision_model.pkl',vectors)
         if vectors.exists() and (ROOT/'artifacts/decision_query_model.pkl').exists():
             app.state.decision_topic=DecisionModel.load(ROOT/'artifacts/decision_query_model.pkl',vectors)
+        app.state.explainer=None
+        app.state.slm_path=default_model_path()
+        app.state.explainer_lock=threading.Lock()
         app.state.import_lock=threading.Lock()
         app.state.online=OpenAlex()
         app.state.data_dir=data
@@ -94,7 +102,10 @@ def create_app(data_dir=None,db_path=None):
         return response
 
     @app.get('/api/health')
-    def health(): return {'status':'ok','papers':len(app.state.engine.ids),'review_model':app.state.model is not None,'solr_enabled':bool(os.environ.get('SOLR_URL'))}
+    def health(): return {'status':'ok','papers':len(app.state.engine.ids),'review_model':app.state.model is not None,'solr_enabled':bool(os.environ.get('SOLR_URL')),'slm':slm_available()}
+    def slm_available():
+        path=app.state.slm_path
+        return app.state.explainer is not None or bool(path and path.exists() and importlib.util.find_spec('llama_cpp'))
     @app.get('/api/search')
     def search(request:Request,q:str=Query('',max_length=500),method:Literal['bm25','tfidf','hybrid','pagerank','solr']='hybrid',
                year_min:int|None=Query(None,ge=1800,le=2100),year_max:int|None=Query(None,ge=1800,le=2100),
@@ -156,6 +167,20 @@ def create_app(data_dir=None,db_path=None):
         method=body.method or ('decision' if model else 'fusion')
         try: return app.state.engine.recommend(body.seeds,body.limit,method,body.diversity,model,topic if model is app.state.decision_topic else None)
         except ValueError as e: raise HTTPException(422,str(e))
+    @app.post('/api/recommendations/explain')
+    def explain(body:ExplainInput):
+        """Two sentences from the small language model, written from retrieved evidence and checked before use."""
+        engine=app.state.engine
+        if body.paper_id not in engine.pos: raise HTTPException(404,'Paper not found')
+        if any(s not in engine.pos for s in body.seeds): raise HTTPException(422,'Unknown saved paper')
+        if not slm_available(): raise HTTPException(503,'Small language model not installed. Run: uv sync --extra slm, then make slm')
+        with app.state.explainer_lock:
+            if app.state.explainer is None: app.state.explainer=Explainer.load(app.state.slm_path)
+        started=time.perf_counter()
+        vectors=app.state.decision.vectors(engine) if app.state.decision else None
+        evidence,fact=passages(engine,body.seeds,body.paper_id,vectors)
+        retrieval=time.perf_counter()-started
+        return dict(app.state.explainer.explain(evidence,fact,engine.by_id[body.paper_id]['title']),retrieval_seconds=retrieval)
     @app.get('/api/library')
     def library(request:Request):
         e=app.state.engine; ids=[p for p in app.state.store.saved(request.state.profile) if p in e.pos]

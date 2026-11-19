@@ -1,0 +1,198 @@
+{
+  "reader": "assistant (one reader, no second annotator)",
+  "rule": "correct = every claim about the recommended paper [1] is supported by its abstract or title, the sentence does not describe the saved paper [2] as [1], and it is not a bare copy of the title",
+  "models": {
+    "qwen2.5-0.5b-instruct-q4_k_m.gguf": {
+      "read": 20,
+      "correct": 3,
+      "items": [
+        {
+          "paper_id": "W2121863487",
+          "source": "W2952298682",
+          "sentence": "Reinforcement Learning introduces key ideas and algorithms, while your saved paper discusses human-level control through deep reinforcement learning [1][2].",
+          "correct": true
+        },
+        {
+          "paper_id": "W4210257598",
+          "source": "W2975317124",
+          "sentence": "3D graph neural networks for RGBD semantic segmentation learn 3D geometric information from 2D appearance and 3D geometric information [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2907492528",
+          "source": "W2975317124",
+          "sentence": "3D graph neural networks for RGBD semantic segmentation learn 3D geometric information from 2D appearance and 3D geometric information [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2283196293",
+          "source": "W2981175810",
+          "sentence": "[1] Recommended: Knowledge Graph Embedding by Translating on Hyperplanes (2014).",
+          "correct": false
+        },
+        {
+          "paper_id": "W3003265726",
+          "source": "W3003265726",
+          "sentence": "Relational machine learning studies methods for the statistical analysis of relational, or graph-structured, data, where your saved paper provides a review of how such statistical models can be \u201ctrained\u201d on large knowledge graphs, and then used to predict new facts about the world (which is [1][2]).",
+          "correct": false
+        },
+        {
+          "paper_id": "W2145544171",
+          "source": "W3003265726",
+          "sentence": "Holographic Embeddings of Knowledge Graphs learns embeddings of entities and relations, where your saved paper provides a review of relational machine learning for knowledge graphs [1][2].",
+          "correct": true
+        },
+        {
+          "paper_id": "W2184957013",
+          "source": "W3003265726",
+          "sentence": "Knowledge Graph Completion with Adaptive Sparse Transfer Matrix learns entity and relation embeddings for knowledge graphs, where your saved paper adapts sparse transfer matrix for heterogeneity and imbalance [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W1757796397",
+          "source": "W3008455288",
+          "sentence": "Deep learning in neural networks: An overview [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2951934944",
+          "source": "W3008455288",
+          "sentence": "Deep learning in biology and medicine is described as a class of machine learning algorithms that combine raw inputs into layers of intermediate features, with a survey on deep learning in medical image analysis [1][2].",
+          "correct": true
+        },
+        {
+          "paper_id": "W4214717370",
+          "source": "W3008455288",
+          "sentence": "Reinforcement Learning introduces deep reinforcement learning, a method for training agents to learn optimal actions through trial and error, where your saved paper human-level control through deep reinforcement learning [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2907492528",
+          "source": "W3009304813",
+          "sentence": "Graph neural networks (2020) are a review of methods and applications, where your saved paper discusses the modeling of graph data and its applications [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W4384070065",
+          "source": "W3009304813",
+          "sentence": "[1] Recommended: A survey on graph neural networks (2023).",
+          "correct": false
+        },
+        {
+          "paper_id": "W3003265726",
+          "source": "W3010336026",
+          "sentence": "Relational machine learning studies methods for the statistical analysis of relational, or graph-structured, data, where your saved paper provides a review of how such statistical models can be \u201ctrained\u201d on large knowledge graphs, and then used to predict new facts about the world (which is [1][2]).",
+          "correct": false
+        },
+        {
+          "paper_id": "W2909137510",
+          "source": "W3010336026",
+          "sentence": "Hypernetwork Knowledge Graph Embeddings learns representations of entities and relations in knowledge graphs, where your saved paper infers the patterns of (or between) the relations [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2962850650",
+          "source": "W3010336026",
+          "sentence": "Holographic Embeddings of Knowledge Graphs learns embeddings of entities and relations efficiently and versatile to perform machine learning on relational data such as knowledge graphs [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2914721378",
+          "source": "W3024560045",
+          "sentence": "Graph Neural Networks for Social Recommendation learn on graph data, where your saved paper provides a state-of-the-art approach to advancing social recommendation since data in social recommender systems can be effectively integrated with graph-structured data [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2912636151",
+          "source": "W3033973999",
+          "sentence": "Graph Neural Networks with Convolutional ARMA Filters learn graph features with convolutional ARMA filters, where your saved paper proposes a novel graph convolutional layer inspired by the auto-regressive moving average (ARMA) filter, providing a more flexible frequency response compared to polynomial ones [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2907492528",
+          "source": "W3035664258",
+          "sentence": "Graph Convolutional Neural Networks for Web-Scale Recommender Systems are state-of-the-art, but making them practical and scalable to web-scale recommendation tasks with billions of items and hundreds of millions of users remains an unsolved challenge [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2116341502",
+          "source": "W3035664258",
+          "sentence": "Weisfeiler and Leman Go Neural: Higher-Order Graph Neural Networks, where your saved paper investigates GNNs from a theoretical perspective [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W3152893301",
+          "source": "W3035664258",
+          "sentence": "Weisfeiler and Leman Go Neural: Higher-Order Graph Neural Networks learns vector representations of nodes and graphs in a supervised, end-to-end fashion [1][2].",
+          "correct": false
+        }
+      ]
+    },
+    "qwen2.5-1.5b-instruct-q4_k_m.gguf": {
+      "read": 10,
+      "correct": 4,
+      "items": [
+        {
+          "paper_id": "W3152893301",
+          "source": "W2912636151",
+          "sentence": "The Graph Neural Network Model learns from graph inputs, which is a review of methods and applications [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W3036016037",
+          "source": "W2912636151",
+          "sentence": "Graph Neural Networks in TensorFlow and Keras with Spektral enables deep learning on graph-structured data, a field that includes many scientific areas, by presenting a new model called graph neural network [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W4210257598",
+          "source": "W2912636151",
+          "sentence": "Graph Neural Networks extend deep learning to graph-structured data, addressing the limitations of traditional neural networks in processing structured data [1][2].",
+          "correct": true
+        },
+        {
+          "paper_id": "W2746553466",
+          "source": "W2952298682",
+          "sentence": "Deep Reinforcement Learning with Double Q-Learning addresses the limitations of Q-learning by proving that overestimations are common and harmful, and proposes a solution to prevent them [1][2].",
+          "correct": true
+        },
+        {
+          "paper_id": "W2121863487",
+          "source": "W2952298682",
+          "sentence": "Reinforcement Learning: An Introduction provides an overview of reinforcement learning, while the reader's saved paper focuses on achieving human-level control through deep reinforcement learning [1][2].",
+          "correct": true
+        },
+        {
+          "paper_id": "W2107726111",
+          "source": "W2952298682",
+          "sentence": "Deep Reinforcement Learning with Double Q-Learning surveys reinforcement learning from a computer-science perspective, while [1] [2] addresses the limitations of Q-learning and proposes a solution [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2907492528",
+          "source": "W2975317124",
+          "sentence": "Graph Neural Networks (GNNs) have been applied to various tasks, but 3D Graph Neural Networks (3D GNNs) are more suitable for RGBD semantic segmentation [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W2919115771",
+          "source": "W2975317124",
+          "sentence": "Deep learning, a subset of machine learning, has seen a resurgence in drug discovery, building on its origins in molecular informatics and drug discovery [1][2].",
+          "correct": false
+        },
+        {
+          "paper_id": "W3003265726",
+          "source": "W2981175810",
+          "sentence": "This paper [2] is a survey on knowledge graph embeddings, which is a subset of the broader survey [1] on knowledge graphs.",
+          "correct": false
+        },
+        {
+          "paper_id": "W2283196293",
+          "source": "W2981175810",
+          "sentence": "Knowledge Graph Embedding by Translating on Hyperplanes learns entity and relation embeddings by translating on hyperplanes, which is a promising method for knowledge graph completion [1][2].",
+          "correct": true
+        }
+      ]
+    }
+  }
+}

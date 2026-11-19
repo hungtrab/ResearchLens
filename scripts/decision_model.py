@@ -15,8 +15,7 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 
 from researchlens.evaluation import bootstrap_mean, ranking_metrics
 from scripts.evaluate_author_next import year
-from researchlens.decision import (FEATURES, QUERY_FEATURES, fusion_scores, graph_features, query_retrieval,
-                                   semantic_features, with_ranks)
+from researchlens.decision import FEATURES, QUERY_FEATURES, candidate_signals, with_ranks
 from scripts.evaluate_author_next import authors
 from scripts.evaluate_ltr import Graph, author_tasks
 
@@ -35,15 +34,7 @@ class SemanticGraph(Graph):
         self.vectors = np.stack([table[pid] for pid in self.engine.ids]).astype(np.float32)
 
     def candidates(self, seeds, query=None):
-        """With a topic query, BM25 adds candidates and the two query signals are appended."""
-        bm25, tfidf, extra = query_retrieval(self.engine, query) if query else (None, None, ())
-        ids, rows = graph_features(self.engine, self.refs, self.citers, seeds, self.cutoff, extra)
-        x = np.column_stack([rows, semantic_features(self.engine, self.vectors, ids, seeds),
-                             fusion_scores(self.engine, seeds, ids)])
-        if query:
-            at = [self.engine.pos[pid] for pid in ids]
-            x = np.column_stack([x, bm25[at], tfidf[at]])
-        return ids, x
+        return candidate_signals(self.engine, self.refs, self.citers, seeds, self.cutoff, self.vectors, query)
 
 
 def text(paper):

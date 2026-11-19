@@ -325,17 +325,18 @@ class MiningEngine:
         hybrid = 0.7 * content + 0.3 * graph
         hybrid_rank = rank_positions(eligible_ranking(hybrid, eligible))
         cocitation_rank = rank_positions(self.pos[pid] for pid in cocitation_order)
+        fused = reciprocal_rank_fusion([hybrid_rank, cocitation_rank], len(self.ids))
         scores = {
             "content": content,
             "graph": graph,
             "hybrid": hybrid,
             "popular": unit(self.pr),
-            "fusion": reciprocal_rank_fusion([hybrid_rank, cocitation_rank], len(self.ids)),
+            "fusion": fused,
             "decision": np.zeros(len(self.ids)),
         }[method]
         signals = {}
         if method == "decision":
-            for pid, probability, row in zip(*decision.rank(self, seeds, topic)):
+            for pid, probability, row in zip(*decision.rank(self, seeds, topic, (content, graph, fused, witnesses))):
                 scores[self.pos[pid]] = probability
                 signals[self.pos[pid]] = row
         seed_terms = set(tokens(" ".join(self.texts[self.pos[s]] for s in seeds)))

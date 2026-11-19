@@ -1,5 +1,16 @@
 # Nhật ký tiến độ ResearchLens
 
+## 19/11/2026 (đêm) — SLM + RAG cho lời giải thích, đo và tối ưu tốc độ
+
+- **Decision model vẫn là phương pháp chính.** SLM chỉ viết lời giải thích khi bấm *Explain with AI*, không đổi thứ tự.
+- **Tốc độ gợi ý** (warm, in-process, 150 lần): đồng trích dẫn 0,7 ms, fusion 20,8 ms, decision 84,7 ms, decision + đề tài 89,0 ms; HTTP thật 53 ms. Trước tối ưu decision mất 222 ms: bỏ tính lặp PageRank/content (143 ms), giới hạn OpenMP 1 luồng khi predict (85 ms). 120 lượt gợi ý giống hệt trước/sau.
+- **SLM + RAG, ba vòng** (Qwen2.5 Q4_K_M, llama.cpp, 8 nhân; luật chọn đặt trước: qua kiểm tra cao nhất với p50 ≤ 3 s):
+  - Vòng 1, SLM viết cả dữ kiện đồ thị: gán sai số đếm, đảo chiều trích dẫn.
+  - Vòng 2, SLM đọc hai abstract: nhầm bài đã lưu thành bài gợi ý; đọc tay 0.5B đúng 3/20, 1.5B 4/10.
+  - Vòng 3, SLM chỉ tóm tắt abstract bài gợi ý, app viết quan hệ đồ thị; đo trên 30 thư viện mới: 0.5B p50 0,36 s, đọc tay **17/20** đúng (tiêu chí ≥ 16/20 đạt). Qua kiểm tra 40% vì 31/90 bài không có abstract.
+- **Lỗi tốc độ tìm ra:** llama.cpp mặc định 16 luồng đọc prompt trên 8 nhân, token đầu 4,21 s; đặt 8 luồng còn 0,42 s.
+- Cài: `make slm` (llama-cpp-python + model 0,4 GB). Không cài thì nút ẩn, API trả 503.
+
 ## 19/11/2026 (khuya, tiếp) — Decision model làm mặc định, thêm retrieval theo đề tài
 
 - **Decision model là mặc định** ở My library theo quyết định của chủ project. Fusion là phương án dự phòng khi thiếu file mô hình.

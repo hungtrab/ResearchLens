@@ -1,0 +1,33 @@
+{
+  "scope": "warm in-process engine.recommend, limit 8, no MMR; excludes HTTP and browser",
+  "machine": "x86_64",
+  "load_average_1min": 11.64306640625,
+  "papers": 3595,
+  "summary": {
+    "fusion": {
+      "runs": 150,
+      "p50_ms": 20.81204648129642,
+      "p95_ms": 79.2357096390333
+    },
+    "cocitation": {
+      "runs": 150,
+      "p50_ms": 0.7343554752878845,
+      "p95_ms": 1.268842432182282
+    },
+    "hybrid": {
+      "runs": 150,
+      "p50_ms": 20.230355497915298,
+      "p95_ms": 76.42868005787022
+    },
+    "decision": {
+      "runs": 150,
+      "p50_ms": 84.74611298879609,
+      "p95_ms": 147.95237075886686
+    },
+    "decision_topic": {
+      "runs": 150,
+      "p50_ms": 88.993921992369,
+      "p95_ms": 157.56549296202135
+    }
+  }
+}

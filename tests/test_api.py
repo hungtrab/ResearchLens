@@ -8,7 +8,9 @@ from researchlens.api import create_app
 
 def test_lifespan_health_headers_and_frontend(client):
     response = client.get("/api/health")
-    assert response.json() == {"status": "ok", "papers": 6, "review_model": True, "solr_enabled": False}
+    health = response.json()
+    assert isinstance(health.pop("slm"), bool)  # true only where llama.cpp and the model file are installed
+    assert health == {"status": "ok", "papers": 6, "review_model": True, "solr_enabled": False}
     assert response.headers["Cache-Control"] == "no-store"
     assert response.headers["X-Content-Type-Options"] == "nosniff"
     assert "frame-ancestors 'none'" in response.headers["Content-Security-Policy"]
