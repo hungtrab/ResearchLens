@@ -1,4 +1,4 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{20}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -23,6 +23,7 @@ Joeran Beel, Bela Gipp, Stefan Langer, and Corinna Breitinger.
 \newblock Research-paper recommender systems: A literature survey.
 \newblock \emph{International Journal on Digital Libraries}, 17\penalty0
   (4):\penalty0 305--338, 2016.
+\newblock \doi{10.1007/s00799-015-0156-0}.
 
 \bibitem[Blondel et~al.(2008)Blondel, Guillaume, Lambiotte, and
   Lefebvre]{blondel2008}
@@ -39,6 +40,15 @@ Jaime Carbonell and Jade Goldstein.
   and producing summaries.
 \newblock In \emph{Proceedings of SIGIR}, pages 335--336, 1998.
 \newblock \doi{10.1145/290941.291025}.
+
+\bibitem[Cohan et~al.(2020)Cohan, Feldman, Beltagy, Downey, and
+  Weld]{cohan2020}
+Arman Cohan, Sergey Feldman, Iz~Beltagy, Doug Downey, and Daniel~S. Weld.
+\newblock {SPECTER}: Document-level representation learning using
+  citation-informed transformers.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 2270--2282, 2020.
+\newblock \doi{10.18653/v1/2020.acl-main.207}.
 
 \bibitem[Cormack et~al.(2009)Cormack, Clarke, and Buettcher]{cormack2009}
 Gordon~V. Cormack, Charles L.~A. Clarke, and Stefan Buettcher.
@@ -75,6 +85,7 @@ Sean~M. McNee, Istvan Albert, Dan Cosley, Prateep Gopalkrishnan, Shyong~K. Lam,
 \newblock On the recommending of citations for research papers.
 \newblock In \emph{Proceedings of the 2002 ACM Conference on Computer Supported
   Cooperative Work}, pages 116--125, 2002.
+\newblock \doi{10.1145/587078.587096}.
 
 \bibitem[{NetworkX Developers}(2026)]{networkx}
 {NetworkX Developers}.
@@ -120,6 +131,7 @@ Trevor Strohman, W.~Bruce Croft, and David Jensen.
 \newblock Recommending citations for academic papers.
 \newblock In \emph{Proceedings of the 30th Annual International ACM SIGIR
   Conference}, pages 705--706, 2007.
+\newblock \doi{10.1145/1277741.1277868}.
 
 \bibitem[Thakur et~al.(2021)Thakur, Reimers, Rücklé, Srivastava, and
   Gurevych]{thakur2021}

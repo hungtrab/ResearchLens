@@ -1,5 +1,20 @@
 # Nhật ký tiến độ ResearchLens
 
+## 19/11/2026 (tối) — Kiểm số liệu bằng test, thử SPECTER và hồi quy logistic trên E3
+
+Làm theo `~/shared/laura_methodology.md`: chốt tiêu chí trong `.audit/tighten.tsv` trước khi đo, mỗi bước có kiểm chứng riêng.
+
+- **U1, kiểm số liệu bằng test.** `tests/test_report_numbers.py` đọc artifact và kiểm mọi con số gợi ý trong report và slide, kể cả từng dòng bảng. Cài lại lỗi cũ 0,192/0,223 làm test đỏ. Một lỗi chỉ sai một ô bảng lúc đầu lọt qua, nên đã thêm kiểm tra theo dòng. Test cũng bắt được một lỗi làm tròn mới khi viết mục SPECTER.
+- **U2, trích dẫn.** McNee 2002, Strohman 2007, Beel 2016 đã tra trên web, đúng tác giả, tiêu đề, trang. Đã thêm DOI. Thêm Cohan 2020 (SPECTER).
+- **U3, SPECTER1 thay TF-IDF.** Tiêu chí: content tăng ở cả E2 và E2b, khoảng tin cậy không chứa 0. Kết quả: +0,020 [−0,005; 0,046] và +0,002 [−0,014; 0,019]. Fusion dùng SPECTER còn kém hơn −0,020 [−0,038; −0,003] ở E2. **Không đạt, app giữ TF-IDF.** Dùng SPECTER1 thay SPECTER2 để tránh model đã thấy trích dẫn sau 2020.
+- **U4, hồi quy logistic.** Tiêu chí: một mô hình thắng fusion trên E2, E2b và E3, khoảng tin cậy không chứa 0. Mô hình học trên che reference: E2 +0,023, E3 +0,037 [0,009; 0,066], nhưng E2b chỉ +0,010 [−0,002; 0,023]. **Không đạt, app giữ fusion.**
+- 528/528 test đạt, 99% coverage.
+
+### Còn mở
+- Một phép thử riêng cho bài mới chưa ai trích, nơi content thực sự quan trọng.
+- Học trọng số hồi quy logistic trên nhiều phép thử cùng lúc, rồi đo trên một mốc năm chưa dùng.
+- 43 cặp brief–paper vẫn cần người chấm.
+
 ## 19/11/2026 (chiều) — Phép thử gần thực tế hơn và learning-to-rank
 
 Phép thử che reference có lợi sẵn cho tín hiệu trích dẫn, vì đáp án là reference. Đáp án cũng là bài tác giả đã biết. Vì vậy có thêm **E2b, tác giả đọc gì tiếp**. Thư viện là các bài một tác giả viết đến 2020 cộng với reference của chúng. Đáp án là bài họ trích lần đầu sau 2020. Kết quả gồm 250 tác giả và 1.899 đáp án.
@@ -18,7 +33,7 @@ Phép thử che reference có lợi sẵn cho tín hiệu trích dẫn, vì đá
 - Hồi quy logistic chưa vào app. Lý do là mức tăng nhỏ, và nó cần kiểm tra lại trên E3 trước.
 - Hạn chế: dữ liệu chỉ có tên tác giả, nên người trùng tên bị gộp làm một.
 - Script: `scripts/evaluate_author_next.py`, `scripts/evaluate_ltr.py`. Report có mục 6.3 mới và trích dẫn McNee 2002, Strohman 2007, Beel 2016. Slide có trang "Phép thử gần thực tế hơn".
-- Bước tiếp theo nên làm là thay TF-IDF bằng SPECTER2, vì content là tín hiệu duy nhất có cho bài mới chưa ai trích.
+- Đã thử SPECTER ở mục trên: không cải thiện.
 
 ## 19/11/2026 — Siết lại bài toán, đổi gợi ý mặc định sang fusion
 
