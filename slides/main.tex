@@ -244,6 +244,24 @@ Fusion & 0,207 & 0,58 & 0,113 & 0,42\\
 \end{columns}
 \source{Hit = có ít nhất một đáp án trong top 10. Logistic -- fusion: +0,023 [0,006; 0,040] và +0,022 [0,007; 0,040], mỗi cột một mô hình. Một mô hình chung chỉ hơn fusion +0,010 [$-0{,}002$; 0,023] ở E2b, nên app giữ fusion. Nguồn: artifacts/ltr.json.}
 \end{frame}
+\begin{frame}{Decision model học từ 2.081 tác vụ tự sinh}
+\begin{columns}[T,onlytextwidth]
+\column{.42\textwidth}
+\small Cắt đồ thị ở mỗi năm 2010--2018, tự tạo tác vụ có đáp án. Không cần người gán nhãn.\\[.15cm]
+10 tín hiệu: đồ thị, nội dung, SPECTER, độ mới.\\[.15cm]
+Gradient boosting. Chọn phương án trên mốc 2018 (validation), đo test một lần.\\[.15cm]
+\footnotesize Thêm hạng trong từng tác vụ: validation tăng từ 0,224 lên 0,258.
+\column{.54\textwidth}
+\small\begin{tabular}{lrrr}\toprule
+nDCG@10 & Fusion & \textbf{Decision} & Hit@10\\\midrule
+E2 & 0,207 & \textbf{0,224} & 0,653\\
+E2b & 0,113 & \textbf{0,132} & 0,440\\
+E3 & 0,259 & \textbf{0,297} & 0,750\\\bottomrule
+\end{tabular}\par\vspace{.25cm}
+\takeaway{Thắng fusion cả 3 phép thử; có ý nghĩa ở E2b và E3. App: lựa chọn ``AI decision model''.}
+\end{columns}
+\source{Chênh lệch 95\%: E2 +0,017 [$-0{,}004$; 0,038], E2b +0,019 [0,004; 0,034], E3 +0,038 [0,001; 0,074]. Nguồn: artifacts/decision\_model.json; researchlens/decision.py.}
+\end{frame}
 \chartslide{Trong 5 cách cũ, PPR dẫn đầu khi che cạnh ngẫu nhiên}{slide_recommendation.pdf}{\bigmetric{0,174}{nDCG@10 của PPR}\par\vspace{.4cm}\small Hybrid: 0,112\par Content: 0,063\par\vspace{.35cm}\par\takeaway{Hybrid chưa thắng graph-only.}}{120 source papers; toàn corpus làm ứng viên, loại seed/source. Error bars: 2.000 bootstrap samples. Nguồn: artifacts/results.json.}
 \chartslide{Hybrid cải thiện content với hiệu ghép cặp dương}{slide_diversity.pdf}{\bigmetric{+0,049}{nDCG: hybrid -- content}\par\vspace{.3cm}\small CI 95\%:\par [0,027; 0,073]\par\vspace{.3cm}\par MMR tăng diversity và coverage của hybrid.}{Hiệu ghép cặp theo cùng source paper. Diversity = 1 -- mean cosine; bubble area theo coverage. Nguồn: artifacts/results.json.}
 \chartslide{Review polarity còn khó dù có tín hiệu học được}{slide_opinion.pdf}{\bigmetric{0,469}{macro-F1 của logreg}\par\vspace{.3cm}\small Lexicon: 0,436\par Majority: 0,181\par\vspace{.3cm}\par\takeaway{CI chồng lấn; chưa khẳng định hơn lexicon.}}{115 test reviews. Cluster bootstrap theo paper, 1.000 samples. Nhãn suy từ rating. Nguồn: PeerRead + artifacts/results.json.}
@@ -253,7 +271,7 @@ Fusion & 0,207 & 0,58 & 0,113 & 0,42\\
 \section{Kiểm chứng và kết luận}
 \begin{frame}{Audit và test độc lập phát hiện lỗi trước bàn giao}
 \begin{columns}[T,onlytextwidth]
-\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{528/528}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
+\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{541/541}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
 \column{.61\textwidth}\par\vspace{.3cm}
 \textbf{Các lỗi đã sửa}\par
 JSONL có line separator Unicode.\par
@@ -297,7 +315,7 @@ OpenAlex API; Apache Solr 9.9 Reference Guide. Truy cập 14/10/2026.
 \par\vspace{.25cm}
 {\Large\bfseries Ba kết luận từ bản chạy}\par\par\vspace{.4cm}
 \textbf{01}\quad Đồng trích dẫn là tín hiệu đơn tốt nhất trên cả ba protocol.\par\par\vspace{.18cm}
-\textbf{02}\quad Fusion vượt hybrid trên cả ba protocol và là mặc định.\par\par\vspace{.18cm}
+\textbf{02}\quad Fusion là mặc định. Decision model học từ dữ liệu tự sinh vượt fusion trên cả ba protocol.\par\par\vspace{.18cm}
 \textbf{03}\quad Review model cần đi cùng evidence và giới hạn.
 \par\vspace{.6cm}
 \takeaway{Demo: \url{http://127.0.0.1:8765}}\par

@@ -4,7 +4,7 @@
 
 Hệ thống chạy local với **129.596 bản ghi hội nghị (2020–2026)** và tìm kiếm OpenAlex trực tuyến. Snapshot thí nghiệm riêng gồm **3.595 paper, 13.481 cạnh citation, 1.320 scored reviews duy nhất**. Bài toán chính: từ các bài đã lưu, gợi ý bài nên đọc tiếp. Search là cách lưu bài đầu tiên, review là bằng chứng cạnh gợi ý.
 
-**Kết quả chính.** My library mặc định dùng fusion: cộng nghịch đảo hạng đồng trích dẫn và hạng hybrid, k=60. Trên 219 bài test sau mốc 2020, fusion đạt nDCG@10 0,207, đồng trích dẫn 0,173, hybrid 0,143. Trên split che ngẫu nhiên 120 bài, fusion 0,259 vẫn hơn hybrid 0,112 nhưng kém đồng trích dẫn 0,305. Xem [audit, điều kiện thí nghiệm và kịch bản demo](docs/CAPSTONE_AUDIT.md).
+**Kết quả chính.** My library mặc định dùng fusion: cộng nghịch đảo hạng đồng trích dẫn và hạng hybrid, k=60. Trên 219 bài test sau mốc 2020, fusion đạt nDCG@10 0,207, đồng trích dẫn 0,173, hybrid 0,143. Trên split che ngẫu nhiên 120 bài, fusion 0,259 vẫn hơn hybrid 0,112 nhưng kém đồng trích dẫn 0,305. Lựa chọn thử nghiệm **AI decision model** (gradient boosting học từ 2.081 tác vụ tự sinh trên các mốc 2010–2018) đạt 0,224, 0,132 và 0,297 trên ba phép thử, vượt fusion ở cả ba. Xem [audit, điều kiện thí nghiệm và kịch bản demo](docs/CAPSTONE_AUDIT.md).
 
 Phiếu thử “bạn có lưu bài này để đọc tiếp không?” dùng được offline. Xem [phiếu chấm](evaluation/reading-study/annotate.html) và [pilot mô hình quyết định, tình trạng nhãn người thật](evaluation/reading-study/README.md).
 
@@ -46,7 +46,7 @@ Cổng host mặc định 8765; đổi bằng `APP_PORT=8766 docker compose up -
 - **Citation network:** phong cách Obsidian, node kéo thả có lực lò xo kéo các node liên kết cùng chuyển động, pan/zoom, tìm theo tiêu đề, highlight neighborhood, nhóm Louvain, bật/tắt nhãn; hướng cạnh citing → cited.
 - **Motion:** chuyển cảnh/panel nhẹ, graph xuất hiện có giới hạn; hỗ trợ reduced motion. Áp dụng hướng dẫn UI/UX từ evondevKit; provenance và quyết định thiết kế ở [`docs/WORKSPACE_DESIGN.md`](docs/WORKSPACE_DESIGN.md).
 - **Review insights:** review thật từ PeerRead, rating-derived polarity, TF-IDF + logistic regression, aspect lexicon với câu evidence và xử lý phủ định cục bộ.
-- **My library:** lưu bền theo profile trình duyệt, xuất BibTeX/JSON; fusion (mặc định)/content/PPR/hybrid/co-citation/popularity recommendations, MMR diversity, cold start, lý do gợi ý.
+- **My library:** lưu bền theo profile trình duyệt, xuất BibTeX/JSON; fusion (mặc định)/AI decision model (thử nghiệm)/content/PPR/hybrid/co-citation/popularity recommendations, MMR diversity, cold start, lý do gợi ý.
 - **Observatory:** thống kê dữ liệu, kết quả thí nghiệm thật, phạm vi và giới hạn của từng metric.
 
 PDF reader cần mạng và trình duyệt hỗ trợ PDF; metadata/search vẫn chạy offline. Bookmark là trang do người đọc nhập, không tự theo dõi scroll. Notes lưu trong SQLite; draft lỗi lưu localStorage với khóa theo profile/paper.
@@ -121,7 +121,7 @@ uv run python scripts/graph_qa.py
 RESEARCHLENS_BASE_URL=http://127.0.0.1:8767 uv run python scripts/discovery_qa.py
 ```
 
-Suite hiện tại có **528 tests đạt**, gồm kiểm thử chỉ mục, kiểm tra mọi con số gợi ý trong report khớp với artifact, thứ hạng, câu trích, phản hồi trang hai và tách tập đánh giá theo bài mẫu. Package researchlens đạt khoảng 99% statement coverage trong lần chạy này. Xem [`docs/TEST_REPORT.md`](docs/TEST_REPORT.md) và [`docs/AUDIT.md`](docs/AUDIT.md). Browser QA kiểm tra desktop/mobile, search, save, details, graph, review analysis, recommendations và export. Browser QA mới kiểm tra Project, PDF arXiv thật, notes tiếng Việt >64 KiB, draft recovery, graph controls và reduced motion. Kết quả nằm ở `artifacts/browser_qa.json` và `artifacts/workspace_qa.json`; ảnh trong `artifacts/screenshots/`.
+Suite hiện tại có **541 tests đạt**, gồm kiểm thử chỉ mục, kiểm tra mọi con số gợi ý trong report khớp với artifact, thứ hạng, câu trích, phản hồi trang hai và tách tập đánh giá theo bài mẫu. Package researchlens đạt khoảng 99% statement coverage trong lần chạy này. Xem [`docs/TEST_REPORT.md`](docs/TEST_REPORT.md) và [`docs/AUDIT.md`](docs/AUDIT.md). Browser QA kiểm tra desktop/mobile, search, save, details, graph, review analysis, recommendations và export. Browser QA mới kiểm tra Project, PDF arXiv thật, notes tiếng Việt >64 KiB, draft recovery, graph controls và reduced motion. Kết quả nằm ở `artifacts/browser_qa.json` và `artifacts/workspace_qa.json`; ảnh trong `artifacts/screenshots/`.
 
 ## Report và slide
 

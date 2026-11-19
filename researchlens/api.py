@@ -15,6 +15,7 @@ from fastapi.responses import FileResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from researchlens.mining import MiningEngine, extract, opinion
+from researchlens.decision import DecisionModel
 from researchlens.reviews import deduplicate, train_model, predict, rating_label
 from researchlens.store import Store
 from researchlens.passages import PassageIndex
@@ -28,7 +29,7 @@ class TextInput(BaseModel):
     text: str=Field(min_length=1,max_length=30000)
 class RecommendationInput(BaseModel):
     seeds: list[str]=Field(default_factory=list,max_length=10000)
-    method: Literal['fusion','content','graph','hybrid','popular','cocitation']='fusion'
+    method: Literal['fusion','content','graph','hybrid','popular','cocitation','decision']='fusion'
     diversity: float=Field(default=.15,ge=0,le=1)
     limit: int=Field(default=12,ge=1,le=50)
 
@@ -53,6 +54,9 @@ def create_app(data_dir=None,db_path=None):
         base_ids={p['id'] for p in papers}
         imported=[p for p in app.state.store.imported() if p['id'] not in base_ids]
         app.state.engine=MiningEngine(resolve_references(papers+imported,app.state.store.aliases()))
+        app.state.decision=None
+        if (ROOT/'artifacts/decision_model.pkl').exists() and (ROOT/'artifacts/specter.npz').exists():
+            app.state.decision=DecisionModel.load(ROOT/'artifacts/decision_model.pkl',ROOT/'artifacts/specter.npz')
         app.state.import_lock=threading.Lock()
         app.state.online=OpenAlex()
         app.state.data_dir=data
@@ -142,7 +146,7 @@ def create_app(data_dir=None,db_path=None):
                 'years':sorted({p['year'] for p in e.papers if p.get('year')},reverse=True)}
     @app.post('/api/recommendations')
     def recommendations(body:RecommendationInput):
-        try: return app.state.engine.recommend(body.seeds,body.limit,body.method,body.diversity)
+        try: return app.state.engine.recommend(body.seeds,body.limit,body.method,body.diversity,app.state.decision)
         except ValueError as e: raise HTTPException(422,str(e))
     @app.get('/api/library')
     def library(request:Request):

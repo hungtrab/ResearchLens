@@ -1,0 +1,78 @@
+{
+  "features": [
+    "co_citation_votes",
+    "content",
+    "personalized_pagerank",
+    "cited_by_saved",
+    "cites_saved",
+    "shared_references",
+    "citation_count",
+    "age",
+    "specter_profile",
+    "specter_closest_saved"
+  ],
+  "rank_features": true,
+  "tasks_per_cutoff": {
+    "2010": 178,
+    "2011": 165,
+    "2012": 100,
+    "2013": 208,
+    "2014": 252,
+    "2015": 253,
+    "2016": 306,
+    "2017": 400,
+    "2018": 219
+  },
+  "validation_cutoff": 2018,
+  "validation_ndcg": {
+    "gbdt_raw": 0.2240712295657195,
+    "gbdt_rank": 0.25769611764217476,
+    "logistic_raw": 0.20660174053114252,
+    "logistic_rank": 0.21153347341402268
+  },
+  "chosen": "gbdt_rank",
+  "test": {
+    "E2": {
+      "tasks": 219,
+      "ndcg": 0.22413139339448993,
+      "recall": 0.2882804917051492,
+      "hit": 0.6529680365296804,
+      "fusion_ndcg": 0.20748930229619705,
+      "minus_fusion": {
+        "mean": 0.01664209109829284,
+        "ci95": [
+          -0.004454993292275782,
+          0.038333663614480026
+        ]
+      }
+    },
+    "E2b": {
+      "tasks": 250,
+      "ndcg": 0.1322032546954472,
+      "recall": 0.14220867294836811,
+      "hit": 0.44,
+      "fusion_ndcg": 0.11332011054182269,
+      "minus_fusion": {
+        "mean": 0.018883144153624513,
+        "ci95": [
+          0.004163959032385222,
+          0.03387433809307661
+        ]
+      }
+    },
+    "E3": {
+      "tasks": 120,
+      "ndcg": 0.29702239939730923,
+      "recall": 0.3534551097051096,
+      "hit": 0.75,
+      "fusion_ndcg": 0.25932654481934186,
+      "minus_fusion": {
+        "mean": 0.037695854577967404,
+        "ci95": [
+          0.001405760993135466,
+          0.07433963239205293
+        ]
+      }
+    }
+  }
+}

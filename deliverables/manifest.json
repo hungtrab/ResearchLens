@@ -1,17 +1,17 @@
 {
   "files": {
     "ResearchLens_Report.pdf": {
-      "bytes": 2411117,
-      "sha256": "17d5a723bb8c55522626157d1c369c7800355605b6c5f0d6341f3a7a777d285d"
+      "bytes": 2416813,
+      "sha256": "4d51f23734d422df00b2f57e70e98f7176c916030c21540138b3f8cef6b2e597"
     },
     "ResearchLens_Slides.pdf": {
-      "bytes": 1723551,
-      "sha256": "fc2892b853ea92c53524bc7a92e3c429a0b648df1e329e4ef16cd6a0d5d025d9"
+      "bytes": 1725546,
+      "sha256": "f25ce5d7375cf6afa4099156233ca50414a9834182cfa459f4776f8fcafd0873"
     },
     "ResearchLens_Source.zip": {
-      "bytes": 128358717,
-      "sha256": "f244291cd6fb6289bc0bb49dff2dd424eba0b5ed7016bdda0411af3a3c328c35"
+      "bytes": 129112897,
+      "sha256": "b9c38876ca44ab94eeeb12d26cb1b6edce83d147d3723ed708569888154de8ff"
     }
   },
-  "source_files": 731
+  "source_files": 737
 }

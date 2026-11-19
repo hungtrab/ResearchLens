@@ -21,7 +21,7 @@ Thời lượng gợi ý: 15–18 phút trình bày + 5 phút demo. Slide 1–23
 1. Mở Discover, nhập `graph neural networks`. Đổi BM25, TF-IDF, Hybrid, và Solr nếu đã bật. Dùng `"graph neural networks"`, `graph AND networks`, `graph -neural` để minh họa query processing.
 2. Mở paper, chỉ nguồn, abstract, entities và local/global citations. Lưu 2–3 bài. Không hứa mọi paper đều có review vì join chỉ khớp đúng title chuẩn hóa.
 3. Mở citation neighborhood từ paper. Zoom/pan, click nút để đọc paper khác; nhắc graph chỉ có các cạnh nội bộ quan sát được.
-4. Mở My library. Gợi ý mặc định là fusion; mỗi bài ghi hạng đồng trích dẫn, hạng hybrid và bài nhân chứng. Chọn hybrid hoặc co-citation để đối chiếu, tăng diversity để xem MMR. Export BibTeX.
+4. Mở My library. Gợi ý mặc định là fusion; mỗi bài ghi hạng đồng trích dẫn, hạng hybrid và bài nhân chứng. Chọn hybrid, co-citation hoặc AI decision model để đối chiếu, tăng diversity để xem MMR. Export BibTeX.
 5. Mở Review insights. Phân tích một review, chỉ đúng câu evidence. Mở Observatory để đối chiếu các chart với JSON thí nghiệm.
 
 ## Câu hỏi thường gặp

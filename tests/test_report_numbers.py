@@ -26,6 +26,7 @@ def interval(stats):
 
 TEMPORAL, AUTHOR, LTR, HOLDOUT = load("temporal_recovery.json"), load("author_next.json"), load("ltr.json"), load("holdout_fusion.json")
 SPECTER = load("specter_eval.json")
+DECISION = load("decision_model.json")
 
 
 def temporal_claims():
@@ -108,3 +109,18 @@ def test_ltr_table_row_matches_artifact():
     e2, e2b = LTR["reference_recovery"], LTR["author_next"]
     cells = [e2["ndcg"], e2["recall"], e2["hit"], e2b["ndcg"], e2b["recall"], e2b["hit"]]
     assert "Hồi quy logistic & " + " & ".join(f"\\textbf{{{vn(c)}}}" for c in cells) in REPORT
+
+
+@pytest.mark.parametrize("suite", ["E2", "E2b", "E3"])
+def test_decision_table_row_matches_artifact(suite):
+    r = DECISION["test"][suite]
+    cells = f"{vn(r['fusion_ndcg'])} & \\textbf{{{vn(r['ndcg'])}}} & +{vn(r['minus_fusion']['mean'])} {interval(r['minus_fusion'])} & {vn(r['hit'])}\\\\"
+    assert cells in REPORT, f"table tab:decision should contain {cells!r}"
+    assert "+" + vn(r["minus_fusion"]["mean"]) + " " + interval(r["minus_fusion"]) in SLIDES
+
+
+def test_decision_validation_numbers_are_quoted():
+    v = DECISION["validation_ndcg"]
+    for variant in v:
+        assert vn(v[variant]) in REPORT
+    assert f"{sum(DECISION['tasks_per_cutoff'].values()):,}".replace(",", ".") + " tác vụ" in REPORT

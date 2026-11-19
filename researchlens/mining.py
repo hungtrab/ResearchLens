@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, E
 from sklearn.preprocessing import normalize
 
 TOKEN = re.compile(r"(?u)\b[a-zA-Z][a-zA-Z0-9_-]+\b")
-RECOMMEND_METHODS = ("fusion", "content", "graph", "hybrid", "popular", "cocitation")
+RECOMMEND_METHODS = ("fusion", "content", "graph", "hybrid", "popular", "cocitation", "decision")
 RRF_K = 60
 
 
@@ -105,6 +105,18 @@ def reciprocal_rank_fusion(rankings, size):
         for i, rank in ranking.items():
             fused[i] += 1 / (RRF_K + rank)
     return unit(fused)
+
+
+def decision_reason(probability, signals):
+    """The decision model's score and the signals a reader can check. The score is not a calibrated probability."""
+    votes, cites_saved, cited_by_saved = round(math.expm1(signals[0])), int(signals[4]), int(signals[3])
+    parts = [f"{votes} co-citing paper{'s' * (votes != 1)}"] if votes else []
+    if cited_by_saved:
+        parts.append(f"cited by {cited_by_saved} saved paper{'s' * (cited_by_saved != 1)}")
+    if cites_saved:
+        parts.append(f"cites {cites_saved} saved paper{'s' * (cites_saved != 1)}")
+    parts += [f"SPECTER similarity {signals[8]:.2f}", f"{int(signals[7])} years old"]
+    return f"Decision model score {probability:.2f} (higher means more likely read next). Signals: " + ", ".join(parts) + "."
 
 
 def fusion_reason(hybrid_rank, cocitation_rank, citers):
@@ -284,10 +296,13 @@ class MiningEngine:
             return f"Content 0.7 × {content[i]:.3f} + personalized PageRank 0.3 × {graph[i]:.3f}."
         return f"Global PageRank {self.pr[i]:.5f}."
 
-    def recommend(self, seeds, limit=12, method="fusion", diversity=0.15):
+    def recommend(self, seeds, limit=12, method="fusion", diversity=0.15, decision=None):
+        """decision is a researchlens.decision.DecisionModel; only method="decision" uses it."""
         seeds = list(dict.fromkeys(seeds))
         if method not in RECOMMEND_METHODS:
             raise ValueError("Unknown recommendation method")
+        if method == "decision" and decision is None:
+            raise ValueError("Decision model is not available")
         if any(s not in self.pos for s in seeds):
             raise ValueError("Unknown seed paper")
         if not 0 <= diversity <= 1:
@@ -313,7 +328,13 @@ class MiningEngine:
             "hybrid": hybrid,
             "popular": unit(self.pr),
             "fusion": reciprocal_rank_fusion([hybrid_rank, cocitation_rank], len(self.ids)),
+            "decision": np.zeros(len(self.ids)),
         }[method]
+        signals = {}
+        if method == "decision":
+            for pid, probability, row in zip(*decision.rank(self, seeds)):
+                scores[self.pos[pid]] = probability
+                signals[self.pos[pid]] = row
         seed_terms = set(tokens(" ".join(self.texts[self.pos[s]] for s in seeds)))
         items = []
         for i in self.mmr_select(scores, eligible, limit, diversity):
@@ -326,6 +347,9 @@ class MiningEngine:
                 evidence = witnesses.get(pid, [])
                 item.update(co_citation_count=len(evidence), witnesses=self.titled_witnesses(evidence))
                 reason = fusion_reason(hybrid_rank[i], cocitation_rank.get(i), len(evidence))
+            elif method == "decision":
+                item.update(witnesses=self.titled_witnesses(witnesses.get(pid, [])))
+                reason = decision_reason(scores[i], signals[i])
             else:
                 reason = self.score_reason(method, i, content, graph)
             if words and method in {"content", "hybrid", "fusion"}:

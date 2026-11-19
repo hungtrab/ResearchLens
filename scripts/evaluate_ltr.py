@@ -10,50 +10,22 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
+from researchlens.decision import GRAPH_FEATURES as FEATURES, citation_links, graph_features
 from researchlens.evaluation import bootstrap_mean, ranking_metrics
 from researchlens.mining import MiningEngine
 from scripts.evaluate_author_next import authors, year
 
 ROOT = Path(__file__).resolve().parents[1]
-FEATURES = ("co_citation_votes", "content", "personalized_pagerank", "cited_by_saved", "cites_saved",
-            "shared_references", "citation_count", "age")
-POOL = 300
-
-
 class Graph:
+    """A corpus cut at one year, with the citation links that the decision signals need."""
+
     def __init__(self, papers, cutoff):
         self.cutoff = cutoff
         self.engine = MiningEngine([p for p in papers if 0 < year(p) <= cutoff])
-        ids = set(self.engine.ids)
-        self.refs = {p["id"]: set(p.get("references", [])) & ids for p in self.engine.papers}
-        self.citers = {}
-        for source, refs in self.refs.items():
-            for ref in refs:
-                self.citers.setdefault(ref, set()).add(source)
+        self.refs, self.citers = citation_links(self.engine)
 
     def candidates(self, seeds):
-        """Hybrid top POOL plus every paper linked to the saved set; returns ids and one feature row each."""
-        e, saved = self.engine, set(seeds)
-        eligible = np.array([pid not in saved for pid in e.ids])
-        content, graph = e.content_graph_scores(seeds, eligible)
-        votes = e.co_citation_witnesses(seeds)
-        saved_refs = {}
-        for s in saved:
-            for ref in self.refs.get(s, ()):
-                saved_refs[ref] = saved_refs.get(ref, 0) + 1
-        pool = set(np.argsort(-(0.7 * content + 0.3 * graph))[:POOL]) | {e.pos[c] for c in votes}
-        for s in saved:
-            pool |= {e.pos[x] for x in self.refs.get(s, set()) | self.citers.get(s, set())}
-        rows, ids = [], []
-        for i in sorted(i for i in pool if eligible[i]):
-            pid = e.ids[i]
-            rows.append([np.log1p(len(votes.get(pid, []))), content[i], graph[i],
-                         sum(pid in self.refs.get(s, ()) for s in saved),
-                         sum(pid in self.citers.get(s, ()) for s in saved),
-                         np.log1p(sum(saved_refs.get(r, 0) for r in self.refs.get(pid, ()))),
-                         np.log1p(len(self.citers.get(pid, ()))), self.cutoff - year(e.papers[i])])
-            ids.append(pid)
-        return ids, np.array(rows, float)
+        return graph_features(self.engine, self.refs, self.citers, seeds, self.cutoff)
 
 
 def reference_tasks(papers, g, last):

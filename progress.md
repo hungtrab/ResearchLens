@@ -1,5 +1,23 @@
 # Nhật ký tiến độ ResearchLens
 
+## 19/11/2026 (khuya) — AI decision model
+
+Decision model của Astra là Laya zero-shot ở phần Reader, chưa từng được dạy bài toán đọc tiếp. Bản mới học từ chính dữ liệu của bài toán.
+
+- **Cách học.** Cắt đồ thị ở mỗi năm 2010–2018, tự tạo tác vụ có đáp án theo hai protocol (che reference, tác giả đọc gì tiếp), không cần người gán nhãn. 1.862 tác vụ huấn luyện (2010–2017), 219 tác vụ validation (2018). Cạnh bị che của E3 bị loại khỏi mọi dữ liệu huấn luyện.
+- **Mô hình.** Gradient boosting trên 10 tín hiệu (đồng trích dẫn, content, PPR, quan hệ trích dẫn với bài đã lưu, reference chung, số trích, tuổi bài, hai cosine SPECTER) cộng hạng phần trăm của chúng trong từng tác vụ. Chọn trên validation trong 4 phương án.
+- **Kết quả test (một lần).**
+
+| nDCG@10 | Fusion | Decision model | Chênh lệch [95%] | Hit@10 |
+|---|---:|---:|---|---:|
+| E2 | 0,207 | **0,224** | +0,017 [−0,004; 0,038] | 0,653 |
+| E2b | 0,113 | **0,132** | +0,019 [0,004; 0,034] | 0,440 |
+| E3 | 0,259 | **0,297** | +0,038 [0,001; 0,074] | 0,750 |
+
+- **Quyết định.** Tiêu chí đặt trước đòi CI không chứa 0 ở cả ba; E2 chưa đạt. Fusion giữ mặc định. App có lựa chọn "AI decision model (experimental)" với điểm và tín hiệu cho từng gợi ý, khoảng 0,2 s mỗi lượt. Ảnh: `artifacts/screenshots/decision_model.png`.
+- **Trung thực.** Lần chạy đầu chưa có validation và đã nhìn test một lần; report ghi lại điều này. Điểm của model không phải xác suất đã hiệu chỉnh.
+- Code: `researchlens/decision.py` (dùng chung cho app và script), `scripts/decision_model.py`, `tests/test_decision.py`. 541/541 test, 99% coverage.
+
 ## 19/11/2026 (tối) — Kiểm số liệu bằng test, thử SPECTER và hồi quy logistic trên E3
 
 Làm theo `~/shared/laura_methodology.md`: chốt tiêu chí trong `.audit/tighten.tsv` trước khi đo, mỗi bước có kiểm chứng riêng.
