@@ -1,0 +1,85 @@
+{
+  "features": [
+    "co_citation_votes",
+    "content",
+    "personalized_pagerank",
+    "cited_by_saved",
+    "cites_saved",
+    "shared_references",
+    "citation_count",
+    "age",
+    "specter_profile",
+    "specter_closest_saved",
+    "fusion"
+  ],
+  "params": {
+    "max_iter": 600,
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 63,
+    "min_samples_leaf": 100,
+    "l2_regularization": 1.0
+  },
+  "tasks_per_cutoff": {
+    "2010": 178,
+    "2011": 165,
+    "2012": 100,
+    "2013": 208,
+    "2014": 252,
+    "2015": 253,
+    "2016": 306,
+    "2017": 400,
+    "2018": 219
+  },
+  "validation_cutoff": 2018,
+  "validation_ndcg": {
+    "gbdt_rank": 0.25769611764217476,
+    "gbdt_rank_fusion": 0.26556577142147547,
+    "gbdt_rank_fusion_large": 0.30273500120527286,
+    "gbdt_rank_fusion_fast": 0.2689632432464112
+  },
+  "chosen": "gbdt_rank_fusion_large",
+  "test": {
+    "E2": {
+      "tasks": 219,
+      "ndcg": 0.2232787844717269,
+      "recall": 0.2867917470657197,
+      "hit": 0.6484018264840182,
+      "fusion_ndcg": 0.20748930229619705,
+      "minus_fusion": {
+        "mean": 0.01578948217552982,
+        "ci95": [
+          -0.00783341869158548,
+          0.039590275191822635
+        ]
+      }
+    },
+    "E2b": {
+      "tasks": 250,
+      "ndcg": 0.13568288183439675,
+      "recall": 0.15551963120556736,
+      "hit": 0.464,
+      "fusion_ndcg": 0.11332011054182269,
+      "minus_fusion": {
+        "mean": 0.022362771292574055,
+        "ci95": [
+          0.007046293829926638,
+          0.038283239586243786
+        ]
+      }
+    },
+    "E3": {
+      "tasks": 120,
+      "ndcg": 0.2603666695834262,
+      "recall": 0.31102806915306913,
+      "hit": 0.6916666666666667,
+      "fusion_ndcg": 0.25932654481934186,
+      "minus_fusion": {
+        "mean": 0.0010401247640843474,
+        "ci95": [
+          -0.03484615130948547,
+          0.035835509299503784
+        ]
+      }
+    }
+  }
+}

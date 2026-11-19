@@ -116,6 +116,8 @@ def decision_reason(probability, signals):
     if cites_saved:
         parts.append(f"cites {cites_saved} saved paper{'s' * (cites_saved != 1)}")
     parts += [f"SPECTER similarity {signals[8]:.2f}", f"{int(signals[7])} years old"]
+    if len(signals) > 11:  # the model trained with a topic query also scores the match to that topic
+        parts.append(f"topic match {signals[11]:.2f}")
     return f"Decision model score {probability:.2f} (higher means more likely read next). Signals: " + ", ".join(parts) + "."
 
 
@@ -296,8 +298,9 @@ class MiningEngine:
             return f"Content 0.7 × {content[i]:.3f} + personalized PageRank 0.3 × {graph[i]:.3f}."
         return f"Global PageRank {self.pr[i]:.5f}."
 
-    def recommend(self, seeds, limit=12, method="fusion", diversity=0.15, decision=None):
-        """decision is a researchlens.decision.DecisionModel; only method="decision" uses it."""
+    def recommend(self, seeds, limit=12, method="fusion", diversity=0.15, decision=None, topic=None):
+        """decision is a researchlens.decision.DecisionModel and topic its optional query; only method="decision"
+        uses them."""
         seeds = list(dict.fromkeys(seeds))
         if method not in RECOMMEND_METHODS:
             raise ValueError("Unknown recommendation method")
@@ -332,7 +335,7 @@ class MiningEngine:
         }[method]
         signals = {}
         if method == "decision":
-            for pid, probability, row in zip(*decision.rank(self, seeds)):
+            for pid, probability, row in zip(*decision.rank(self, seeds, topic)):
                 scores[self.pos[pid]] = probability
                 signals[self.pos[pid]] = row
         seed_terms = set(tokens(" ".join(self.texts[self.pos[s]] for s in seeds)))

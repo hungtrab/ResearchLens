@@ -11,7 +11,13 @@
     "specter_profile",
     "specter_closest_saved"
   ],
-  "rank_features": true,
+  "params": {
+    "max_iter": 300,
+    "learning_rate": 0.05,
+    "max_leaf_nodes": 31,
+    "min_samples_leaf": 100,
+    "l2_regularization": 1.0
+  },
   "tasks_per_cutoff": {
     "2010": 178,
     "2011": 165,
@@ -25,11 +31,12 @@
   },
   "validation_cutoff": 2018,
   "validation_ndcg": {
-    "gbdt_raw": 0.2240712295657195,
     "gbdt_rank": 0.25769611764217476,
-    "logistic_raw": 0.20660174053114252,
-    "logistic_rank": 0.21153347341402268
+    "gbdt_rank_fusion": 0.26556577142147547,
+    "gbdt_rank_fusion_large": 0.30273500120527286,
+    "gbdt_rank_fusion_fast": 0.2689632432464112
   },
+  "best_on_validation": "gbdt_rank_fusion_large",
   "chosen": "gbdt_rank",
   "test": {
     "E2": {

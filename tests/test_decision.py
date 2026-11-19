@@ -9,6 +9,7 @@ from researchlens.decision import FEATURES, DecisionModel, with_ranks
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL, VECTORS = ROOT / "artifacts/decision_model.pkl", ROOT / "artifacts/specter.npz"
+TOPIC_MODEL = ROOT / "artifacts/decision_query_model.pkl"
 needs_model = pytest.mark.skipif(not (MODEL.exists() and VECTORS.exists()), reason="decision model artifacts missing")
 
 
@@ -45,7 +46,7 @@ def test_papers_without_an_embedding_get_zero_vectors(engine, decision):
 
 def test_load_rejects_a_model_trained_on_other_features(tmp_path):
     path = tmp_path / "model.pkl"
-    path.write_bytes(pickle.dumps(dict(variant="gbdt_rank", model=None, features=FEATURES[:-1])))
+    path.write_bytes(pickle.dumps(dict(variant="gbdt_rank", model=None, features=FEATURES + ("unknown",))))
     with pytest.raises(ValueError, match="different features"):
         DecisionModel.load(path, VECTORS)
 
@@ -77,3 +78,27 @@ def test_top_recommendation_is_the_models_most_likely_paper(engine, decision):
     top = engine.recommend(["P1"], limit=1, method="decision", diversity=0, decision=decision)["items"][0]
     assert top["id"] == ids[int(np.argmax(probability))]
     assert top["score"] == pytest.approx(float(probability.max()))
+
+
+@needs_model
+def test_api_defaults_to_the_decision_model(client):
+    result = client.post("/api/recommendations", json=dict(seeds=["P1"], limit=3, diversity=0)).json()
+    assert result["items"][0]["reason"].startswith("Decision model score ")
+    fusion = client.post("/api/recommendations", json=dict(seeds=["P1"], method="fusion", limit=3)).json()
+    assert "reciprocal rank fusion" in fusion["items"][0]["reason"]
+
+
+@needs_model
+def test_topic_switches_to_the_topic_model_and_explains_the_match(client):
+    body = dict(seeds=["P1"], topic="opinion mining of reviewer sentiment", limit=3, diversity=0)
+    items = client.post("/api/recommendations", json=body).json()["items"]
+    assert all("topic match" in p["reason"] for p in items)
+    assert items[0]["id"] == "P5"  # the only paper about opinion mining ranks first once the topic is known
+    plain = client.post("/api/recommendations", json=dict(seeds=["P1"], limit=3, diversity=0)).json()["items"]
+    assert not any("topic match" in p["reason"] for p in plain)
+
+
+@needs_model
+def test_topic_model_refuses_to_rank_without_a_topic(engine):
+    with pytest.raises(ValueError, match="topic"):
+        DecisionModel.load(TOPIC_MODEL, VECTORS).rank(engine, ["P1"])

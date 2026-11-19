@@ -1,5 +1,21 @@
 # Nhật ký tiến độ ResearchLens
 
+## 19/11/2026 (khuya, tiếp) — Decision model làm mặc định, thêm retrieval theo đề tài
+
+- **Decision model là mặc định** ở My library theo quyết định của chủ project. Fusion là phương án dự phòng khi thiếu file mô hình.
+- **Vòng cải tiến 2 (kết quả âm).** Thêm tín hiệu fusion và mô hình lớn hơn: validation 0,303 so với 0,258, nhưng E3 giảm từ 0,297 còn 0,260. Giữ bản cũ. Lưu ở `artifacts/decision_model_round2.json`.
+- **Decision + retrieval theo đề tài.** Ô Topic tùy chọn: BM25 lấy thêm 100 ứng viên, thêm 2 tín hiệu (BM25, TF-IDF với đề tài), một mô hình riêng xếp hạng lại.
+
+| nDCG@10 | Fusion | Chỉ BM25 | Decision | Decision + đề tài | Hit@10 |
+|---|---:|---:|---:|---:|---:|
+| E2 | 0,207 | 0,107 | 0,224 | **0,237** | 0,644 |
+| E2b | 0,113 | 0,135 | 0,132 | **0,182** | 0,584 |
+| E3 | 0,259 | 0,087 | 0,297 | **0,304** | 0,783 |
+
+  So với fusion: +0,030 [0,006; 0,055], +0,069 [0,051; 0,087], +0,045 [0,005; 0,087]. Cả ba khoảng tin cậy không chứa 0.
+- Đề tài trong phép thử là thứ người dùng có thật: bài đang viết (E2, E3) hoặc tiêu đề bài mới của tác giả (E2b).
+- Lệnh: `uv run python -m scripts.decision_model --query`. Artifact: `artifacts/decision_query_model.json`, `.pkl`.
+
 ## 19/11/2026 (khuya) — AI decision model
 
 Decision model của Astra là Laya zero-shot ở phần Reader, chưa từng được dạy bài toán đọc tiếp. Bản mới học từ chính dữ liệu của bài toán.

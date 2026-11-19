@@ -27,6 +27,7 @@ def interval(stats):
 TEMPORAL, AUTHOR, LTR, HOLDOUT = load("temporal_recovery.json"), load("author_next.json"), load("ltr.json"), load("holdout_fusion.json")
 SPECTER = load("specter_eval.json")
 DECISION = load("decision_model.json")
+ROUND1, ROUND2, TOPIC = load("decision_model_round1.json"), load("decision_model_round2.json"), load("decision_query_model.json")
 
 
 def temporal_claims():
@@ -93,7 +94,7 @@ def test_slides_quote_ltr():
 
 
 ROW_NAMES = {"popular": "Global PageRank", "content": "Content", "graph": "Personalized PageRank", "hybrid": "Hybrid",
-             "cocitation": "Đồng trích dẫn", "fusion": "Fusion (mặc định)"}
+             "cocitation": "Đồng trích dẫn", "fusion": "Fusion"}
 
 
 @pytest.mark.parametrize("method", ROW_NAMES)
@@ -120,7 +121,23 @@ def test_decision_table_row_matches_artifact(suite):
 
 
 def test_decision_validation_numbers_are_quoted():
-    v = DECISION["validation_ndcg"]
-    for variant in v:
-        assert vn(v[variant]) in REPORT
+    for run in (ROUND1, ROUND2, TOPIC):
+        for variant, value in run["validation_ndcg"].items():
+            if variant in (run["chosen"], run.get("best_on_validation", run["chosen"])) or run is ROUND1:
+                assert vn(value) in REPORT, (variant, vn(value))
+    assert DECISION["test"] == ROUND1["test"], "the app model must be the round-1 model the report describes"
+
+
+def test_round2_numbers_are_quoted():
+    for suite in ("E2", "E2b", "E3"):
+        assert vn(ROUND2["test"][suite]["ndcg"]) in REPORT
+
+
+@pytest.mark.parametrize("suite", ["E2", "E2b", "E3"])
+def test_topic_table_row_matches_artifacts(suite):
+    t, d = TOPIC["test"][suite], DECISION["test"][suite]
+    row = f"{suite} & {vn(t['fusion_ndcg'])} & {vn(t['bm25_only_ndcg'])} & {vn(d['ndcg'])} & \\textbf{{{vn(t['ndcg'])}}} & {vn(t['hit'])}\\\\"
+    assert row in REPORT, f"table tab:topic should contain {row!r}"
+    delta = "+" + vn(t["minus_fusion"]["mean"]) + " " + interval(t["minus_fusion"])
+    assert delta in REPORT and delta in SLIDES
     assert f"{sum(DECISION['tasks_per_cutoff'].values()):,}".replace(",", ".") + " tác vụ" in REPORT

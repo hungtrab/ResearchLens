@@ -21,7 +21,7 @@ Thời lượng gợi ý: 15–18 phút trình bày + 5 phút demo. Slide 1–23
 1. Mở Discover, nhập `graph neural networks`. Đổi BM25, TF-IDF, Hybrid, và Solr nếu đã bật. Dùng `"graph neural networks"`, `graph AND networks`, `graph -neural` để minh họa query processing.
 2. Mở paper, chỉ nguồn, abstract, entities và local/global citations. Lưu 2–3 bài. Không hứa mọi paper đều có review vì join chỉ khớp đúng title chuẩn hóa.
 3. Mở citation neighborhood từ paper. Zoom/pan, click nút để đọc paper khác; nhắc graph chỉ có các cạnh nội bộ quan sát được.
-4. Mở My library. Gợi ý mặc định là fusion; mỗi bài ghi hạng đồng trích dẫn, hạng hybrid và bài nhân chứng. Chọn hybrid, co-citation hoặc AI decision model để đối chiếu, tăng diversity để xem MMR. Export BibTeX.
+4. Mở My library. Gợi ý mặc định là AI decision model; mỗi bài ghi điểm, các tín hiệu và bài nhân chứng. Nhập một câu vào ô Topic, ví dụ "knowledge graph completion with embeddings", rồi bấm Enter để thêm retrieval theo đề tài; lý do có thêm "topic match". Chọn fusion, hybrid hoặc co-citation để đối chiếu, tăng diversity để xem MMR. Export BibTeX.
 5. Mở Review insights. Phân tích một review, chỉ đúng câu evidence. Mở Observatory để đối chiếu các chart với JSON thí nghiệm.
 
 ## Câu hỏi thường gặp
@@ -30,7 +30,9 @@ Thời lượng gợi ý: 15–18 phút trình bày + 5 phút demo. Slide 1–23
 
 **Tại sao không dùng RMSE theo hình đặc tả?** Không có user ratings để làm regression. Với ranking, Recall/nDCG/MRR có ý nghĩa; với review classes dùng macro-F1.
 
-**Vì sao mặc định là fusion mà không phải đồng trích dẫn?** Fusion thắng trên thí nghiệm cắt năm 2020 (0,207 so với 0,173) và không rỗng khi bài đã lưu chưa có ai trích cùng. Trên split ngẫu nhiên, đồng trích dẫn cao hơn (0,305 so với 0,259), nên so sánh này còn mở. Fusion hơn hybrid trên cả hai.
+**Vì sao mặc định là decision model?** Trên cả ba phép thử nó vượt fusion; khi có Topic, khoảng tin cậy của mức vượt không chứa 0 ở cả ba. Fusion vẫn có trong menu và là phương án dự phòng khi thiếu file mô hình.
+
+**Vì sao trước đó mặc định là fusion mà không phải đồng trích dẫn?** Fusion thắng trên thí nghiệm cắt năm 2020 (0,207 so với 0,173) và không rỗng khi bài đã lưu chưa có ai trích cùng. Trên split ngẫu nhiên, đồng trích dẫn cao hơn (0,305 so với 0,259), nên so sánh này còn mở. Fusion hơn hybrid trên cả hai.
 
 **Có leakage không?** Loại 442 held-out edges trước mọi graph score; lưu seed/target từng source; review train/dev/test paper-disjoint và exact-text-disjoint. Tuy nhiên graph không time-censor nên không tuyên bố dự báo tương lai.
 

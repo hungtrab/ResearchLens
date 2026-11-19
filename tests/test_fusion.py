@@ -102,10 +102,11 @@ def test_unknown_method_is_rejected_with_seeds(fusion_engine, method):
         fusion_engine.recommend(["S"], method=method)
 
 
-def test_api_defaults_to_fusion(app_config, fusion_papers):
+def test_api_defaults_to_fusion_without_decision_model(app_config, fusion_papers):
     (app_config["data_dir"] / "papers.jsonl").write_text("".join(json.dumps(p) + "\n" for p in fusion_papers))
     (app_config["data_dir"] / "reviews.jsonl").unlink()
     with TestClient(create_app(**app_config)) as client:
+        client.app.state.decision = client.app.state.decision_topic = None
         response = client.post("/api/recommendations", json={"seeds": ["S"], "diversity": 0})
         assert response.status_code == 200
         result = response.json()

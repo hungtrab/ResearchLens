@@ -39,8 +39,9 @@ def reference_tasks(papers, g, last):
             yield sorted(set(refs) - hidden), hidden
 
 
-def author_tasks(papers, g, last):
-    """E2b protocol: an author's library before the cutoff, first-time citations after it."""
+def author_tasks(papers, g, last, with_query=False):
+    """E2b protocol: an author's library before the cutoff, first-time citations after it.
+    with_query also yields the titles of the author's new papers, the topic they are working on."""
     by_author = {}
     for p in papers:
         for name in authors(p):
@@ -54,7 +55,7 @@ def author_tasks(papers, g, last):
         library = ({p["id"] for p in before} | {r for p in before for r in p.get("references", [])}) & ids
         targets = ({r for p in after for r in p.get("references", [])} & ids) - library - {p["id"] for p in written}
         if len(library) >= 3 and targets:
-            yield sorted(library), targets
+            yield (sorted(library), targets, " ".join(p["title"] for p in after)) if with_query else (sorted(library), targets)
 
 
 def fit(g, tasks):
