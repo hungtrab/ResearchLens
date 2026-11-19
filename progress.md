@@ -18,8 +18,8 @@ Phép thử: che một phần ba reference của một bài, dùng phần còn l
 
 - **RQ1.** Trong các tín hiệu đơn, đồng trích dẫn tìm lại tốt nhất trên cả hai protocol.
 - **RQ2.** Fusion vượt hybrid trên cả hai protocol: +0,064, khoảng tin cậy 95% [0,042; 0,087], và +0,147 [0,115; 0,178]. So với đồng trích dẫn đứng riêng, fusion thắng ở thí nghiệm chính (+0,034 [0,016; 0,054]) nhưng thua ở split ngẫu nhiên (−0,046 [−0,083; −0,007]). Vì vậy chưa kết luận được giữa hai cách này.
-- **Vì sao mặc định là fusion.** Fusion thắng trên thí nghiệm chính, và không trả danh sách rỗng khi bài đã lưu chưa có ai trích cùng. Hằng số k=60 lấy từ bài gốc của RRF, không chỉnh trên dữ liệu. Fusion được chọn sau khi đã xem kết quả temporal. Split ngẫu nhiên đã cố định từ trước, và được dùng làm phép kiểm tra lại.
-- Đã thử một giả thuyết cho kết quả trái chiều: nhân chứng là bài xuất bản sau bài nguồn. Giả thuyết không đứng vững. Bỏ các nhân chứng đó thì đồng trích dẫn chỉ giảm từ 0,305 xuống 0,301.
+- **Vì sao mặc định là fusion.** Fusion thắng trên thí nghiệm chính. Với diversity mặc định 0,15 của app, fusion vẫn đạt 0,206 so với 0,152 của hybrid. Fusion cũng không trả danh sách rỗng khi bài đã lưu chưa có ai trích cùng, nhưng lý do này yếu: đồng trích dẫn chỉ rỗng ở 1/219 bài, và một luật dự phòng cũng giải quyết được. Hằng số k=60 lấy từ bài gốc của RRF, không chỉnh trên dữ liệu. Fusion được chọn sau khi đã xem kết quả temporal. Split ngẫu nhiên đã cố định từ trước, và được dùng làm phép kiểm tra lại.
+- Đã thử một giả thuyết cho kết quả trái chiều: nhân chứng là bài xuất bản sau bài nguồn. Giả thuyết không đứng vững. Bỏ các nhân chứng đó thì đồng trích dẫn chỉ giảm từ 0,305 xuống 0,301. Chạy lại bằng `scripts/check_future_witnesses.py`.
 
 [Report, mục 6.1–6.2](deliverables/ResearchLens_Report.pdf) · [Kết quả temporal từng bài](artifacts/temporal_recovery.json) · [Kiểm tra lại trên split ngẫu nhiên](artifacts/holdout_fusion.json)
 
@@ -41,5 +41,5 @@ Phép thử: che một phần ba reference của một bài, dùng phần còn l
 ### Phần còn mở
 
 - **Gợi ý theo brief của Project chưa có người chấm.** 43 cặp brief–paper mới có nhãn pilot do trợ lý chấm. Cần ít nhất hai người đọc chấm độc lập bằng [phiếu chấm](evaluation/reading-study/annotate.html) để có số liệu và mức đồng thuận.
-- **Fusion và đồng trích dẫn chưa phân xử được.** Bước tiếp theo là lặp phép cắt theo năm trên các mốc khác. Một hướng là cho trọng số của hai hạng phụ thuộc số nhân chứng, chọn trên một mốc rồi khóa trước khi đo mốc khác.
+- **Fusion và đồng trích dẫn chưa phân xử được.** Bước tiếp theo là lặp phép cắt theo năm trên các mốc khác. Chưa thử PPR thay hybrid làm thành phần thứ hai của fusion. Một hướng là cho trọng số của hai hạng phụ thuộc số nhân chứng, chọn trên một mốc rồi khóa trước khi đo mốc khác.
 - `scripts/evaluate.py` (split ngẫu nhiên) vẫn tự tính điểm, không gọi `recommend` của app. Bảng E3 trong report vì vậy chưa có fusion. Phần kiểm tra fusion trên split này nằm ở `scripts/evaluate_holdout_fusion.py`.

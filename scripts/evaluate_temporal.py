@@ -42,13 +42,16 @@ def main():
             ranked = [p["id"] for p in result["items"]]
             assert not set(ranked).intersection(seeds) and set(ranked) <= candidates
             metrics = ranking_metrics(ranked, hidden)
-            task["methods"][method] = dict(top10=ranked, ndcg=metrics["ndcg_at_10"], recall=metrics["recall_at_10"])
+            # The app calls recommend with its default diversity, so score that configuration too.
+            shipped = [p["id"] for p in engine.recommend(seeds, limit=10, method=method)["items"]]
+            task["methods"][method] = dict(top10=ranked, ndcg=metrics["ndcg_at_10"], recall=metrics["recall_at_10"],
+                                           ndcg_app_default=ranking_metrics(shipped, hidden)["ndcg_at_10"])
         observations.append(task)
 
     summary = {}
     for method in METHODS:
         rows = [t["methods"][method] for t in observations]
-        summary[method] = {k: float(np.mean([r[k] for r in rows])) for k in ("ndcg", "recall")}
+        summary[method] = {k: float(np.mean([r[k] for r in rows])) for k in ("ndcg", "recall", "ndcg_app_default")}
         summary[method]["queries_with_results"] = sum(bool(r["top10"]) for r in rows)
     result = dict(cutoff_year=CUTOFF, corpus_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
                   historical_papers=len(historical), historical_edges=engine.graph.number_of_edges(),

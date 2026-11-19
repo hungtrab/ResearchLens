@@ -185,11 +185,10 @@ Review polarity & 115 review; official test split & Paper-disjoint; khử trùng
 \begin{frame}{Fusion dẫn đầu khi graph dừng ở năm 2020}
 \begin{columns}[T,onlytextwidth]
 \column{.44\textwidth}
-\small Graph đến hết 2020: 2.520 bài, 7.881 cạnh\\[.2cm]
-219 bài test sau 2020, 826 reference bị che\\[.2cm]
-Cả sáu cách gọi cùng hàm \texttt{recommend} của app\\[.35cm]
-\textbf{RQ1} Đồng trích dẫn là tín hiệu đơn tốt nhất.\\[.15cm]
-\textbf{RQ2} Fusion vượt hybrid +0,064 và vượt đồng trích dẫn +0,034.
+\small Graph đến hết 2020: 2.520 bài, 7.881 cạnh. 219 bài test sau 2020, 826 reference bị che.\\[.2cm]
+\textbf{RQ1} Đồng trích dẫn là tín hiệu đơn tốt nhất.\\[.1cm]
+\textbf{RQ2} Fusion vượt hybrid +0,064 và vượt đồng trích dẫn +0,034.\\[.1cm]
+\footnotesize Fusion được chọn sau khi xem E2. Split ngẫu nhiên ở slide sau cho kết quả ngược với đồng trích dẫn.
 \column{.52\textwidth}
 \small\begin{tabular}{lrr}\toprule
 & nDCG@10 & Recall@10\\\midrule
@@ -219,7 +218,7 @@ Fusion & 0,259\\
 \par\vspace{.3cm}\small Fusion -- hybrid: +0,147\\
 Fusion -- đồng trích dẫn: $-0{,}046$\\[.3cm]
 Bỏ nhân chứng mới hơn bài nguồn: đồng trích dẫn chỉ giảm 0,305 xuống 0,301.\\[.3cm]
-\takeaway{Mặc định là fusion: thắng thí nghiệm chính và không rỗng khi chưa ai trích cùng.}
+\takeaway{Fusion và đồng trích dẫn chưa phân xử được. Mặc định là fusion vì thắng thí nghiệm chính.}
 \end{columns}
 \source{scripts/evaluate\_holdout\_fusion.py; artifacts/holdout\_fusion.json. Khoảng 95\% fusion -- đồng trích dẫn [$-0{,}083$; $-0{,}007$].}
 \end{frame}
