@@ -222,6 +222,28 @@ Bỏ nhân chứng mới hơn bài nguồn: đồng trích dẫn chỉ giảm 0,
 \end{columns}
 \source{scripts/evaluate\_holdout\_fusion.py; artifacts/holdout\_fusion.json. Khoảng 95\% fusion -- đồng trích dẫn [$-0{,}083$; $-0{,}007$].}
 \end{frame}
+\begin{frame}{Phép thử gần thực tế hơn: tác giả đọc gì tiếp}
+\begin{columns}[T,onlytextwidth]
+\column{.40\textwidth}
+\small Thư viện là bài của tác giả đến 2020 và reference của chúng. Đáp án là bài họ trích \textbf{lần đầu} sau 2020.\\[.2cm]
+250 tác giả, 1.899 đáp án.\\[.2cm]
+Hồi quy logistic trên 8 tín hiệu có tên, huấn luyện ở mốc 2018.\\[.2cm]
+\footnotesize Che reference có lợi sẵn cho tín hiệu trích dẫn. Phép thử này bớt lợi thế đó.
+\column{.56\textwidth}
+\scriptsize\begin{tabular}{lrrrr}\toprule
+& \multicolumn{2}{c}{Che reference} & \multicolumn{2}{c}{Tác giả}\\
+& nDCG & Hit & nDCG & Hit\\\midrule
+Global PR & 0,032 & 0,18 & 0,047 & 0,31\\
+Content & 0,110 & 0,37 & 0,068 & 0,22\\
+Hybrid & 0,143 & 0,42 & 0,070 & 0,24\\
+Đồng trích dẫn & 0,173 & 0,53 & 0,099 & 0,40\\
+Fusion & 0,207 & 0,58 & 0,113 & 0,42\\
+\textbf{Hồi quy logistic} & \textbf{0,231} & \textbf{0,66} & \textbf{0,136} & \textbf{0,45}\\\bottomrule
+\end{tabular}\par\vspace{.2cm}
+\takeaway{Tác giả thật đọc bài mới và nổi tiếng. Độ mới và số trích dẫn có trọng số lớn nhất.}
+\end{columns}
+\source{Hit = có ít nhất một đáp án trong top 10. Logistic -- fusion: +0,023 [0,006; 0,040] và +0,022 [0,007; 0,040]. Nguồn: artifacts/author\_next.json, artifacts/ltr.json.}
+\end{frame}
 \chartslide{Trong 5 cách cũ, PPR dẫn đầu khi che cạnh ngẫu nhiên}{slide_recommendation.pdf}{\bigmetric{0,174}{nDCG@10 của PPR}\par\vspace{.4cm}\small Hybrid: 0,112\par Content: 0,063\par\vspace{.35cm}\par\takeaway{Hybrid chưa thắng graph-only.}}{120 source papers; toàn corpus làm ứng viên, loại seed/source. Error bars: 2.000 bootstrap samples. Nguồn: artifacts/results.json.}
 \chartslide{Hybrid cải thiện content với hiệu ghép cặp dương}{slide_diversity.pdf}{\bigmetric{+0,049}{nDCG: hybrid -- content}\par\vspace{.3cm}\small CI 95\%:\par [0,027; 0,073]\par\vspace{.3cm}\par MMR tăng diversity và coverage của hybrid.}{Hiệu ghép cặp theo cùng source paper. Diversity = 1 -- mean cosine; bubble area theo coverage. Nguồn: artifacts/results.json.}
 \chartslide{Review polarity còn khó dù có tín hiệu học được}{slide_opinion.pdf}{\bigmetric{0,469}{macro-F1 của logreg}\par\vspace{.3cm}\small Lexicon: 0,436\par Majority: 0,181\par\vspace{.3cm}\par\takeaway{CI chồng lấn; chưa khẳng định hơn lexicon.}}{115 test reviews. Cluster bootstrap theo paper, 1.000 samples. Nhãn suy từ rating. Nguồn: PeerRead + artifacts/results.json.}
@@ -245,8 +267,8 @@ Alias citation; parser program cũ.
 \begin{frame}{Proxy evaluation chưa thay thế nghiên cứu người dùng}
 \par\vspace{.4cm}
 \begin{columns}[T,onlytextwidth]
-\column{.46\textwidth}\textbf{Giới hạn hiện tại}\par Reference recovery khác sở thích.\par Fusion và đồng trích dẫn trái chiều giữa hai protocol.\par Gợi ý theo brief chưa có người chấm.
-\column{.46\textwidth}\textbf{Bước kiểm chứng tiếp}\par Thử các mốc năm khác.\par Người đọc chấm 43 cặp brief--paper.\par Annotation aspect cho review.
+\column{.46\textwidth}\textbf{Giới hạn hiện tại}\par Reference recovery có lợi sẵn cho trích dẫn.\par Fusion và đồng trích dẫn chưa phân xử được.\par Tác giả trùng tên bị gộp.\par Gợi ý theo brief chưa có người chấm.
+\column{.46\textwidth}\textbf{Bước kiểm chứng tiếp}\par SPECTER2 thay TF-IDF.\par Kiểm tra hồi quy logistic trên E3.\par Người đọc chấm 43 cặp brief--paper.\par Annotation aspect cho review.
 \end{columns}
 \par\vspace{.7cm}\takeaway{770 isolates và missing abstracts ảnh hưởng kết quả.}
 \source{Phân tích giới hạn từ snapshot và protocol đã thực thi; chưa có user study hoặc A/B test.}
@@ -274,8 +296,8 @@ OpenAlex API; Apache Solr 9.9 Reference Guide. Truy cập 14/10/2026.
 \begin{frame}{Tín hiệu trích dẫn quyết định gợi ý bài đọc tiếp}
 \par\vspace{.25cm}
 {\Large\bfseries Ba kết luận từ bản chạy}\par\par\vspace{.4cm}
-\textbf{01}\quad Đồng trích dẫn là tín hiệu đơn tốt nhất trên cả hai protocol.\par\par\vspace{.18cm}
-\textbf{02}\quad Fusion vượt hybrid trên cả hai protocol và là mặc định mới.\par\par\vspace{.18cm}
+\textbf{01}\quad Đồng trích dẫn là tín hiệu đơn tốt nhất trên cả ba protocol.\par\par\vspace{.18cm}
+\textbf{02}\quad Fusion vượt hybrid trên cả ba protocol. Hồi quy logistic còn thêm khoảng +0,02.\par\par\vspace{.18cm}
 \textbf{03}\quad Review model cần đi cùng evidence và giới hạn.
 \par\vspace{.6cm}
 \takeaway{Demo: \url{http://127.0.0.1:8765}}\par

@@ -1,5 +1,25 @@
 # Nhật ký tiến độ ResearchLens
 
+## 19/11/2026 (chiều) — Phép thử gần thực tế hơn và learning-to-rank
+
+Phép thử che reference có lợi sẵn cho tín hiệu trích dẫn, vì đáp án là reference. Đáp án cũng là bài tác giả đã biết. Vì vậy có thêm **E2b, tác giả đọc gì tiếp**. Thư viện là các bài một tác giả viết đến 2020 cộng với reference của chúng. Đáp án là bài họ trích lần đầu sau 2020. Kết quả gồm 250 tác giả và 1.899 đáp án.
+
+| | nDCG@10 E2 | Hit@10 E2 | nDCG@10 E2b | Hit@10 E2b |
+|---|---:|---:|---:|---:|
+| Global PageRank | 0,032 | 0,178 | 0,047 | 0,308 |
+| Hybrid | 0,143 | 0,416 | 0,070 | 0,236 |
+| Đồng trích dẫn | 0,173 | 0,525 | 0,099 | 0,396 |
+| Fusion (mặc định) | 0,207 | 0,580 | 0,113 | 0,420 |
+| **Hồi quy logistic** | **0,231** | **0,658** | **0,136** | **0,452** |
+
+- E2b khó hơn E2 với mọi phương pháp. Fusion vẫn đứng đầu trong các phương pháp của app.
+- Hồi quy logistic trên tám tín hiệu có tên được huấn luyện ở mốc 2018. Nó vượt fusion +0,023 [0,006; 0,040] ở E2 và +0,022 [0,007; 0,040] ở E2b.
+- Ở E2b, độ mới và số lượt được trích có trọng số lớn nhất. Tác giả thật hay đọc bài mới và nổi tiếng.
+- Hồi quy logistic chưa vào app. Lý do là mức tăng nhỏ, và nó cần kiểm tra lại trên E3 trước.
+- Hạn chế: dữ liệu chỉ có tên tác giả, nên người trùng tên bị gộp làm một.
+- Script: `scripts/evaluate_author_next.py`, `scripts/evaluate_ltr.py`. Report có mục 6.3 mới và trích dẫn McNee 2002, Strohman 2007, Beel 2016. Slide có trang "Phép thử gần thực tế hơn".
+- Bước tiếp theo nên làm là thay TF-IDF bằng SPECTER2, vì content là tín hiệu duy nhất có cho bài mới chưa ai trích.
+
 ## 19/11/2026 — Siết lại bài toán, đổi gợi ý mặc định sang fusion
 
 ResearchLens giải một bài toán: **từ các bài người dùng đã lưu, gợi ý bài nên đọc tiếp**, kèm lý do người dùng tự kiểm tra được. Tìm kiếm là cách lưu bài đầu tiên. Review là bằng chứng hiển thị cạnh gợi ý.

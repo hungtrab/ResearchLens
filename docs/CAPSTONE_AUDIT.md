@@ -34,3 +34,5 @@ Co-citation trả ít nhất một kết quả cho 218/219 tác vụ. Chênh l�
 Trong My library, gợi ý mặc định là fusion; chọn Co-citation để chỉ xem đồng trích dẫn. Mở tên bài làm bằng chứng dưới gợi ý để kiểm tra hai reference. Ví dụ thật trong snapshot, bài *Knowledge Transfer for Out-of-Knowledge-Base Entities* (W2963406064) trích cả *Learning Entity and Relation Embeddings for Knowledge Graph Completion* (W2184957013) và *Knowledge Graph Embedding by Translating on Hyperplanes* (W2283196293).
 
 Chạy `uv run python scripts/evaluate_temporal.py`. Tệp `artifacts/temporal_recovery.json` lưu hash của snapshot, tập seed/target, top 10 và hai metric của từng phương pháp trên từng paper. Phần thử nghiệm theo thời gian không dùng OpenAlex trực tuyến.
+
+Phép thử tác giả đọc gì tiếp (E2b) chạy bằng `uv run python scripts/evaluate_author_next.py` và ghi `artifacts/author_next.json`. Hồi quy logistic chạy bằng `uv run python -m scripts.evaluate_ltr` sau hai script trên, và ghi `artifacts/ltr.json`. Hai script đọc tác vụ đã cố định từ artifact, nên số liệu không đổi giữa các lần chạy.
