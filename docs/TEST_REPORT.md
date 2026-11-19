@@ -6,7 +6,7 @@ Executed on 18 November 2026 with Python 3.11.16 in the project's `uv` environme
 uv run pytest -q --cov=researchlens --cov-report=term-missing --junitxml=artifacts/pytest.xml
 ```
 
-**Result: 548 passed, 0 failed in 34.76 seconds.** One dependency deprecation warning was emitted by Starlette's TestClient about its HTTPX integration; it did not affect the tests.
+**Result: 549 passed, 0 failed in 28.80 seconds.** One dependency deprecation warning was emitted by Starlette's TestClient about its HTTPX integration; it did not affect the tests.
 
 Current machine-readable results are in `artifacts/pytest.xml`; the console and coverage record is `artifacts/test-results.txt`.
 

@@ -120,10 +120,12 @@ def score(g, variant, model, tasks):
             column = (FEATURES + QUERY_FEATURES).index("query_bm25")
             alone = [ids[i] for i in np.argsort(-x[:, column], kind="stable") if ids[i] != source][:10]
             bm25 = ranking_metrics(alone, targets)["ndcg_at_10"]
-        rows.append((m["ndcg_at_10"], m["recall_at_10"], float(bool(set(top) & targets)), fusion_ndcg, bm25))
+        rows.append((m["ndcg_at_10"], m["recall_at_10"], float(bool(set(top) & targets)), fusion_ndcg, bm25,
+                     float(bool(set(top[:5]) & targets))))
     a = np.array(rows)
     delta = list(a[:, 0] - a[:, 3])
     result = dict(tasks=len(rows), ndcg=float(a[:, 0].mean()), recall=float(a[:, 1].mean()), hit=float(a[:, 2].mean()),
+                  hit5=float(a[:, 5].mean()),
                   fusion_ndcg=float(a[:, 3].mean()), minus_fusion=dict(mean=float(np.mean(delta)), ci95=bootstrap_mean(delta)))
     if any(t[4] for t in tasks):
         result["bm25_only_ndcg"] = float(a[:, 4].mean())

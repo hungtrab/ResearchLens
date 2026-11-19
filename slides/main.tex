@@ -270,15 +270,16 @@ Decision model xếp hạng lại toàn bộ.\\[.15cm]
 Đề tài trong phép thử là thứ người dùng có thật: bài đang viết, hoặc tiêu đề bài mới.\\[.15cm]
 \footnotesize BM25 một mình kém xa decision model. Lợi ích đến từ kết hợp.
 \column{.58\textwidth}
-\small\begin{tabular}{lrrrr}\toprule
-nDCG@10 & Fusion & BM25 & Decision & \textbf{+ đề tài}\\\midrule
-E2 & 0,207 & 0,107 & 0,224 & \textbf{0,237}\\
-E2b & 0,113 & 0,135 & 0,132 & \textbf{0,182}\\
-E3 & 0,259 & 0,087 & 0,297 & \textbf{0,304}\\\bottomrule
-\end{tabular}\par\vspace{.25cm}
-\takeaway{Hit@10: 0,64 · 0,58 · 0,78. Mặc định trong app.}
+\small\begin{tabular}{lrrr}\toprule
+Hit@10 & Fusion & Decision & \textbf{+ đề tài}\\\midrule
+E2 & 58\% & \textbf{65\%} & 64\%\\
+E2b & 42\% & 44\% & \textbf{58\%}\\
+E3 & 71\% & 75\% & \textbf{78\%}\\\midrule
+Hit@5, E3 & 57\% & 62\% & \textbf{63\%}\\\bottomrule
+\end{tabular}\par\vspace{.2cm}
+\takeaway{Gần 4/5 lượt có bài đúng trong top 10. Mặc định trong app.}
 \end{columns}
-\source{So với fusion: +0,030 [0,006; 0,055], +0,069 [0,051; 0,087], +0,045 [0,005; 0,087]. Nguồn: artifacts/decision\_query\_model.json.}
+\source{nDCG@10 của fusion và decision + đề tài: 0,207 và 0,237; 0,113 và 0,182; 0,259 và 0,304; chênh lệch +0,030 [0,006; 0,055], +0,069 [0,051; 0,087], +0,045 [0,005; 0,087]. Nguồn: artifacts/decision\_query\_model.json.}
 \end{frame}
 \chartslide{Trong 5 cách cũ, PPR dẫn đầu khi che cạnh ngẫu nhiên}{slide_recommendation.pdf}{\bigmetric{0,174}{nDCG@10 của PPR}\par\vspace{.4cm}\small Hybrid: 0,112\par Content: 0,063\par\vspace{.35cm}\par\takeaway{Hybrid chưa thắng graph-only.}}{120 source papers; toàn corpus làm ứng viên, loại seed/source. Error bars: 2.000 bootstrap samples. Nguồn: artifacts/results.json.}
 \chartslide{Hybrid cải thiện content với hiệu ghép cặp dương}{slide_diversity.pdf}{\bigmetric{+0,049}{nDCG: hybrid -- content}\par\vspace{.3cm}\small CI 95\%:\par [0,027; 0,073]\par\vspace{.3cm}\par MMR tăng diversity và coverage của hybrid.}{Hiệu ghép cặp theo cùng source paper. Diversity = 1 -- mean cosine; bubble area theo coverage. Nguồn: artifacts/results.json.}
@@ -289,7 +290,7 @@ E3 & 0,259 & 0,087 & 0,297 & \textbf{0,304}\\\bottomrule
 \section{Kiểm chứng và kết luận}
 \begin{frame}{Audit và test độc lập phát hiện lỗi trước bàn giao}
 \begin{columns}[T,onlytextwidth]
-\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{548/548}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
+\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{549/549}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
 \column{.61\textwidth}\par\vspace{.3cm}
 \textbf{Các lỗi đã sửa}\par
 JSONL có line separator Unicode.\par

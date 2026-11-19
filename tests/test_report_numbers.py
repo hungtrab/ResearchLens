@@ -125,7 +125,8 @@ def test_decision_validation_numbers_are_quoted():
         for variant, value in run["validation_ndcg"].items():
             if variant in (run["chosen"], run.get("best_on_validation", run["chosen"])) or run is ROUND1:
                 assert vn(value) in REPORT, (variant, vn(value))
-    assert DECISION["test"] == ROUND1["test"], "the app model must be the round-1 model the report describes"
+    shipped = {suite: {k: v for k, v in r.items() if k != "hit5"} for suite, r in DECISION["test"].items()}
+    assert shipped == ROUND1["test"], "the app model must be the round-1 model the report describes"
 
 
 def test_round2_numbers_are_quoted():
@@ -141,3 +142,19 @@ def test_topic_table_row_matches_artifacts(suite):
     delta = "+" + vn(t["minus_fusion"]["mean"]) + " " + interval(t["minus_fusion"])
     assert delta in REPORT and delta in SLIDES
     assert f"{sum(DECISION['tasks_per_cutoff'].values()):,}".replace(",", ".") + " tác vụ" in REPORT
+
+
+def hit_at(task_list, method, k):
+    return sum(bool(set(t["methods"][method]["top10"][:k]) & set(t["targets"])) for t in task_list) / len(task_list)
+
+
+def test_hit_table_matches_artifacts():
+    fusion = {"E2": (hit_at(TEMPORAL["observations"], "fusion", 10), hit_at(TEMPORAL["observations"], "fusion", 5)),
+              "E2b": (hit_at(AUTHOR["observations"], "fusion", 10), hit_at(AUTHOR["observations"], "fusion", 5)),
+              "E3": (HOLDOUT["hits"]["fusion"]["hit10"], HOLDOUT["hits"]["fusion"]["hit5"])}
+    for suite, (f10, f5) in fusion.items():
+        d, t = DECISION["test"][suite], TOPIC["test"][suite]
+        cells = [f10, d["hit"], t["hit"], f5, d["hit5"], t["hit5"]]
+        row = f"{suite} & " + " & ".join(map(vn, cells)) + "\\\\"
+        assert row in REPORT, f"table tab:hit should contain {row!r}"
+        assert f"{round(100 * t['hit'])}\\%" in REPORT  # the abstract quotes the topic model in percent

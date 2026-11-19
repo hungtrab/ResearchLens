@@ -13,6 +13,13 @@
 | E3 | 0,259 | 0,087 | 0,297 | **0,304** | 0,783 |
 
   So với fusion: +0,030 [0,006; 0,055], +0,069 [0,051; 0,087], +0,045 [0,005; 0,087]. Cả ba khoảng tin cậy không chứa 0.
+- **Chỉ số chính là Hit@10 / Hit@5** (có ít nhất một bài đúng trong 10 / 5 gợi ý đầu):
+
+| | Fusion | Decision | Decision + đề tài |
+|---|---:|---:|---:|
+| E2 Hit@10 / Hit@5 | 58% / 47% | 65% / 48% | 64% / 49% |
+| E2b Hit@10 / Hit@5 | 42% / 28% | 44% / 33% | **58% / 45%** |
+| E3 Hit@10 / Hit@5 | 71% / 57% | 75% / 62% | **78% / 63%** |
 - Đề tài trong phép thử là thứ người dùng có thật: bài đang viết (E2, E3) hoặc tiêu đề bài mới của tác giả (E2b).
 - Lệnh: `uv run python -m scripts.decision_model --query`. Artifact: `artifacts/decision_query_model.json`, `.pkl`.
 

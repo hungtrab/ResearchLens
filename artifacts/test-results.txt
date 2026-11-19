@@ -5,7 +5,7 @@
 ........................................................................ [ 65%]
 ........................................................................ [ 78%]
 ........................................................................ [ 91%]
-............................................                             [100%]
+.............................................                            [100%]
 =============================== warnings summary ===============================
 .venv/lib/python3.11/site-packages/fastapi/testclient.py:1
   /home/hungchan/Work/20261/webmining/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
@@ -15,22 +15,22 @@
 ================================ tests coverage ================================
 _______________ coverage: platform linux, python 3.11.16-final-0 _______________
 
-Name                         Stmts   Miss  Cover   Missing
-----------------------------------------------------------
+Name                         Stmts   Miss  Cover
+------------------------------------------------
 researchlens/__init__.py         0      0   100%
-researchlens/api.py            182      2    99%   185-186
+researchlens/api.py            182      2    99%
 researchlens/catalog.py         62      0   100%
 researchlens/decision.py        90      0   100%
 researchlens/discovery.py       92      0   100%
 researchlens/evaluation.py      25      0   100%
-researchlens/mining.py         324      4    99%   179, 205, 207, 373
-researchlens/passages.py       138      2    99%   149, 187
+researchlens/mining.py         324      4    99%
+researchlens/passages.py       138      2    99%
 researchlens/pdf.py             36      0   100%
-researchlens/reviews.py         33      3    91%   31-33
+researchlens/reviews.py         33      3    91%
 researchlens/solr.py            27      0   100%
 researchlens/sources.py         72      0   100%
-researchlens/store.py           82      1    99%   90
+researchlens/store.py           82      1    99%
 researchlens/workspace.py      139      0   100%
-----------------------------------------------------------
+------------------------------------------------
 TOTAL                         1302     12    99%
-548 passed, 1 warning in 34.76s
+549 passed, 1 warning in 28.80s
