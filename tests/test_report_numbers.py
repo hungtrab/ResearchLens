@@ -2,7 +2,10 @@
 import json
 from pathlib import Path
 
+import numpy as np
 import pytest
+
+from researchlens.evaluation import bootstrap_mean
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = (ROOT / "report/main.tex").read_text()
@@ -210,6 +213,7 @@ def test_slm_latency_row_and_http_numbers_match_artifacts():
 
 
 SLM_RANKER, LLM_RANKER = load("slm_ranker.json"), load("llm_ranker.json")
+GRAPH_RANKER = load("llm_ranker_graph.json")
 
 
 def signed(x):
@@ -246,5 +250,23 @@ def test_language_model_ranker_table_matches_artifacts():
         assert f"{signed(d['mean'])} [{signed(d['ci95'][0])}; {signed(d['ci95'][1])}]" in REPORT
     assert ", ".join(signed(LLM_RANKER["suites"][s]["minus_fusion"]["mean"]) for s in suites[:2]) in REPORT
     assert ", ".join(signed(LLM_RANKER["suites"][s]["minus_decision"]["mean"]) for s in suites[:2]) in REPORT
-    empty = sum(r["named"] == 0 for r in LLM_RANKER["rows"])
-    assert f"{empty}/{len(LLM_RANKER['rows'])} câu trả lời" in REPORT
+    assert LLM_RANKER["answers_naming_all"] == 1 and f"Cả {len(LLM_RANKER['rows'])} câu trả lời" in REPORT
+
+
+def test_graph_rag_ranker_matches_artifacts():
+    """LLM + graph RAG row, its deltas vs decision, fusion and text-only LLM, and how many answers ran out."""
+    suites = ("E2", "E2b", "E3")
+    assert GRAPH_RANKER["graph_evidence"] and GRAPH_RANKER["baselines"] == LLM_RANKER["baselines"]
+    cells = " & ".join(vn(GRAPH_RANKER["suites"][s]["ndcg"]) for s in suites)
+    seconds = s2(GRAPH_RANKER["seconds_per_request"]["p50"])
+    assert f"LLM + graph RAG & {cells} & {vn(GRAPH_RANKER['suites']['E2']['hit10'])} & {seconds}\\,s\\\\" in REPORT
+    assert f"LLM + graph RAG & {cells} & {seconds}\\,s\\\\" in SLIDES
+    assert not GRAPH_RANKER["beats_decision"]
+    span = lambda d: f"{signed(d['mean'])} [{signed(d['ci95'][0])}; {signed(d['ci95'][1])}]"
+    for s in suites:
+        assert span(GRAPH_RANKER["suites"][s]["minus_decision"]) in REPORT
+    assert span(GRAPH_RANKER["suites"]["E3"]["minus_fusion"]) in REPORT
+    gain = [g["llm"] - t["llm"] for g, t in zip(GRAPH_RANKER["rows"], LLM_RANKER["rows"]) if g["suite"] == "E3"]
+    assert span(dict(mean=float(np.mean(gain)), ci95=bootstrap_mean(gain))) in REPORT
+    empty = sum(r["named"] == 0 for r in GRAPH_RANKER["rows"])
+    assert f"{empty}/{len(GRAPH_RANKER['rows'])} câu trả lời vẫn dùng hết 16.384 token" in REPORT

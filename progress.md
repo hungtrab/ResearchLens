@@ -11,9 +11,12 @@
 | **Decision** | **0,224** | **0,132** | **0,297** | 85 ms |
 | SLM 0.5B | 0,148 | 0,078 | 0,155 | 3,48 s |
 | SLM 1.5B | 0,186 | 0,114 | 0,193 | 6,17 s |
-| LLM GLM-5.3-flash | 0,205 | 0,119 | 0,257 | 110,61 s |
+| LLM GLM-5.3-flash | 0,204 | 0,122 | 0,250 | 110,61 s |
+| LLM + graph RAG | 0,202 | 0,128 | 0,303 | 222,07 s |
 
-- Không mô hình nào đạt luật. LLM ngang fusion; thấp hơn decision ở cả ba phép thử nhưng CI chứa 0. 12/589 câu trả lời của LLM hết 8.192 token suy luận nên giữ thứ tự fusion; bỏ đi kết luận không đổi.
+- Không mô hình nào đạt luật. LLM chỉ đọc văn bản ngang fusion; thấp hơn decision ở cả ba phép thử nhưng CI chứa 0.
+- Graph RAG: mỗi ứng viên thêm một dòng bằng chứng trích dẫn (đồng trích dẫn với bài đã lưu, liên kết trích dẫn với bài đã lưu, số lần được trích). Ở E3 cao hơn LLM chỉ văn bản +0,053 [0,017; 0,090] và vượt fusion +0,043 [0,006; 0,079]; so với decision vẫn −0,022, −0,004, +0,006, CI chứa 0.
+- Chạy sạch: giới hạn 16.384 token (8.192 làm 31% prompt graph bị cắt khi đang suy luận). Còn 16/589 câu graph và 0/589 câu văn bản bị cắt. Gọi API bằng streaming, vì gateway trả HTTP 504 cho các câu suy luận lâu.
 - Lỗi tìm ra khi viết SLM ranker: tái dùng KV cache theo prefix dài nhất làm điểm phụ thuộc thứ tự chấm (−0,27 thành −0,18). Sửa: đọc phần thư viện một lần, mỗi ứng viên luôn nối ngay sau.
 - Key API nằm ở `llm_api/.env`, không vào git (`.gitignore`) và không vào gói zip.
 

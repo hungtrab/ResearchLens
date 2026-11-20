@@ -17,7 +17,7 @@ from pathlib import Path
 
 import numpy as np
 
-from researchlens.decision import DecisionModel
+from researchlens.decision import DecisionModel, citation_links
 from researchlens.evaluation import bootstrap_mean, ranking_metrics
 from researchlens.explain import describe
 from researchlens.mining import MiningEngine
@@ -67,6 +67,15 @@ def suites(papers, without_e3, split):
             ("E3", full, [(t["seeds"], t["relevant"], t["paper_id"]) for t in split])]
 
 
+def graph_evidence(pid, seeds, refs, citers, votes):
+    """What the citation graph says about one candidate, in words, for the LLM + graph RAG prompt."""
+    saved = set(seeds)
+    return (f"{len(votes.get(pid, []))} papers cite it together with a saved paper; "
+            f"{sum(pid in refs.get(s, ()) for s in saved)} saved papers cite it; "
+            f"it cites {sum(pid in citers.get(s, ()) for s in saved)} saved papers; "
+            f"{len(citers.get(pid, ()))} papers in the collection cite it.")
+
+
 def ndcg(order, targets):
     return ranking_metrics(order[:10], set(targets))["ndcg_at_10"]
 
@@ -93,8 +102,11 @@ def retrieval_jobs(limit=None):
             pool = drop(engine.recommend(seeds, POOL + 1, "fusion", 0)["items"])[:POOL]
             ranked = drop(engine.recommend(seeds, 11, "decision", 0, decision)["items"])
             titles = [engine.by_id[s]["title"] for s in sorted(seeds)[:SEEDS_SHOWN]]
+            refs, citers = citation_links(engine)
+            votes = engine.co_citation_witnesses(seeds)
             jobs.append(dict(suite=name, seeds=seeds, targets=sorted(targets), pool=pool, titles=titles,
                              candidates=[describe(engine.by_id[pid], 40) for pid in pool],
+                             graph=[graph_evidence(pid, seeds, refs, citers, votes) for pid in pool],
                              fusion=ndcg(pool, targets), decision=ndcg(ranked, targets),
                              fusion_hit=float(bool(set(pool[:10]) & set(targets))),
                              decision_hit=float(bool(set(ranked[:10]) & set(targets))),
