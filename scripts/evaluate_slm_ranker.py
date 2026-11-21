@@ -4,10 +4,13 @@ Retrieval: fusion's top 20 candidates. Ranking: the model reads the saved papers
 candidate's title and abstract, and is asked whether the reader should read it next; the score is the logit of
 "Yes" minus "No". The saved papers come first in the prompt, so llama.cpp reuses them across the 20 candidates.
 Same frozen tasks as decision_model.py: E2, E2b and E3. Decision model and fusion are rerun here on the same
-graphs, so the deltas are paired per task.
+graphs, so the deltas are paired per task. The decision model is scored twice: on the same 20 candidates
+("decision_pool", the fair comparison) and on its own candidates as the app runs it ("decision"), where about a
+third of its top 10 lies outside fusion's 20.
 Pre-registered: the SLM ranker beats the decision model only if its nDCG@10 is higher with a paired 95% CI
 excluding 0 on at least two of the three suites.
-Run: uv run --extra slm python -m scripts.evaluate_slm_ranker [--models 0.5b 1.5b] [--limit N]"""
+Run: uv run --extra slm python -m scripts.evaluate_slm_ranker [--models 0.5b 1.5b] [--limit N]
+--rescore recomputes the baselines and deltas of slm_ranker.json from its stored per-task scores."""
 import argparse
 import glob
 import json
@@ -25,7 +28,9 @@ from scripts.evaluate_author_next import year
 
 ROOT = Path(__file__).resolve().parents[1]
 POOL, SEEDS_SHOWN, THREADS = 20, 30, 8
+BASELINES = ("decision_pool", "decision", "fusion")  # decision_pool: the decision model on the same 20 candidates
 SYSTEM = "You help a researcher decide which paper to read next."
+RULE = "beats the decision model if nDCG@10 delta CI95 > 0 on at least 2 of 3 suites"
 
 
 class Ranker:
@@ -97,19 +102,22 @@ def retrieval_jobs(limit=None):
     # Retrieval and the two baselines, once.
     jobs = []
     for name, engine, tasks in suites(papers, without_e3, split):
+        refs, citers = citation_links(engine)
         for seeds, targets, source in tasks[:limit]:
             drop = lambda items: [i["id"] for i in items if i["id"] != source]
             pool = drop(engine.recommend(seeds, POOL + 1, "fusion", 0)["items"])[:POOL]
             ranked = drop(engine.recommend(seeds, 11, "decision", 0, decision)["items"])
+            probability = dict(zip(*decision.rank(engine, seeds)[:2]))  # every fusion top-20 paper is scored
+            on_pool = sorted(pool, key=lambda pid: -probability[pid])
             titles = [engine.by_id[s]["title"] for s in sorted(seeds)[:SEEDS_SHOWN]]
-            refs, citers = citation_links(engine)
             votes = engine.co_citation_witnesses(seeds)
+            hit = lambda order: float(bool(set(order[:10]) & set(targets)))
             jobs.append(dict(suite=name, seeds=seeds, targets=sorted(targets), pool=pool, titles=titles,
                              candidates=[describe(engine.by_id[pid], 40) for pid in pool],
                              graph=[graph_evidence(pid, seeds, refs, citers, votes) for pid in pool],
-                             fusion=ndcg(pool, targets), decision=ndcg(ranked, targets),
-                             fusion_hit=float(bool(set(pool[:10]) & set(targets))),
-                             decision_hit=float(bool(set(ranked[:10]) & set(targets))),
+                             fusion=ndcg(pool, targets), fusion_hit=hit(pool),
+                             decision=ndcg(ranked, targets), decision_hit=hit(ranked),
+                             decision_pool=ndcg(on_pool, targets), decision_pool_hit=hit(on_pool),
                              pool_recall=len(set(pool) & set(targets)) / len(targets)))
         print(name, "retrieval done", flush=True)
     return jobs
@@ -120,13 +128,13 @@ def baselines(jobs):
     for name in ("E2", "E2b", "E3"):
         sub = [j for j in jobs if j["suite"] == name]
         if sub:
-            out[name] = dict(tasks=len(sub), fusion=summary(sub, "fusion"), decision=summary(sub, "decision"),
-                             pool_recall=float(np.mean([j["pool_recall"] for j in sub])))
+            out[name] = dict(tasks=len(sub), pool_recall=float(np.mean([j["pool_recall"] for j in sub])),
+                             **{key: summary(sub, key) for key in BASELINES})
     return out
 
 
 def compare(rows, key):
-    """Per suite: the ranker's nDCG@10 and Hit@10 and its paired deltas vs the decision model and fusion."""
+    """Per suite: the ranker's nDCG@10 and Hit@10 and its paired deltas vs each baseline."""
     per_suite = {}
     for name in ("E2", "E2b", "E3"):
         sub = [r for r in rows if r["suite"] == name]
@@ -134,16 +142,44 @@ def compare(rows, key):
             per_suite[name] = dict(tasks=len(sub), **summary(sub, key), **{
                 f"minus_{base}": dict(mean=float(np.mean([r[key] - r[base] for r in sub])),
                                       ci95=bootstrap_mean([r[key] - r[base] for r in sub]))
-                for base in ("decision", "fusion")})
+                for base in BASELINES})
     return per_suite
+
+
+def beats(per_suite):
+    """The pre-registered rule, against the decision model on the same candidates and as the app runs it."""
+    return {base: sum(s[f"minus_{base}"]["ci95"][0] > 0 for s in per_suite.values()) >= 2
+            for base in ("decision_pool", "decision")}
+
+
+def with_baselines(rows, jobs):
+    """Per-task rows with every baseline's score on the same task (rows and jobs are in the same order)."""
+    assert len(rows) == len(jobs) and all(r["suite"] == j["suite"] for r, j in zip(rows, jobs))
+    return [dict(r, **{k: j[k] for k in BASELINES}) for r, j in zip(rows, jobs)]
+
+
+def rescore(jobs):
+    """Recompute slm_ranker.json's baselines and deltas without rerunning the language models."""
+    path = ROOT / "artifacts/slm_ranker.json"
+    result = json.loads(path.read_text())
+    for model in result["models"].values():
+        model["rows"] = with_baselines(model["rows"], jobs)
+        model["suites"] = compare(model["rows"], "slm")
+        model["beats_decision"] = beats(model["suites"])
+    result.update(rule=RULE, baselines=baselines(jobs))
+    path.write_text(json.dumps(result, indent=2))
+    print(json.dumps({n: m["suites"] for n, m in result["models"].items()}, indent=1))
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--models", nargs="+", default=["0.5b", "1.5b", "3b"])
     parser.add_argument("--limit", type=int, help="first N tasks per suite, for a smoke run")
+    parser.add_argument("--rescore", action="store_true", help="recompute baselines from stored per-task scores")
     args = parser.parse_args()
     jobs = retrieval_jobs(args.limit)
+    if args.rescore:
+        return rescore(jobs)
     models = {}
     paths = glob.glob(str(Path.home() / ".cache/huggingface/hub/models--Qwen--Qwen2.5-*-Instruct-GGUF/snapshots/*/*.gguf"))
     for size in args.models:
@@ -157,21 +193,20 @@ def main():
             seconds.append(time.perf_counter() - started)
             order = [job["pool"][i] for i in np.argsort(-np.array(scores), kind="stable")]
             rows.append(dict(suite=job["suite"], slm=ndcg(order, job["targets"]),
-                             slm_hit=float(bool(set(order[:10]) & set(job["targets"]))),
-                             decision=job["decision"], fusion=job["fusion"]))
+                             slm_hit=float(bool(set(order[:10]) & set(job["targets"])))))
             if k % 50 == 0:
                 print(size, k, f"{np.median(seconds):.2f}s/task", flush=True)
         load.append(os.getloadavg()[0])
+        rows = with_baselines(rows, jobs)
         per_suite = compare(rows, "slm")
-        wins = sum(s["minus_decision"]["ci95"][0] > 0 for s in per_suite.values())
-        models[ranker.name] = dict(suites=per_suite, beats_decision=wins >= 2,
+        models[ranker.name] = dict(suites=per_suite, beats_decision=beats(per_suite),
                                    seconds_per_request=dict(p50=float(np.percentile(seconds, 50)),
                                                             p95=float(np.percentile(seconds, 95))),
                                    load_average_1min=load, rows=rows)
         print(ranker.name, json.dumps(per_suite, indent=1), flush=True)
         del ranker
 
-    result = dict(rule="SLM beats decision model if nDCG@10 delta CI95 > 0 on at least 2 of 3 suites",
+    result = dict(rule=RULE,
                   pool=POOL, seeds_shown=SEEDS_SHOWN, threads=THREADS, system=SYSTEM, baselines=baselines(jobs),
                   models=models)
     out = ROOT / ("artifacts/slm_ranker.json" if not args.limit else "artifacts/slm_ranker_smoke.json")

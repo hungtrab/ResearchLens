@@ -221,35 +221,41 @@ def signed(x):
 
 
 def test_language_model_ranker_table_matches_artifacts():
-    """tab:llmrank and its slide: same 20 candidates, decision model and fusion rerun on the same tasks."""
+    """tab:llmrank and its slide: same 20 candidates, decision model and fusion rerun on the same tasks; the
+    decision model both on those 20 candidates (the comparison) and on its own candidates as the app runs it."""
     base = SLM_RANKER["baselines"]
     assert base == LLM_RANKER["baselines"]
     for suite in ("E2", "E2b", "E3"):  # the rerun reproduces the decision model's test numbers
         assert abs(base[suite]["decision"]["ndcg"] - DECISION["test"][suite]["ndcg"]) < 1e-9
     suites = ("E2", "E2b", "E3")
-    rows = {"Fusion": [base[s]["fusion"]["ndcg"] for s in suites],
-            "Decision": [base[s]["decision"]["ndcg"] for s in suites]}
+    cells = lambda key: " & ".join(vn(base[s][key]["ndcg"]) for s in suites) + f" & {vn(base['E2'][key]['hit10'])}"
+    assert f"Fusion & {cells('fusion')} & " in REPORT and f"Decision model (app) & {cells('decision')} & " in REPORT
+    bold = lambda key, hit: " & ".join("\\textbf{%s}" % vn(x) for x in [base[s][key]["ndcg"] for s in suites]
+                                       + ([base["E2"][key]["hit10"]] if hit else []))
+    assert f"\\textbf{{Decision model}} & {bold('decision_pool', True)} & " in REPORT
+    assert f"Decision (app) & {' & '.join(vn(base[s]['decision']['ndcg']) for s in suites)} & " in SLIDES
+    assert f"\\textbf{{Decision (cùng 20)}} & {bold('decision_pool', False)} & " in SLIDES
     for name, model in SLM_RANKER["models"].items():
         size = "0.5B" if "-0.5b-" in name else "1.5B"
         cells = [model["suites"][s]["ndcg"] for s in suites]
         seconds = s2(model["seconds_per_request"]["p50"])
         assert f"SLM {size} & " + " & ".join(map(vn, cells)) + f" & {vn(model['suites']['E2']['hit10'])} & {seconds}\\,s\\\\" in REPORT
         assert f"SLM {size} & " + " & ".join(map(vn, cells)) + f" & {seconds}\\,s\\\\" in SLIDES
-        assert not model["beats_decision"]
+        assert not any(model["beats_decision"].values())
     llm = [LLM_RANKER["suites"][s]["ndcg"] for s in suites]
     seconds = s2(LLM_RANKER["seconds_per_request"]["p50"])
     assert "LLM GLM-5.3-flash & " + " & ".join(map(vn, llm)) + f" & {vn(LLM_RANKER['suites']['E2']['hit10'])} & {seconds}\\,s\\\\" in REPORT
     assert "LLM GLM-5.3 & " + " & ".join(map(vn, llm)) + f" & {seconds}\\,s\\\\" in SLIDES
-    assert not LLM_RANKER["beats_decision"]
-    for name, cells in rows.items():
-        assert " & ".join(map(vn, cells)) in REPORT.replace("\\textbf{", "").replace("}", "")
+    assert not any(LLM_RANKER["beats_decision"].values())
     assert ", ".join(vn(base[s]["pool_recall"]) for s in suites[:2]) + f" và {vn(base['E3']['pool_recall'])} số bài đúng" in REPORT
     mid = next(m for n, m in SLM_RANKER["models"].items() if "-1.5b-" in n)["suites"]
-    for s in ("E2", "E3"):
-        d = mid[s]["minus_decision"]
+    for s in suites:
+        d = mid[s]["minus_decision_pool"]
         assert f"{signed(d['mean'])} [{signed(d['ci95'][0])}; {signed(d['ci95'][1])}]" in REPORT
     assert ", ".join(signed(LLM_RANKER["suites"][s]["minus_fusion"]["mean"]) for s in suites[:2]) in REPORT
-    assert ", ".join(signed(LLM_RANKER["suites"][s]["minus_decision"]["mean"]) for s in suites[:2]) in REPORT
+    assert ", ".join(signed(LLM_RANKER["suites"][s]["minus_decision_pool"]["mean"]) for s in suites[:2]) in REPORT
+    d = LLM_RANKER["suites"]["E3"]["minus_decision_pool"]
+    assert d["ci95"][1] < 0 and f"{signed(d['mean'])} [{signed(d['ci95'][0])}; {signed(d['ci95'][1])}]" in REPORT
     assert LLM_RANKER["answers_naming_all"] == 1 and f"Cả {len(LLM_RANKER['rows'])} câu trả lời" in REPORT
 
 
@@ -261,12 +267,14 @@ def test_graph_rag_ranker_matches_artifacts():
     seconds = s2(GRAPH_RANKER["seconds_per_request"]["p50"])
     assert f"LLM + graph RAG & {cells} & {vn(GRAPH_RANKER['suites']['E2']['hit10'])} & {seconds}\\,s\\\\" in REPORT
     assert f"LLM + graph RAG & {cells} & {seconds}\\,s\\\\" in SLIDES
-    assert not GRAPH_RANKER["beats_decision"]
+    assert not any(GRAPH_RANKER["beats_decision"].values())
     span = lambda d: f"{signed(d['mean'])} [{signed(d['ci95'][0])}; {signed(d['ci95'][1])}]"
     for s in suites:
-        assert span(GRAPH_RANKER["suites"][s]["minus_decision"]) in REPORT
+        assert span(GRAPH_RANKER["suites"][s]["minus_decision_pool"]) in REPORT
     assert span(GRAPH_RANKER["suites"]["E3"]["minus_fusion"]) in REPORT
-    gain = [g["llm"] - t["llm"] for g, t in zip(GRAPH_RANKER["rows"], LLM_RANKER["rows"]) if g["suite"] == "E3"]
-    assert span(dict(mean=float(np.mean(gain)), ci95=bootstrap_mean(gain))) in REPORT
+    gain = {s: [g["llm"] - t["llm"] for g, t in zip(GRAPH_RANKER["rows"], LLM_RANKER["rows"]) if g["suite"] == s]
+            for s in suites}
+    assert span(dict(mean=float(np.mean(gain["E3"])), ci95=bootstrap_mean(gain["E3"]))) in REPORT
+    assert f"chênh lệch là {signed(np.mean(gain['E2']))} và {signed(np.mean(gain['E2b']))}, khoảng tin cậy chứa 0" in REPORT
     empty = sum(r["named"] == 0 for r in GRAPH_RANKER["rows"])
     assert f"{empty}/{len(GRAPH_RANKER['rows'])} câu trả lời vẫn dùng hết 16.384 token" in REPORT

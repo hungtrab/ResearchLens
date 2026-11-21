@@ -7,16 +7,19 @@
 
 | nDCG@10 | E2 | E2b | E3 | p50 mỗi lượt |
 |---|---:|---:|---:|---:|
+| Decision (app, ứng viên riêng) | 0,224 | 0,132 | 0,297 | 85 ms |
 | Fusion | 0,207 | 0,113 | 0,259 | 21 ms |
-| **Decision** | **0,224** | **0,132** | **0,297** | 85 ms |
+| **Decision (cùng 20 ứng viên)** | **0,219** | **0,131** | **0,293** | 85 ms |
 | SLM 0.5B | 0,148 | 0,078 | 0,155 | 3,48 s |
 | SLM 1.5B | 0,186 | 0,114 | 0,193 | 6,17 s |
 | LLM GLM-5.3-flash | 0,204 | 0,122 | 0,250 | 110,61 s |
-| LLM + graph RAG | 0,202 | 0,128 | 0,303 | 222,07 s |
+| LLM + graph RAG | 0,202 | 0,127 | 0,303 | 221,95 s |
 
 - Không mô hình nào đạt luật. LLM chỉ đọc văn bản ngang fusion; thấp hơn decision ở cả ba phép thử nhưng CI chứa 0.
-- Graph RAG: mỗi ứng viên thêm một dòng bằng chứng trích dẫn (đồng trích dẫn với bài đã lưu, liên kết trích dẫn với bài đã lưu, số lần được trích). Ở E3 cao hơn LLM chỉ văn bản +0,053 [0,017; 0,090] và vượt fusion +0,043 [0,006; 0,079]; so với decision vẫn −0,022, −0,004, +0,006, CI chứa 0.
-- Chạy sạch: giới hạn 16.384 token (8.192 làm 31% prompt graph bị cắt khi đang suy luận). Còn 16/589 câu graph và 0/589 câu văn bản bị cắt. Gọi API bằng streaming, vì gateway trả HTTP 504 cho các câu suy luận lâu.
+- Graph RAG: mỗi ứng viên thêm một dòng bằng chứng trích dẫn (đồng trích dẫn với bài đã lưu, liên kết trích dẫn với bài đã lưu, số lần được trích). Ở E3 cao hơn LLM chỉ văn bản +0,053 [0,017; 0,090] và vượt fusion +0,043 [0,006; 0,079]; so với decision trên cùng 20 ứng viên vẫn −0,017, −0,004, +0,009, CI chứa 0.
+- Chạy sạch: giới hạn 16.384 token (8.192 làm 31% prompt graph bị cắt khi đang suy luận). Còn 15/589 câu graph và 0/589 câu văn bản bị cắt. Gọi API bằng streaming, vì gateway trả HTTP 504 cho các câu suy luận lâu.
+- Rà lại implementation (21/11): bảng cũ ghi "cùng 20 ứng viên" nhưng decision model chạy trên tập ứng viên riêng (~300 bài); 33% top 10 của nó nằm ngoài 20 bài của fusion. Thêm baseline decision xếp lại đúng 20 bài (0,219/0,131/0,293), luật so với baseline này; kết luận không đổi. Với baseline này SLM 1.5B thua có ý nghĩa ở cả ba phép thử, LLM văn bản thua có ý nghĩa ở E3. SLM tính lại từ điểm từng tác vụ đã lưu (`--rescore`), LLM từ cache, không gọi lại model.
+- Cũng sửa: chỉ đọc số dạng `[k]` trong câu trả lời (48 câu có thêm đoạn giải thích sau thứ tự; kết quả không đổi); câu rỗng đã hỏi ở 16.384 token không hỏi lại; GLM không tất định ở temperature 0, nên prompt trùng dùng một câu trả lời trong cache (graph E2b 0,128 → 0,127).
 - Lỗi tìm ra khi viết SLM ranker: tái dùng KV cache theo prefix dài nhất làm điểm phụ thuộc thứ tự chấm (−0,27 thành −0,18). Sửa: đọc phần thư viện một lần, mỗi ứng viên luôn nối ngay sau.
 - Key API nằm ở `llm_api/.env`, không vào git (`.gitignore`) và không vào gói zip.
 

@@ -23,7 +23,8 @@ from pathlib import Path
 import httpx
 import numpy as np
 
-from scripts.evaluate_slm_ranker import POOL, SEEDS_SHOWN, baselines, compare, ndcg, retrieval_jobs
+from scripts.evaluate_slm_ranker import (POOL, RULE, SEEDS_SHOWN, baselines, beats, compare, ndcg, retrieval_jobs,
+                                         with_baselines)
 
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "artifacts/llm_ranker_cache.jsonl"
@@ -42,8 +43,9 @@ def prompt(job, graph=False):
 
 
 def order_from(answer, n):
-    """Indices named in the answer, first mention wins, then the rest in fusion order."""
-    named = list(dict.fromkeys(int(k) - 1 for k in re.findall(r"\[?(\d+)\]?", answer) if 1 <= int(k) <= n))
+    """Indices named in the answer as [k], first mention wins, then the rest in fusion order. Some answers add a
+    sentence of reasoning after the ranking; a bare number there (a year, "top 10") is not a candidate."""
+    named = list(dict.fromkeys(int(k) - 1 for k in re.findall(r"\[(\d+)\]", answer) if 1 <= int(k) <= n))
     return named + [i for i in range(n) if i not in named], len(named)
 
 
@@ -67,7 +69,8 @@ def main():
         text = prompt(job, args.graph)
         digest = hashlib.sha256((SYSTEM + text).encode()).hexdigest()
         cached = cache.get((model, digest))
-        if cached and order_from(cached["answer"], POOL)[1]:  # an empty answer was cut off mid-reasoning: ask again
+        # An empty answer ran out of tokens mid-reasoning: ask again only if it was asked with a lower limit.
+        if cached and (order_from(cached["answer"], POOL)[1] or cached.get("max_tokens") == MAX_TOKENS):
             return cached
         for attempt in range(8):  # the shared endpoint is sometimes overloaded for minutes
             started = time.perf_counter()
@@ -111,13 +114,14 @@ def main():
         order = [job["pool"][i] for i in indices]
         rows.append(dict(suite=job["suite"], llm=ndcg(order, job["targets"]),
                          llm_hit=float(bool(set(order[:10]) & set(job["targets"]))), named=named,
-                         decision=job["decision"], fusion=job["fusion"], seconds=answer["seconds"]))
+                         seconds=answer["seconds"]))
+    rows = with_baselines(rows, jobs)
     per_suite = compare(rows, "llm")
     seconds = [r["seconds"] for r in rows]
     tokens = [a["usage"] for a in answers if a.get("usage")]
-    result = dict(graph_evidence=args.graph, rule="LLM beats decision model if nDCG@10 delta CI95 > 0 on at least 2 of 3 suites",
+    result = dict(graph_evidence=args.graph, rule=RULE,
                   model=model, pool=POOL, seeds_shown=SEEDS_SHOWN, system=SYSTEM, baselines=baselines(jobs),
-                  suites=per_suite, beats_decision=sum(s["minus_decision"]["ci95"][0] > 0 for s in per_suite.values()) >= 2,
+                  suites=per_suite, beats_decision=beats(per_suite),
                   answers_naming_all=float(np.mean([r["named"] == POOL for r in rows])),
                   seconds_per_request=dict(p50=float(np.percentile(seconds, 50)), p95=float(np.percentile(seconds, 95))),
                   tokens=dict(prompt=sum(t.get("prompt_tokens", 0) for t in tokens),
