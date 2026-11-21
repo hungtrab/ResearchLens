@@ -18,6 +18,16 @@
 - Không mô hình nào đạt luật. LLM chỉ đọc văn bản ngang fusion; thấp hơn decision ở cả ba phép thử nhưng CI chứa 0.
 - Graph RAG: mỗi ứng viên thêm một dòng bằng chứng trích dẫn (đồng trích dẫn với bài đã lưu, liên kết trích dẫn với bài đã lưu, số lần được trích). Ở E3 cao hơn LLM chỉ văn bản +0,053 [0,017; 0,090] và vượt fusion +0,043 [0,006; 0,079]; so với decision trên cùng 20 ứng viên vẫn −0,017, −0,004, +0,009, CI chứa 0.
 - Chạy sạch: giới hạn 16.384 token (8.192 làm 31% prompt graph bị cắt khi đang suy luận). Còn 15/589 câu graph và 0/589 câu văn bản bị cắt. Gọi API bằng streaming, vì gateway trả HTTP 504 cho các câu suy luận lâu.
+- 100 ứng viên (21/11): 20 ứng viên chỉ chứa 36%/17%/47% bài đúng; 100 chứa 66%/37%/75%. Đưa hết 2.520–3.595 bài thì không còn là RAG (SLM ~10 phút/tác vụ, prompt LLM ~200k token). LLM được hỏi chọn và xếp top 10 trong 100.
+
+| nDCG@10, cùng 100 ứng viên | E2 | E2b | E3 | p50 |
+|---|---:|---:|---:|---:|
+| Decision | 0,229 | 0,130 | 0,296 | 85 ms |
+| SLM 0.5B | 0,067 | 0,040 | 0,075 | 14,00 s |
+| SLM 1.5B | 0,127 | 0,068 | 0,088 | 24,71 s |
+| **LLM + graph RAG** | **0,242** | **0,135** | **0,310** | 202,13 s |
+
+- LLM + graph RAG cao hơn decision ở cả ba (+0,013, +0,006, +0,013) nhưng CI chứa 0, không đạt luật; vượt fusion có ý nghĩa ở cả ba. 28/589 câu hết token. ~9,7 triệu token. SLM tệ đi với nhiều ứng viên. Chưa chạy LLM chỉ văn bản với 100 ứng viên.
 - Rà lại implementation (21/11): bảng cũ ghi "cùng 20 ứng viên" nhưng decision model chạy trên tập ứng viên riêng (~300 bài); 33% top 10 của nó nằm ngoài 20 bài của fusion. Thêm baseline decision xếp lại đúng 20 bài (0,219/0,131/0,293), luật so với baseline này; kết luận không đổi. Với baseline này SLM 1.5B thua có ý nghĩa ở cả ba phép thử, LLM văn bản thua có ý nghĩa ở E3. SLM tính lại từ điểm từng tác vụ đã lưu (`--rescore`), LLM từ cache, không gọi lại model.
 - Cũng sửa: chỉ đọc số dạng `[k]` trong câu trả lời (48 câu có thêm đoạn giải thích sau thứ tự; kết quả không đổi); câu rỗng đã hỏi ở 16.384 token không hỏi lại; GLM không tất định ở temperature 0, nên prompt trùng dùng một câu trả lời trong cache (graph E2b 0,128 → 0,127).
 - Lỗi tìm ra khi viết SLM ranker: tái dùng KV cache theo prefix dài nhất làm điểm phụ thuộc thứ tự chấm (−0,27 thành −0,18). Sửa: đọc phần thư viện một lần, mỗi ứng viên luôn nối ngay sau.

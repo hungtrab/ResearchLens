@@ -90,8 +90,8 @@ def summary(rows, key):
     return dict(ndcg=float(values.mean()), hit10=float(np.mean([r[key + "_hit"] for r in rows])))
 
 
-def retrieval_jobs(limit=None):
-    """Every frozen task with fusion's top-20 pool and the decision model and fusion scores on it."""
+def retrieval_jobs(limit=None, size=POOL):
+    """Every frozen task with fusion's top-`size` pool and the decision model and fusion scores on it."""
     papers =[json.loads(line) for line in (ROOT / "data/papers.jsonl").read_text().splitlines() if line.strip()]
     split = [json.loads(line) for line in (ROOT / "artifacts/recommendation_split.jsonl").open() if line.strip()]
     hidden = {(t["paper_id"], r) for t in split for r in t["relevant"]}
@@ -105,10 +105,10 @@ def retrieval_jobs(limit=None):
         refs, citers = citation_links(engine)
         for seeds, targets, source in tasks[:limit]:
             drop = lambda items: [i["id"] for i in items if i["id"] != source]
-            pool = drop(engine.recommend(seeds, POOL + 1, "fusion", 0)["items"])[:POOL]
+            pool = drop(engine.recommend(seeds, size + 1, "fusion", 0)["items"])[:size]
             ranked = drop(engine.recommend(seeds, 11, "decision", 0, decision)["items"])
-            probability = dict(zip(*decision.rank(engine, seeds)[:2]))  # every fusion top-20 paper is scored
-            on_pool = sorted(pool, key=lambda pid: -probability[pid])
+            probability = dict(zip(*decision.rank(engine, seeds)[:2]))
+            on_pool = sorted(pool, key=lambda pid: -probability.get(pid, -1))  # unscored: after the rest, in fusion order
             titles = [engine.by_id[s]["title"] for s in sorted(seeds)[:SEEDS_SHOWN]]
             votes = engine.co_citation_witnesses(seeds)
             hit = lambda order: float(bool(set(order[:10]) & set(targets)))
@@ -176,8 +176,9 @@ def main():
     parser.add_argument("--models", nargs="+", default=["0.5b", "1.5b", "3b"])
     parser.add_argument("--limit", type=int, help="first N tasks per suite, for a smoke run")
     parser.add_argument("--rescore", action="store_true", help="recompute baselines from stored per-task scores")
+    parser.add_argument("--pool", type=int, default=POOL, help="how many fusion candidates the model ranks")
     args = parser.parse_args()
-    jobs = retrieval_jobs(args.limit)
+    jobs = retrieval_jobs(args.limit, args.pool)
     if args.rescore:
         return rescore(jobs)
     models = {}
@@ -207,9 +208,10 @@ def main():
         del ranker
 
     result = dict(rule=RULE,
-                  pool=POOL, seeds_shown=SEEDS_SHOWN, threads=THREADS, system=SYSTEM, baselines=baselines(jobs),
+                  pool=args.pool, seeds_shown=SEEDS_SHOWN, threads=THREADS, system=SYSTEM, baselines=baselines(jobs),
                   models=models)
-    out = ROOT / ("artifacts/slm_ranker.json" if not args.limit else "artifacts/slm_ranker_smoke.json")
+    name = "slm_ranker" + (f"_pool{args.pool}" if args.pool != POOL else "") + ("_smoke" if args.limit else "")
+    out = ROOT / f"artifacts/{name}.json"
     out.write_text(json.dumps(result, indent=2))
     print(json.dumps(result["baselines"], indent=1))
 

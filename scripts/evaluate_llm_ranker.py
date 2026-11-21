@@ -29,6 +29,7 @@ from scripts.evaluate_slm_ranker import (POOL, RULE, SEEDS_SHOWN, baselines, bea
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "artifacts/llm_ranker_cache.jsonl"
 SYSTEM = "You help a researcher decide which paper to read next."
+TOP = 10
 MAX_TOKENS = 16384  # GLM reasons first and reasoning counts toward the limit; at 8192, 31% of graph prompts ran out
 
 
@@ -37,9 +38,11 @@ def prompt(job, graph=False):
     library = "\n".join(f"- {t}" for t in job["titles"])
     lines = [f"{c}\n    Citation evidence: {e}" if graph else c for c, e in zip(job["candidates"], job["graph"])]
     candidates = "\n".join(f"[{i + 1}] {c}" for i, c in enumerate(lines))
+    task = (f"Rank all {len(lines)} candidates by how useful each is for this researcher to read next, most useful first."
+            if len(lines) <= POOL else  # only the top 10 is scored, and ranking 100 would mostly waste reasoning
+            f"Choose the {TOP} candidates most useful for this researcher to read next and rank them, most useful first.")
     return (f"The researcher has saved these papers:\n{library}\n\nCandidate papers:\n{candidates}\n\n"
-            f"Rank all {len(job['candidates'])} candidates by how useful each is for this researcher to read next, "
-            "most useful first. Answer only with the numbers, like: [3] > [1] > [2]")
+            f"{task} Answer only with the numbers, like: [3] > [1] > [2]")
 
 
 def order_from(answer, n):
@@ -53,10 +56,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int, help="first N tasks per suite, for a smoke run")
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--pool", type=int, default=POOL, help="how many fusion candidates the model ranks")
     parser.add_argument("--graph", action="store_true", help="add each candidate's citation evidence to the prompt")
     args = parser.parse_args()
     base, key, model = (os.environ[k] for k in ("LLM_BASE_URL", "LLM_API_KEY", "LLM_MODEL"))
-    jobs = retrieval_jobs(args.limit)
+    jobs = retrieval_jobs(args.limit, args.pool)
     cache = {}
     if CACHE.exists():
         for line in CACHE.read_text().splitlines():
@@ -70,7 +74,7 @@ def main():
         digest = hashlib.sha256((SYSTEM + text).encode()).hexdigest()
         cached = cache.get((model, digest))
         # An empty answer ran out of tokens mid-reasoning: ask again only if it was asked with a lower limit.
-        if cached and (order_from(cached["answer"], POOL)[1] or cached.get("max_tokens") == MAX_TOKENS):
+        if cached and (order_from(cached["answer"], len(job["pool"]))[1] or cached.get("max_tokens") == MAX_TOKENS):
             return cached
         for attempt in range(8):  # the shared endpoint is sometimes overloaded for minutes
             started = time.perf_counter()
@@ -102,7 +106,7 @@ def main():
                 with CACHE.open("a") as out:
                     out.write(json.dumps(row) + "\n")
                 print(time.strftime("%H:%M"), "new answer", f"{row['seconds']:.0f}s",
-                      "named" if order_from(row["answer"], POOL)[1] else "EMPTY", flush=True)
+                      "named" if order_from(row["answer"], len(job["pool"]))[1] else "EMPTY", flush=True)
             return row
         raise RuntimeError("API kept failing after 8 attempts")
 
@@ -120,14 +124,15 @@ def main():
     seconds = [r["seconds"] for r in rows]
     tokens = [a["usage"] for a in answers if a.get("usage")]
     result = dict(graph_evidence=args.graph, rule=RULE,
-                  model=model, pool=POOL, seeds_shown=SEEDS_SHOWN, system=SYSTEM, baselines=baselines(jobs),
+                  model=model, pool=args.pool, seeds_shown=SEEDS_SHOWN, system=SYSTEM, baselines=baselines(jobs),
                   suites=per_suite, beats_decision=beats(per_suite),
-                  answers_naming_all=float(np.mean([r["named"] == POOL for r in rows])),
+                  answers_naming_all=float(np.mean([r["named"] >= min(args.pool, TOP if args.pool > POOL else POOL)
+                                                    for r in rows])),
                   seconds_per_request=dict(p50=float(np.percentile(seconds, 50)), p95=float(np.percentile(seconds, 95))),
                   tokens=dict(prompt=sum(t.get("prompt_tokens", 0) for t in tokens),
                               completion=sum(t.get("completion_tokens", 0) for t in tokens)),
                   rows=rows)
-    name = "llm_ranker_graph" if args.graph else "llm_ranker"
+    name = ("llm_ranker_graph" if args.graph else "llm_ranker") + (f"_pool{args.pool}" if args.pool != POOL else "")
     out = ROOT / f"artifacts/{name}{'_smoke' if args.limit else ''}.json"
     out.write_text(json.dumps(result, indent=2))
     print(json.dumps({k: v for k, v in result.items() if k != "rows"}, indent=1))

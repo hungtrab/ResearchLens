@@ -278,3 +278,35 @@ def test_graph_rag_ranker_matches_artifacts():
     assert f"chênh lệch là {signed(np.mean(gain['E2']))} và {signed(np.mean(gain['E2b']))}, khoảng tin cậy chứa 0" in REPORT
     empty = sum(r["named"] == 0 for r in GRAPH_RANKER["rows"])
     assert f"{empty}/{len(GRAPH_RANKER['rows'])} câu trả lời vẫn dùng hết 16.384 token" in REPORT
+
+
+SLM_100, GRAPH_100 = load("slm_ranker_pool100.json"), load("llm_ranker_graph_pool100.json")
+
+
+def test_hundred_candidate_rankers_match_artifacts():
+    """The 100-candidate block of tab:llmrank, its slide rows, and the deltas quoted in the text."""
+    suites = ("E2", "E2b", "E3")
+    base = GRAPH_100["baselines"]
+    assert SLM_100["pool"] == GRAPH_100["pool"] == 100 and SLM_100["baselines"] == base
+    ndcgs = lambda per_suite, key=None: [(per_suite[s][key] if key else per_suite[s])["ndcg"] for s in suites]
+    decision = ndcgs(base, "decision_pool")
+    assert f"Decision model (100) & {' & '.join(map(vn, decision))} & {vn(base['E2']['decision_pool']['hit10'])} & " in REPORT
+    assert f"Decision (cùng 100) & {' & '.join(map(vn, decision))} & " in SLIDES
+    for name, model in SLM_100["models"].items():
+        size = "0.5B" if "-0.5b-" in name else "1.5B"
+        row = f"SLM {size} (100) & {' & '.join(map(vn, ndcgs(model['suites'])))}"
+        assert f"{row} & {vn(model['suites']['E2']['hit10'])} & {s2(model['seconds_per_request']['p50'])}\\,s\\\\" in REPORT
+        assert not any(model["beats_decision"].values())
+    assert f"SLM 1.5B (100) & " in SLIDES
+    llm = GRAPH_100["suites"]
+    bold = " & ".join("\\textbf{%s}" % vn(x) for x in ndcgs(llm))
+    seconds = s2(GRAPH_100["seconds_per_request"]["p50"])
+    assert f"\\textbf{{LLM + graph RAG (100)}} & {bold} & {vn(llm['E2']['hit10'])} & {seconds}\\,s\\\\" in REPORT
+    assert f"\\textbf{{LLM + graph RAG (100)}} & {bold} & {seconds}\\,s\\\\" in SLIDES
+    assert not any(GRAPH_100["beats_decision"].values())
+    span = lambda d: f"{signed(d['mean'])} [{signed(d['ci95'][0])}; {signed(d['ci95'][1])}]"
+    assert ", ".join(span(llm[s]["minus_decision_pool"]) for s in suites[:2]) in REPORT
+    assert ", ".join(span(llm[s]["minus_fusion"]) for s in suites[:2]) in REPORT
+    assert ", ".join(vn(base[s]["pool_recall"]) for s in suites[:2]) + f" và {vn(base['E3']['pool_recall'])};" in REPORT
+    empty = sum(r["named"] == 0 for r in GRAPH_100["rows"])
+    assert f"{empty}/{len(GRAPH_100['rows'])} câu trả lời dùng hết 16.384 token" in REPORT

@@ -281,15 +281,14 @@ Hit@5, E3 & 57\% & 62\% & \textbf{63\%}\\\bottomrule
 \end{columns}
 \source{nDCG@10 của fusion và decision + đề tài: 0,207 và 0,237; 0,113 và 0,182; 0,259 và 0,304; chênh lệch +0,030 [0,006; 0,055], +0,069 [0,051; 0,087], +0,045 [0,005; 0,087]. Nguồn: artifacts/decision\_query\_model.json.}
 \end{frame}
-\begin{frame}{SLM/LLM xếp hạng thay decision model? Không tốt hơn}
+\begin{frame}{SLM/LLM xếp hạng: ngang decision, chậm hơn nhiều}
 \begin{columns}[T,onlytextwidth]
-\column{.36\textwidth}
-\small Cùng 20 ứng viên của fusion, 589 tác vụ; decision cũng xếp lại đúng 20 bài đó.\\[.12cm]
-SLM: hỏi Yes/No từng bài. LLM: xếp cả 20 bài một lần (RankGPT). Graph RAG: thêm bằng chứng trích dẫn cho mỗi bài.\\[.12cm]
-Luật đặt trước: thắng decision ở $\ge$2/3 phép thử.\\[.12cm]
-\footnotesize Graph RAG giúp LLM ở E3 (+0,053 so với chỉ văn bản) nhưng chưa vượt decision.
-\column{.60\textwidth}
-\small\begin{tabular}{lrrrr}\toprule
+\column{.30\textwidth}
+\small 589 tác vụ; mọi bộ xếp hạng, kể cả decision, xếp lại cùng 20 hoặc 100 ứng viên của fusion.\\[.12cm]
+SLM: Yes/No từng bài. LLM: xếp danh sách (RankGPT). Graph RAG: thêm bằng chứng trích dẫn.\\[.12cm]
+Luật: thắng decision ở $\ge$2/3 phép thử.
+\column{.68\textwidth}
+\footnotesize\setlength{\tabcolsep}{4pt}\begin{tabular}{lrrrr}\toprule
 nDCG@10 & E2 & E2b & E3 & p50\\\midrule
 Fusion & 0,207 & 0,113 & 0,259 & 21\,ms\\
 Decision (app) & 0,224 & 0,132 & 0,297 & 85\,ms\\
@@ -297,11 +296,14 @@ Decision (app) & 0,224 & 0,132 & 0,297 & 85\,ms\\
 SLM 0.5B & 0,148 & 0,078 & 0,155 & 3,48\,s\\
 SLM 1.5B & 0,186 & 0,114 & 0,193 & 6,17\,s\\
 LLM GLM-5.3 & 0,204 & 0,122 & 0,250 & 110,61\,s\\
-LLM + graph RAG & 0,202 & 0,127 & 0,303 & 221,95\,s\\\bottomrule
-\end{tabular}\par\vspace{.2cm}
-\takeaway{Đồ thị trích dẫn xếp hạng; mô hình ngôn ngữ chỉ viết lý do.}
+LLM + graph RAG & 0,202 & 0,127 & 0,303 & 221,95\,s\\\midrule
+Decision (cùng 100) & 0,229 & 0,130 & 0,296 & 85\,ms\\
+SLM 1.5B (100) & 0,127 & 0,068 & 0,088 & 24,71\,s\\
+\textbf{LLM + graph RAG (100)} & \textbf{0,242} & \textbf{0,135} & \textbf{0,310} & 202,13\,s\\\bottomrule
+\end{tabular}\par\vspace{.1cm}
+\takeaway{Ngang chất lượng, 85\,ms so với 202\,s: decision model xếp hạng, LLM viết lý do.}
 \end{columns}
-\source{Nguồn: artifacts/slm\_ranker.json, llm\_ranker.json, llm\_ranker\_graph.json.}
+\source{Nguồn: artifacts/slm\_ranker*.json, llm\_ranker*.json.}
 \end{frame}
 \begin{frame}{SLM + RAG viết lý do; decision model vẫn xếp hạng}
 \begin{columns}[T,onlytextwidth]
@@ -331,7 +333,7 @@ Retrieval & 7\,ms & \\\bottomrule
 \section{Kiểm chứng và kết luận}
 \begin{frame}{Audit và test độc lập phát hiện lỗi trước bàn giao}
 \begin{columns}[T,onlytextwidth]
-\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{578/578}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
+\column{.31\textwidth}\par\vspace{.5cm}\bigmetric{579/579}{test tự động đạt}\par\vspace{.4cm}\small Package ứng dụng đạt 99\% statement coverage.
 \column{.61\textwidth}\par\vspace{.3cm}
 \textbf{Các lỗi đã sửa}\par
 JSONL có line separator Unicode.\par
