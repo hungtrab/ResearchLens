@@ -1,13 +1,12 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{fontspec}
 \setmainfont{Latin Modern Roman}
-\usepackage[margin=2cm]{geometry}
-\usepackage{graphicx,booktabs,enumitem,caption}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs,enumitem}
 \usepackage[hidelinks]{hyperref}
-\captionsetup{font=small,skip=3pt}
-\setlist{itemsep=1pt,topsep=2pt}
+\setlist{itemsep=1pt,topsep=2pt,leftmargin=*}
 \setlength{\parskip}{3pt}
-\graphicspath{{../artifacts/figures/report/}}
+\setlength{\parindent}{0pt}
 
 \begin{document}
 \begin{center}
@@ -18,63 +17,51 @@ Instructor: Dr. Nguyễn Kiêm Hiếu. Hanoi, 23 November 2026
 \end{center}
 
 \section{Problem statement}
-A researcher who has saved a few papers on a topic wants to know what to read next. ResearchLens takes that library and ranks every other paper in a corpus of AI and ML papers. Each recommendation shows evidence the reader can check: papers that cite it together with a saved paper, its citation links to the library, and peer reviews of it with the original sentences. The project sits in link analysis and recommender systems, with opinion mining for the reviews. Search is the access layer, used to find the first papers to save.
-
-We have no logs of real readers, so we evaluate on hidden citations. The two research questions are:
-\begin{enumerate}[label=\textbf{RQ\arabic*.},leftmargin=*]
-\item Which signal recovers hidden papers best: popularity, TF-IDF content, Personalized PageRank or cocitation?
-\item Does a combination of signals beat the best single signal?
-\end{enumerate}
+Given a few papers a researcher has saved, recommend which paper to read next, and show why: papers that cite it together with a saved paper, its citation links to the library, and its peer reviews. The project covers link analysis, recommender systems and opinion mining.
+\begin{itemize}
+\item \textbf{RQ1.} Which signal recovers hidden papers best: popularity, TF-IDF content, Personalized PageRank (PPR) or cocitation?
+\item \textbf{RQ2.} Does a combination of signals beat the best single signal?
+\end{itemize}
 
 \section{Datasets}
-\begin{itemize}[leftmargin=*]
-\item \textbf{OpenAlex}: 3,171 works from eight topic queries (400 results each, up to 2025), with abstracts and reference lists. Merged with PeerRead, the corpus has 3,595 papers and 13,481 internal citation edges; 75.80\% of papers have an abstract.
-\item \textbf{PeerRead} (ICLR 2017): 1,320 scored reviews after removing duplicates, in the official splits of 1,082, 123 and 115 reviews. Review scores give three labels: critical, mixed and positive.
-\item \textbf{SciFact} (BEIR): 5,183 abstracts and 300 test queries with relevance judgments, used to check the search layer.
-\item \textbf{Conference catalog}: metadata of eight AI conferences from 2020 to 2026 (official programs, ACL Anthology, CVF and OpenAlex), searched separately from the experimental corpus.
+\begin{itemize}
+\item \textbf{OpenAlex + PeerRead}: 3,595 AI and ML papers with 13,481 citation edges; 75.80\% have an abstract.
+\item \textbf{PeerRead} (ICLR 2017): 1,320 scored reviews, split 1,082 / 123 / 115.
+\item \textbf{SciFact} (BEIR): 5,183 abstracts and 300 queries, to check search.
 \end{itemize}
 
 \section{Current experiment results}
-\textbf{Protocols.} E2 (main): cut the corpus at the end of 2020 and hide one third of the references of each of 219 later papers. E2b: predict the papers 250 authors cite for the first time after 2020, from what they wrote before. E3: a random holdout of 442 citation edges from 120 papers. The metric is nDCG@10, with paired bootstrap intervals over tasks.
+We hide citations and ask each method to recover them. E2: cut at 2020, hide one third of the references of 219 later papers. E2b: predict what 250 authors cite for the first time after 2020. E3: random holdout of 442 edges. Metric: nDCG@10.
 
-\begin{table}[h]\centering\small
-\begin{tabular}{@{}lrrrl@{}}\toprule
-Method & E2 & E2b & E3 & Note\\\midrule
-Global PageRank & 0.032 & 0.047 & 0.038 & popularity only\\
-Content (TF-IDF) & 0.110 & 0.068 & 0.070 & \\
-Personalized PageRank & 0.121 & 0.047 & 0.174 & \\
-Hybrid (0.7 content + 0.3 PPR) & 0.143 & 0.070 & 0.112 & previous default\\
-Cocitation & 0.173 & 0.099 & \textbf{0.305} & best single signal\\
-Fusion (RRF of cocitation and hybrid) & 0.207 & 0.113 & 0.259 & \\
-Decision model (gradient boosting) & 0.224 & 0.132 & 0.297 & 85\,ms per request\\
-Decision model + topic sentence & \textbf{0.237} & \textbf{0.182} & 0.304 & current default\\
-LLM + graph RAG, 100 candidates & 0.242 & 0.135 & 0.310 & about 200\,s per request\\\bottomrule
-\end{tabular}\caption{nDCG@10 on the three protocols.}\end{table}
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}\toprule
+Method & E2 & E2b & E3\\\midrule
+Content (TF-IDF) & 0.110 & 0.068 & 0.070\\
+PPR & 0.121 & 0.047 & 0.174\\
+Hybrid (0.7 content + 0.3 PPR) & 0.143 & 0.070 & 0.112\\
+Cocitation & 0.173 & 0.099 & \textbf{0.305}\\
+Fusion (RRF of cocitation and hybrid) & 0.207 & 0.113 & 0.259\\
+Decision model (gradient boosting) & 0.224 & 0.132 & 0.297\\
+Decision model + topic sentence & \textbf{0.237} & \textbf{0.182} & 0.304\\\bottomrule
+\end{tabular}
+\end{center}
 
-\textbf{RQ1.} Cocitation is the best single signal on all three protocols; on E2 it beats Personalized PageRank by +0.052 [0.029, 0.075].
-
-\textbf{RQ2.} Reciprocal rank fusion beats the hybrid on every protocol (E2: +0.064 [0.042, 0.087]) but loses to cocitation alone on E3, so that comparison is still open. A gradient boosting model trained on 2,081 tasks from cutoffs between 2010 and 2018 beats fusion on all three protocols. When the reader adds one sentence about the topic, BM25 retrieval adds candidates and the model beats fusion with intervals above zero on all three (+0.030, +0.069, +0.045). At least one right paper appears in the top 10 for 64\%, 58\% and 78\% of tasks, against 58\%, 42\% and 71\% for fusion.
-
-\textbf{Language models.} On the same candidates, Qwen2.5 0.5B and 1.5B and a text only LLM (GLM 5.3 Flash) rank worse than the decision model. The LLM with citation evidence for 100 candidates is slightly higher, with intervals that include zero, at more than 2,000 times the latency. The app therefore keeps the decision model for ranking and uses a small model only to write a one sentence summary of a recommended paper (17 of 20 checked by hand were correct).
-
-\textbf{Other components.} On SciFact, BM25 reaches nDCG@10 of 0.651 against 0.621 for TF-IDF. On the 115 test reviews, TF-IDF with logistic regression reaches macro F1 of 0.469, against 0.436 for a lexicon and 0.181 for the majority class; the intervals of the learned model and the lexicon overlap.
-
-\begin{figure}[h]\centering
-\includegraphics[width=.78\linewidth]{decision.pdf}
-\caption{Fusion, the decision model and the decision model with a topic. Left: nDCG@10. Right: Hit@10.}
-\end{figure}
+\begin{itemize}
+\item \textbf{RQ1:} cocitation is the best single signal on all three tasks.
+\item \textbf{RQ2:} fusion beats the hybrid on all three tasks, but loses to cocitation alone on E3. A gradient boosting model trained on 2,081 tasks beats fusion on all three; with a topic sentence, all three gains have 95\% intervals above zero.
+\item Language models used as rankers (Qwen2.5, GLM 5.3 Flash) did not beat the decision model and are more than 1,000 times slower.
+\item Reviews: TF-IDF with logistic regression reaches macro F1 0.469 (majority class 0.181). Search: BM25 nDCG@10 0.651 on SciFact.
+\end{itemize}
 
 \section{System: current stage}
-\textbf{Requirements.} Search and filter papers; save papers into a personal library; recommend what to read next with evidence; show the citation network, reviews and their polarity; organize papers into projects; read PDFs with notes. The system must run on one CPU machine without a GPU, and every number shown must come from observed data.
+\textbf{Requirements.} Search and save papers, recommend with evidence, show the citation graph and reviews, organize projects, read PDFs with notes. Runs on one CPU machine.
 
-\textbf{Design and implementation.} A FastAPI backend serves the API and a plain HTML and JavaScript interface. Libraries and notes live in SQLite. The mining engine builds TF-IDF and BM25 matrices and the citation graph in memory at startup; NetworkX computes PageRank, HITS and Louvain communities. Recommendation offers cocitation, the hybrid, fusion and the decision model, which is the default. Apache Solr is an optional search backend through Docker. The conference catalog uses an SQLite FTS5 index on disk, and online search imports single papers from OpenAlex. All views are implemented: search, paper details, library and recommendations, citation network, review insights, projects, the PDF reader, the conference catalog and online search. 574 automated tests pass and cover 99\% of the application code, and a browser test walks through the demo on desktop and mobile.
+\textbf{Design and implementation.} FastAPI backend, HTML and JavaScript interface, SQLite for libraries and notes. TF-IDF, BM25 and the citation graph are built in memory; NetworkX computes PageRank and communities. All views are working, and 574 automated tests pass.
 
 \section{Next steps for the final report and presentation}
-\begin{enumerate}[leftmargin=*]
-\item Repeat the time cutoff at other years to decide between fusion and cocitation.
-\item Collect relevance labels from at least two independent readers for project suggestions and measure their agreement.
-\item Test content signals on papers that nobody has cited yet, where content is the only signal available.
-\item Run the text only LLM on 100 candidates, to separate the effect of graph evidence from that of a larger candidate set.
-\item Finish the final report and slides, and rehearse the five minute demo.
+\begin{enumerate}
+\item Repeat the time cutoff at other years to settle fusion versus cocitation.
+\item Collect relevance labels from independent readers for project suggestions.
+\item Finish the final report, the slides and the demo.
 \end{enumerate}
 \end{document}
