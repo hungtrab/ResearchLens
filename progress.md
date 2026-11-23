@@ -1,5 +1,10 @@
 # Nhật ký tiến độ ResearchLens
 
+## 23/11/2026 (chiều) — Progress report cho người chưa biết project, repo public
+
+- Progress report (`deliverables/Group05_ProgressReport.pdf`, 3 trang) viết lại cho người đọc chưa biết gì về project: bài toán, dữ liệu, cách đo bằng trích dẫn bị ẩn (Test 1, 2, 3 giải thích bằng lời), bốn hướng tiếp cận, kết quả, trạng thái hệ thống, bước tiếp theo (gồm dựng web demo public).
+- Code đã lên GitHub public: https://github.com/hungtrab/ResearchLens (nhánh `main`). Trước khi push đã rà toàn bộ 24 commit: không có key `nvapi-`, không có `llm_api/` hay `.env`, email commit chỉ là `hungchan@local`, không có file trên 50 MB.
+
 ## 23/11/2026 — Viết lại report bằng tiếng Anh, LaTeX cổ điển
 
 - `report/main.tex` và `report/discovery.tex` viết lại toàn bộ bằng tiếng Anh. Dùng `article` 11pt, có abstract, mục lục, danh sách hình và bảng, natbib `plainnat`, không dùng màu. Số liệu giữ nguyên, chỉ đổi dấu thập phân sang dấu chấm (0.207). Slide vẫn bằng tiếng Việt.
