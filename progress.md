@@ -1,5 +1,16 @@
 # Nhật ký tiến độ ResearchLens
 
+## 23/11/2026 — Viết lại report bằng tiếng Anh, LaTeX cổ điển
+
+- `report/main.tex` và `report/discovery.tex` viết lại toàn bộ bằng tiếng Anh. Dùng `article` 11pt, có abstract, mục lục, danh sách hình và bảng, natbib `plainnat`, không dùng màu. Số liệu giữ nguyên, chỉ đổi dấu thập phân sang dấu chấm (0.207). Slide vẫn bằng tiếng Việt.
+- Câu chữ: không có em dash, không có "--" trong văn bản, không ghép từ bằng gạch nối (chỉ còn tên riêng như TF-IDF, ACL-ARC, scikit-learn và các flag trong lệnh shell), không có từ hype. Đã kiểm bằng grep.
+- Hình vẽ theo phong cách figures4papers: `scripts/report_figures.py` sinh 13 hình PDF và PNG vào `artifacts/figures/report/`. `make figures` đã gọi script này.
+- Thêm 5 mục vào `references.bib` (Small 1973, SciERC, ACL-ARC, CSFCube, ASPIRE). Ghi chú trong bib đã dịch sang tiếng Anh.
+- `tests/test_report_numbers.py`: phần report kiểm số dạng tiếng Anh, phần slide vẫn kiểm dạng tiếng Việt. Mean và CI95 giờ được kiểm trong cùng một chuỗi, nên số test giảm từ 579 xuống 574. Kết quả: 574/574 test đạt, coverage 1.391/1.405 statement.
+- Report không còn nhắc đường dẫn file, tên script hay tên hàm. Bỏ phụ lục cách chạy lại và phụ lục danh mục artifact (cách chạy vẫn có trong README).
+- Thêm progress report 3 trang theo yêu cầu của thầy: `report/progress.tex`, xuất ra `deliverables/GroupXX_ProgressReport.pdf`. Còn phải điền số nhóm (`\GroupNo`) và link repo (`\RepoURL`), vì repo hiện chưa có remote.
+- Report 41 trang, không có overfull box hay ký tự thiếu. Gói zip đã build lại và giải nén thử: 573 test đạt, 1 test bỏ qua vì không có model GGUF. Không có `llm_api/` và không có chuỗi `nvapi-` trong zip.
+
 ## 20/11/2026 — SLM và LLM làm bộ xếp hạng: không vượt decision model
 
 - **Câu hỏi:** để mô hình ngôn ngữ xếp hạng thay decision model có tốt hơn không? Cùng 20 ứng viên của fusion, 589 tác vụ (E2, E2b, E3), decision và fusion chạy lại trên đúng tác vụ đó (khớp `decision_model.json`). Luật đặt trước: thắng decision ở ≥ 2/3 phép thử với CI95 > 0.

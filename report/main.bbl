@@ -1,4 +1,4 @@
-\begin{thebibliography}{22}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -9,14 +9,14 @@
 {Allen Institute for AI}.
 \newblock Peerread: Public data repository, 2018.
 \newblock URL \url{https://github.com/allenai/PeerRead}.
-\newblock Commit 9bb37751781a900cee9e74ec3105997732c8e8e5; tập ICLR 2017.
+\newblock Commit 9bb37751781a900cee9e74ec3105997732c8e8e5; ICLR 2017 part.
 
 \bibitem[{Apache Software Foundation}(2026)]{solr}
 {Apache Software Foundation}.
 \newblock Apache solr reference guide: Solr in docker, 2026.
 \newblock URL
   \url{https://solr.apache.org/guide/solr/9_9/deployment-guide/solr-in-docker.html}.
-\newblock Triển khai kiểm tra bằng image solr:9.9.0.
+\newblock Tested with the solr:9.9.0 image.
 
 \bibitem[Beel et~al.(2016)Beel, Gipp, Langer, and Breitinger]{beel2016}
 Joeran Beel, Bela Gipp, Stefan Langer, and Corinna Breitinger.
@@ -64,6 +64,14 @@ Jerome~H. Friedman.
   1189--1232, 2001.
 \newblock \doi{10.1214/aos/1013203451}.
 
+\bibitem[Jurgens et~al.(2018)Jurgens, Kumar, Hoover, McFarland, and
+  Jurafsky]{jurgens2018aclarc}
+David Jurgens, Srijan Kumar, Raine Hoover, Dan McFarland, and Dan Jurafsky.
+\newblock Measuring the evolution of a scientific field through citation
+  frames.
+\newblock \emph{Transactions of the Association for Computational Linguistics},
+  6, 2018.
+
 \bibitem[Kang et~al.(2018)Kang, Ammar, Dalvi, van Zuylen, Kohlmeier, Hovy, and
   Schwartz]{kang2018}
 Dongyeop Kang, Waleed Ammar, Bhavana Dalvi, Madeleine van Zuylen, Sebastian
@@ -78,6 +86,13 @@ Jon~M. Kleinberg.
 \newblock Authoritative sources in a hyperlinked environment.
 \newblock \emph{Journal of the ACM}, 46\penalty0 (5):\penalty0 604--632, 1999.
 \newblock \doi{10.1145/324133.324140}.
+
+\bibitem[Luan et~al.(2018)Luan, He, Ostendorf, and Hajishirzi]{luan2018scierc}
+Yi~Luan, Luheng He, Mari Ostendorf, and Hannaneh Hajishirzi.
+\newblock Multi-task identification of entities, relations, and coreference for
+  scientific knowledge graph construction.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing}, 2018.
 
 \bibitem[Manning et~al.(2008)Manning, Raghavan, and Schütze]{manning2008}
 Christopher~D. Manning, Prabhakar Raghavan, and Hinrich Schütze.
@@ -94,6 +109,21 @@ Sean~M. McNee, Istvan Albert, Dan Cosley, Prateep Gopalkrishnan, Shyong~K. Lam,
   Cooperative Work}, pages 116--125, 2002.
 \newblock \doi{10.1145/587078.587096}.
 
+\bibitem[Mysore et~al.(2021)Mysore, O'Gorman, McCallum, and
+  Zamani]{mysore2021csfcube}
+Sheshera Mysore, Tim O'Gorman, Andrew McCallum, and Hamed Zamani.
+\newblock {CSFCube}: A test collection of computer science research articles
+  for faceted query by example.
+\newblock In \emph{Proceedings of the Neural Information Processing Systems
+  Track on Datasets and Benchmarks}, 2021.
+
+\bibitem[Mysore et~al.(2022)Mysore, Cohan, and Hope]{mysore2022aspire}
+Sheshera Mysore, Arman Cohan, and Tom Hope.
+\newblock Multi-vector models with textual guidance for fine-grained scientific
+  document similarity.
+\newblock In \emph{Proceedings of the 2022 Conference of the North American
+  Chapter of the Association for Computational Linguistics}, 2022.
+
 \bibitem[{NetworkX Developers}(2026)]{networkx}
 {NetworkX Developers}.
 \newblock Networkx: Louvain community detection, 2026.
@@ -104,14 +134,14 @@ Sean~M. McNee, Istvan Albert, Dan Cosley, Prateep Gopalkrishnan, Shyong~K. Lam,
 {OpenAlex}.
 \newblock Openalex api: Works and authentication, 2026{\natexlab{a}}.
 \newblock URL \url{https://help.openalex.org/api/}.
-\newblock Truy cập ngày 14/10/2026; dữ liệu lấy qua API và lưu
-  snapshot.
+\newblock Accessed 14 October 2026; data fetched through the API and stored as
+  a snapshot.
 
 \bibitem[{OpenAlex}(2026{\natexlab{b}})]{openalexsearch}
 {OpenAlex}.
 \newblock Openalex api search, 2026{\natexlab{b}}.
 \newblock URL \url{https://help.openalex.org/api/searching/}.
-\newblock Tìm kiếm metadata trực tuyến; truy cập 14/10/2026.
+\newblock Online metadata search; accessed 14 October 2026.
 
 \bibitem[Page et~al.(1999)Page, Brin, Motwani, and Winograd]{page1999}
 Lawrence Page, Sergey Brin, Rajeev Motwani, and Terry Winograd.
@@ -126,12 +156,20 @@ Stephen Robertson and Hugo Zaragoza.
   (4):\penalty0 333--389, 2009.
 \newblock \doi{10.1561/1500000019}.
 
+\bibitem[Small(1973)]{small1973}
+Henry Small.
+\newblock Co-citation in the scientific literature: A new measure of the
+  relationship between two documents.
+\newblock \emph{Journal of the American Society for Information Science},
+  24\penalty0 (4):\penalty0 265--269, 1973.
+\newblock \doi{10.1002/asi.4630240406}.
+
 \bibitem[{SQLite}(2026)]{fts5}
 {SQLite}.
 \newblock Sqlite fts5 extension, 2026.
 \newblock URL \url{https://www.sqlite.org/fts5.html}.
-\newblock Tài liệu inverted index, unicode61 và BM25; truy cập
-  14/10/2026.
+\newblock Inverted index, unicode61 tokenizer and BM25; accessed 14 October
+  2026.
 
 \bibitem[Strohman et~al.(2007)Strohman, Croft, and Jensen]{strohman2007}
 Trevor Strohman, W.~Bruce Croft, and David Jensen.

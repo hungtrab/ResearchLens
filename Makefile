@@ -13,13 +13,16 @@ evaluate:
 	uv run python scripts/evaluate.py --tasks 120
 figures:
 	uv run python scripts/figures.py
+	uv run python scripts/report_figures.py
 	cp artifacts/figures/*_table.tex report/generated/
 documents: figures
 	latexmk -xelatex -interaction=nonstopmode -halt-on-error -cd report/main.tex
 	latexmk -xelatex -interaction=nonstopmode -halt-on-error -cd slides/main.tex
+	latexmk -xelatex -interaction=nonstopmode -halt-on-error -cd report/progress.tex
 	mkdir -p deliverables
 	cp report/main.pdf deliverables/ResearchLens_Report.pdf
 	cp slides/main.pdf deliverables/ResearchLens_Slides.pdf
+	cp report/progress.pdf deliverables/GroupXX_ProgressReport.pdf
 verify:
 	uv run python scripts/verify_artifacts.py
 solr:
