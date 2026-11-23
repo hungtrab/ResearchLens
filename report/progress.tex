@@ -56,20 +56,21 @@ The score is nDCG@10, between 0 and 1: it is higher when the hidden papers appea
 
 \subsection*{Results}
 \begin{center}\small
-\begin{tabular}{@{}lrrr@{}}\toprule
-Approach (nDCG@10, higher is better) & Test 1 & Test 2 & Test 3\\\midrule
-Text similarity & 0.110 & 0.068 & 0.070\\
-Network closeness & 0.121 & 0.047 & 0.174\\
-Cocitation & 0.173 & 0.099 & \textbf{0.305}\\
-Hybrid (text + network) & 0.143 & 0.070 & 0.112\\
-Rank fusion (cocitation + hybrid) & 0.207 & 0.113 & 0.259\\
-\textbf{Decision model} & 0.224 & 0.132 & 0.297\\
-\textbf{Decision model + topic sentence} & \textbf{0.237} & \textbf{0.182} & 0.304\\\midrule
-\multicolumn{4}{@{}l}{\emph{Reranking the same 100 candidates from rank fusion}}\\
-Decision model & 0.229 & 0.130 & 0.296\\
-Small LM (Qwen2.5 1.5B) & 0.127 & 0.068 & 0.088\\
-LLM (GLM 5.3 Flash) + citation evidence & \textbf{0.242} & \textbf{0.135} & \textbf{0.310}\\\bottomrule
-\end{tabular}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Approach (nDCG@10, higher is better) & Test 1 & Test 2 & Test 3 & Time\\\midrule
+Text similarity & 0.110 & 0.068 & 0.070 & n/a\\
+Network closeness & 0.121 & 0.047 & 0.174 & n/a\\
+Cocitation & 0.173 & 0.099 & \textbf{0.305} & 0.7\,ms\\
+Hybrid (text + network) & 0.143 & 0.070 & 0.112 & 20\,ms\\
+Rank fusion (cocitation + hybrid) & 0.207 & 0.113 & 0.259 & 21\,ms\\
+\textbf{Decision model} & 0.224 & 0.132 & 0.297 & 85\,ms\\
+\textbf{Decision model + topic sentence} & \textbf{0.237} & \textbf{0.182} & 0.304 & 89\,ms\\\midrule
+\multicolumn{5}{@{}l}{\emph{Reranking the same 100 candidates from rank fusion}}\\
+Decision model & 0.229 & 0.130 & 0.296 & 85\,ms\\
+Small LM (Qwen2.5 1.5B) & 0.127 & 0.068 & 0.088 & 25\,s\\
+LLM (GLM 5.3 Flash) + citation evidence & \textbf{0.242} & \textbf{0.135} & \textbf{0.310} & 202\,s\\\bottomrule
+\end{tabular}\par\smallskip
+{\footnotesize Time: median per request on a laptop CPU (8 cores); the LLM is called through a remote API. Text similarity and network closeness were not timed alone; both are parts of the hybrid.}
 \end{center}
 \begin{itemize}
 \item \textbf{Q1.} Cocitation is the best single signal in all three tests. Papers that other researchers cite together are good reading suggestions.
