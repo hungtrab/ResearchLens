@@ -8,14 +8,12 @@
 \setlist{itemsep=1pt,topsep=2pt}
 \setlength{\parskip}{3pt}
 \graphicspath{{../artifacts/figures/report/}}
-% Fill in before submission.
-\newcommand{\GroupNo}{XX}
-\newcommand{\RepoURL}{\textit{repository link to be added}}
 
 \begin{document}
 \begin{center}
 {\Large\bfseries ResearchLens: Recommending What to Read Next\\from a Library of Saved Papers}\par\medskip
-Progress report, IT4868E Web Mining, semester 2026.1. Group \GroupNo\par
+Progress report, IT4868E Web Mining, semester 2026.1. Group 5\par
+Tran Quang Hung (20235502), Vu Thuong Tin (20230091),\\ Chu Anh Duc (20230081), Dinh Quoc Bao (20235478)\par
 Instructor: Dr. Nguyễn Kiêm Hiếu. Hanoi, 23 November 2026
 \end{center}
 
@@ -37,8 +35,6 @@ We have no logs of real readers, so we evaluate on hidden citations. The two res
 \end{itemize}
 
 \section{Current experiment results}
-Code repository: \RepoURL.
-
 \textbf{Protocols.} E2 (main): cut the corpus at the end of 2020 and hide one third of the references of each of 219 later papers. E2b: predict the papers 250 authors cite for the first time after 2020, from what they wrote before. E3: a random holdout of 442 citation edges from 120 papers. The metric is nDCG@10, with paired bootstrap intervals over tasks.
 
 \begin{table}[h]\centering\small

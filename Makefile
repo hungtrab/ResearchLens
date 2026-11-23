@@ -22,7 +22,7 @@ documents: figures
 	mkdir -p deliverables
 	cp report/main.pdf deliverables/ResearchLens_Report.pdf
 	cp slides/main.pdf deliverables/ResearchLens_Slides.pdf
-	cp report/progress.pdf deliverables/GroupXX_ProgressReport.pdf
+	cp report/progress.pdf deliverables/Group05_ProgressReport.pdf
 verify:
 	uv run python scripts/verify_artifacts.py
 solr:

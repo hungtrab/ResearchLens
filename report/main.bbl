@@ -7,13 +7,13 @@
 
 \bibitem[{Allen Institute for AI}(2018)]{peerreadrepo}
 {Allen Institute for AI}.
-\newblock Peerread: Public data repository, 2018.
+\newblock {PeerRead}: Public data repository, 2018.
 \newblock URL \url{https://github.com/allenai/PeerRead}.
 \newblock Commit 9bb37751781a900cee9e74ec3105997732c8e8e5; ICLR 2017 part.
 
 \bibitem[{Apache Software Foundation}(2026)]{solr}
 {Apache Software Foundation}.
-\newblock Apache solr reference guide: Solr in docker, 2026.
+\newblock {Apache Solr} reference guide: {Solr} in {Docker}, 2026.
 \newblock URL
   \url{https://solr.apache.org/guide/solr/9_9/deployment-guide/solr-in-docker.html}.
 \newblock Tested with the solr:9.9.0 image.
@@ -36,7 +36,7 @@ Vincent~D. Blondel, Jean-Loup Guillaume, Renaud Lambiotte, and Etienne
 
 \bibitem[Carbonell and Goldstein(1998)]{carbonell1998}
 Jaime Carbonell and Jade Goldstein.
-\newblock The use of mmr, diversity-based reranking for reordering documents
+\newblock The use of {MMR}, diversity-based reranking for reordering documents
   and producing summaries.
 \newblock In \emph{Proceedings of SIGIR}, pages 335--336, 1998.
 \newblock \doi{10.1145/290941.291025}.
@@ -52,7 +52,7 @@ Arman Cohan, Sergey Feldman, Iz~Beltagy, Doug Downey, and Daniel~S. Weld.
 
 \bibitem[Cormack et~al.(2009)Cormack, Clarke, and Buettcher]{cormack2009}
 Gordon~V. Cormack, Charles L.~A. Clarke, and Stefan Buettcher.
-\newblock Reciprocal rank fusion outperforms condorcet and individual rank
+\newblock Reciprocal rank fusion outperforms {Condorcet} and individual rank
   learning methods.
 \newblock In \emph{Proceedings of SIGIR}, pages 758--759, 2009.
 \newblock \doi{10.1145/1571941.1572114}.
@@ -70,16 +70,17 @@ David Jurgens, Srijan Kumar, Raine Hoover, Dan McFarland, and Dan Jurafsky.
 \newblock Measuring the evolution of a scientific field through citation
   frames.
 \newblock \emph{Transactions of the Association for Computational Linguistics},
-  6, 2018.
+  6:\penalty0 391--406, 2018.
+\newblock \doi{10.1162/tacl_a_00028}.
 
 \bibitem[Kang et~al.(2018)Kang, Ammar, Dalvi, van Zuylen, Kohlmeier, Hovy, and
   Schwartz]{kang2018}
 Dongyeop Kang, Waleed Ammar, Bhavana Dalvi, Madeleine van Zuylen, Sebastian
   Kohlmeier, Eduard Hovy, and Roy Schwartz.
-\newblock A dataset of peer reviews (peerread): Collection, insights and nlp
-  applications.
+\newblock A dataset of peer reviews ({PeerRead}): Collection, insights and
+  {NLP} applications.
 \newblock In \emph{Proceedings of NAACL-HLT}, pages 1647--1661, 2018.
-\newblock URL \url{https://aclanthology.org/N18-1149/}.
+\newblock \doi{10.18653/v1/N18-1149}.
 
 \bibitem[Kleinberg(1999)]{kleinberg1999}
 Jon~M. Kleinberg.
@@ -92,13 +93,14 @@ Yi~Luan, Luheng He, Mari Ostendorf, and Hannaneh Hajishirzi.
 \newblock Multi-task identification of entities, relations, and coreference for
   scientific knowledge graph construction.
 \newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
-  Natural Language Processing}, 2018.
+  Natural Language Processing}, pages 3219--3232, 2018.
+\newblock \doi{10.18653/v1/D18-1360}.
 
 \bibitem[Manning et~al.(2008)Manning, Raghavan, and Schütze]{manning2008}
 Christopher~D. Manning, Prabhakar Raghavan, and Hinrich Schütze.
 \newblock \emph{Introduction to Information Retrieval}.
 \newblock Cambridge University Press, 2008.
-\newblock URL \url{https://nlp.stanford.edu/IR-book/}.
+\newblock \doi{10.1017/CBO9780511809071}.
 
 \bibitem[McNee et~al.(2002)McNee, Albert, Cosley, Gopalkrishnan, Lam, Rashid,
   Konstan, and Riedl]{mcnee2002}
@@ -116,42 +118,45 @@ Sheshera Mysore, Tim O'Gorman, Andrew McCallum, and Hamed Zamani.
   for faceted query by example.
 \newblock In \emph{Proceedings of the Neural Information Processing Systems
   Track on Datasets and Benchmarks}, 2021.
+\newblock URL \url{https://openreview.net/forum?id=8Y50dBbmGU}.
 
 \bibitem[Mysore et~al.(2022)Mysore, Cohan, and Hope]{mysore2022aspire}
 Sheshera Mysore, Arman Cohan, and Tom Hope.
 \newblock Multi-vector models with textual guidance for fine-grained scientific
   document similarity.
 \newblock In \emph{Proceedings of the 2022 Conference of the North American
-  Chapter of the Association for Computational Linguistics}, 2022.
+  Chapter of the Association for Computational Linguistics}, pages 4453--4470,
+  2022.
+\newblock \doi{10.18653/v1/2022.naacl-main.331}.
 
 \bibitem[{NetworkX Developers}(2026)]{networkx}
 {NetworkX Developers}.
-\newblock Networkx: Louvain community detection, 2026.
+\newblock {NetworkX}: {Louvain} community detection, 2026.
 \newblock URL
   \url{https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html}.
 
 \bibitem[{OpenAlex}(2026{\natexlab{a}})]{openalex}
 {OpenAlex}.
-\newblock Openalex api: Works and authentication, 2026{\natexlab{a}}.
+\newblock {OpenAlex API}: Works and authentication, 2026{\natexlab{a}}.
 \newblock URL \url{https://help.openalex.org/api/}.
 \newblock Accessed 14 October 2026; data fetched through the API and stored as
   a snapshot.
 
 \bibitem[{OpenAlex}(2026{\natexlab{b}})]{openalexsearch}
 {OpenAlex}.
-\newblock Openalex api search, 2026{\natexlab{b}}.
+\newblock {OpenAlex API} search, 2026{\natexlab{b}}.
 \newblock URL \url{https://help.openalex.org/api/searching/}.
 \newblock Online metadata search; accessed 14 October 2026.
 
 \bibitem[Page et~al.(1999)Page, Brin, Motwani, and Winograd]{page1999}
 Lawrence Page, Sergey Brin, Rajeev Motwani, and Terry Winograd.
-\newblock The pagerank citation ranking: Bringing order to the web.
+\newblock The {PageRank} citation ranking: Bringing order to the {Web}.
 \newblock Technical report, Stanford InfoLab, 1999.
 \newblock URL \url{http://ilpubs.stanford.edu:8090/422/}.
 
 \bibitem[Robertson and Zaragoza(2009)]{robertson2009}
 Stephen Robertson and Hugo Zaragoza.
-\newblock The probabilistic relevance framework: Bm25 and beyond.
+\newblock The probabilistic relevance framework: {BM25} and beyond.
 \newblock \emph{Foundations and Trends in Information Retrieval}, 3\penalty0
   (4):\penalty0 333--389, 2009.
 \newblock \doi{10.1561/1500000019}.
@@ -166,7 +171,7 @@ Henry Small.
 
 \bibitem[{SQLite}(2026)]{fts5}
 {SQLite}.
-\newblock Sqlite fts5 extension, 2026.
+\newblock {SQLite FTS5} extension, 2026.
 \newblock URL \url{https://www.sqlite.org/fts5.html}.
 \newblock Inverted index, unicode61 tokenizer and BM25; accessed 14 October
   2026.
@@ -182,7 +187,7 @@ Trevor Strohman, W.~Bruce Croft, and David Jensen.
   Ren]{sun2023rankgpt}
 Weiwei Sun, Lingyong Yan, Xinyu Ma, Shuaiqiang Wang, Pengjie Ren, Zhumin Chen,
   Dawei Yin, and Zhaochun Ren.
-\newblock Is {ChatGPT} good at search? investigating large language models as
+\newblock Is {ChatGPT} good at search? {I}nvestigating large language models as
   re-ranking agents.
 \newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in
   Natural Language Processing}, pages 14918--14937, 2023.
@@ -192,7 +197,7 @@ Weiwei Sun, Lingyong Yan, Xinyu Ma, Shuaiqiang Wang, Pengjie Ren, Zhumin Chen,
   Gurevych]{thakur2021}
 Nandan Thakur, Nils Reimers, Andreas Rücklé, Abhishek Srivastava, and Iryna
   Gurevych.
-\newblock Beir: A heterogeneous benchmark for zero-shot evaluation of
+\newblock {BEIR}: A heterogeneous benchmark for zero-shot evaluation of
   information retrieval models.
 \newblock In \emph{NeurIPS Datasets and Benchmarks}, 2021.
 \newblock URL \url{https://arxiv.org/abs/2104.08663}.
@@ -203,6 +208,6 @@ David Wadden, Shanchuan Lin, Kyle Lo, Lucy~Lu Wang, Madeleine van Zuylen, Arman
   Cohan, and Hannaneh Hajishirzi.
 \newblock Fact or fiction: Verifying scientific claims.
 \newblock In \emph{Proceedings of EMNLP}, pages 7534--7550, 2020.
-\newblock URL \url{https://aclanthology.org/2020.emnlp-main.609/}.
+\newblock \doi{10.18653/v1/2020.emnlp-main.609}.
 
 \end{thebibliography}

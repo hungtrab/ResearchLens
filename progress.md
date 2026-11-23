@@ -8,8 +8,11 @@
 - Thêm 5 mục vào `references.bib` (Small 1973, SciERC, ACL-ARC, CSFCube, ASPIRE). Ghi chú trong bib đã dịch sang tiếng Anh.
 - `tests/test_report_numbers.py`: phần report kiểm số dạng tiếng Anh, phần slide vẫn kiểm dạng tiếng Việt. Mean và CI95 giờ được kiểm trong cùng một chuỗi, nên số test giảm từ 579 xuống 574. Kết quả: 574/574 test đạt, coverage 1.391/1.405 statement.
 - Report không còn nhắc đường dẫn file, tên script hay tên hàm. Bỏ phụ lục cách chạy lại và phụ lục danh mục artifact (cách chạy vẫn có trong README).
-- Thêm progress report 3 trang theo yêu cầu của thầy: `report/progress.tex`, xuất ra `deliverables/GroupXX_ProgressReport.pdf`. Còn phải điền số nhóm (`\GroupNo`) và link repo (`\RepoURL`), vì repo hiện chưa có remote.
-- Report 41 trang, không có overfull box hay ký tự thiếu. Gói zip đã build lại và giải nén thử: 573 test đạt, 1 test bỏ qua vì không có model GGUF. Không có `llm_api/` và không có chuỗi `nvapi-` trong zip.
+- Thêm progress report 3 trang theo yêu cầu của thầy: `report/progress.tex`, xuất ra `deliverables/Group05_ProgressReport.pdf`. Nhóm 5: Tran Quang Hung 20235502, Vu Thuong Tin 20230091, Chu Anh Duc 20230081, Dinh Quoc Bao 20235478. Không có link repo, vì thầy không yêu cầu.
+- Bỏ phụ lục demo năm phút. Report còn 40 trang.
+- Bìa report: logo ĐHBKHN lớn (bản 1900 px từ hust.edu.vn, đổi chữ trắng sang đỏ) và logo SoICT bên dưới (bản gốc từ soict.hust.edu.vn), lưu ở `report/images/`.
+- Kiểm lại 27 tài liệu tham khảo. Tên tác giả, tên bài, tập và trang khớp với Crossref hoặc OpenAlex. Thêm DOI cho SciERC, ACL-ARC, ASPIRE, PeerRead và SciFact. CSFCube trỏ tới OpenReview. Sách của Manning dùng DOI, vì trang Stanford không truy cập được. DOI trong PDF giờ là link bấm được (gói `doi`). Mọi link đều tới đúng trang; ACM, Wiley, IOP, MIT Press và Emerald chặn curl với mã 403 nhưng doi.org chuyển hướng đúng bài. Riêng Robertson và Zaragoza (2009) giữ tập 3(4), trang 333–389 như bản gốc; Crossref hiện ghi 4(1-2), trang 1–174 sau khi Emerald đăng lại.
+- Report 40 trang, không có overfull box hay ký tự thiếu. Gói zip đã build lại và giải nén thử: 573 test đạt, 1 test bỏ qua vì không có model GGUF. Không có `llm_api/` và không có chuỗi `nvapi-` trong zip.
 
 ## 20/11/2026 — SLM và LLM làm bộ xếp hạng: không vượt decision model
 
