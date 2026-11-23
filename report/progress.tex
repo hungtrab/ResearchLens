@@ -49,9 +49,10 @@ The score is nDCG@10, between 0 and 1: it is higher when the hidden papers appea
 \begin{enumerate}
 \item \textbf{Single signals.} Popularity in the network (PageRank); text similarity to the saved papers (TF-IDF); closeness in the citation network (Personalized PageRank); and cocitation, which counts how many papers cite a candidate together with a saved paper.
 \item \textbf{Simple combinations.} A weighted sum of text similarity and network closeness (``hybrid''), and rank fusion, which merges the ranked list of cocitation with the hybrid list.
-\item \textbf{A learned ranker.} A gradient boosting model looks at all signals at once and learns how to weigh them. We train it on 2,081 practice tests built automatically from older years of the data, so no manual labels are needed. Optionally, the student can also type one sentence about their topic.
 \item \textbf{Language models as rankers.} We also asked a small model (Qwen2.5) and a large one (GLM 5.3 Flash) to rank the same candidate papers.
 \end{enumerate}
+
+\textbf{Our main method: the Decision model.} Instead of fixing by hand how much each signal counts, the Decision model learns it. For every candidate paper it reads ten signals at once: cocitation, citation links to and from the saved papers, shared references, text similarity, network closeness, citation count, age and two embedding similarities. A gradient boosting model turns them into one score. We train it on 2,081 practice tests built automatically from older years of the data (2010 to 2018), so no manual labels are needed. If the student also types one sentence about their topic, the model adds papers that match the sentence (BM25 search) and two more signals. It ranks the whole collection in about 85 milliseconds on a laptop CPU, and it is the default method of ResearchLens.
 
 \subsection*{Results}
 \begin{center}\small
@@ -62,14 +63,14 @@ Network closeness & 0.121 & 0.047 & 0.174\\
 Cocitation & 0.173 & 0.099 & \textbf{0.305}\\
 Hybrid (text + network) & 0.143 & 0.070 & 0.112\\
 Rank fusion (cocitation + hybrid) & 0.207 & 0.113 & 0.259\\
-Learned ranker & 0.224 & 0.132 & 0.297\\
-Learned ranker + topic sentence & \textbf{0.237} & \textbf{0.182} & 0.304\\\bottomrule
+\textbf{Decision model} & 0.224 & 0.132 & 0.297\\
+\textbf{Decision model + topic sentence} & \textbf{0.237} & \textbf{0.182} & 0.304\\\bottomrule
 \end{tabular}
 \end{center}
 \begin{itemize}
 \item \textbf{Q1.} Cocitation is the best single signal in all three tests. Papers that other researchers cite together are good reading suggestions.
-\item \textbf{Q2.} Combining helps. Rank fusion beats the hybrid in all tests. The learned ranker with a topic sentence beats rank fusion in all three tests, and the gain is statistically reliable. With it, 64\% of Test 1 cases and 58\% of Test 2 cases have at least one correct paper in the first 10 suggestions.
-\item Language models were not better than the learned ranker and took minutes per request instead of under 0.1 seconds, so we use one only to write a short summary of each suggested paper.
+\item \textbf{Q2.} Combining helps. Rank fusion beats the hybrid in all tests. The Decision model with a topic sentence beats rank fusion in all three tests, and the gain is statistically reliable. With it, 64\% of Test 1 cases and 58\% of Test 2 cases have at least one correct paper in the first 10 suggestions.
+\item Language models were not better than the Decision model and took minutes per request instead of under 0.1 seconds, so we use one only to write a short summary of each suggested paper.
 \item The review classifier reaches macro F1 of 0.469 on three classes, against 0.181 for always guessing the most common class.
 \end{itemize}
 
@@ -78,13 +79,12 @@ Learned ranker + topic sentence & \textbf{0.237} & \textbf{0.182} & 0.304\\\bott
 \section{System: current stage}
 \textbf{Requirements.} A student can search and save papers, get suggestions with reasons, see the citation network, read reviews, group papers into projects and read PDFs with notes. It should run on an ordinary laptop without a GPU.
 
-\textbf{Design and implementation.} A Python backend (FastAPI) holds the paper collection, the citation network and the ranking models in memory, and stores each student's library in SQLite. A browser interface shows search, the library and suggestions, the citation graph, reviews, projects and the PDF reader. These parts work locally, and 574 automated tests pass.
+\textbf{Design and implementation.} A Python backend (FastAPI) holds the paper collection, the citation network and the ranking models in memory, and stores each student's library in SQLite. A browser interface shows search, the library and suggestions, the citation graph, reviews, projects and the PDF reader.
 
 \section{Next steps for the final report and presentation}
 \begin{enumerate}
-\item Build and deploy a web demo that the instructor and the class can open in a browser and try with their own papers.
+\item Build and deploy a web demo.
 \item Repeat Test 1 with other cut years, to check that the results hold beyond 2020.
-\item Ask a few students to judge the suggestions, to see whether the test scores match what real readers find useful.
 \item Write the final report and prepare the presentation.
 \end{enumerate}
 \end{document}
