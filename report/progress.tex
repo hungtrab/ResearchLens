@@ -49,7 +49,7 @@ The score is nDCG@10, between 0 and 1: it is higher when the hidden papers appea
 \begin{enumerate}
 \item \textbf{Single signals.} Popularity in the network (PageRank); text similarity to the saved papers (TF-IDF); closeness in the citation network (Personalized PageRank); and cocitation, which counts how many papers cite a candidate together with a saved paper.
 \item \textbf{Simple combinations.} A weighted sum of text similarity and network closeness (``hybrid''), and rank fusion, which merges the ranked list of cocitation with the hybrid list.
-\item \textbf{Language models as rankers.} We also asked a small model (Qwen2.5) and a large one (GLM 5.3 Flash) to rank the same candidate papers.
+\item \textbf{Language models as rankers.} We take the top 100 candidates of rank fusion and ask a small model (Qwen2.5) or a large one (GLM 5.3 Flash) to rank them. The large model also receives, for each candidate, its citation facts from our network (retrieval augmented generation).
 \end{enumerate}
 
 \textbf{Our main method: the Decision model.} Instead of fixing by hand how much each signal counts, the Decision model learns it. For every candidate paper it reads ten signals at once: cocitation, citation links to and from the saved papers, shared references, text similarity, network closeness, citation count, age and two embedding similarities. A gradient boosting model turns them into one score. We train it on 2,081 practice tests built automatically from older years of the data (2010 to 2018), so no manual labels are needed. If the student also types one sentence about their topic, the model adds papers that match the sentence (BM25 search) and two more signals. It ranks the whole collection in about 85 milliseconds on a laptop CPU, and it is the default method of ResearchLens.
@@ -64,13 +64,17 @@ Cocitation & 0.173 & 0.099 & \textbf{0.305}\\
 Hybrid (text + network) & 0.143 & 0.070 & 0.112\\
 Rank fusion (cocitation + hybrid) & 0.207 & 0.113 & 0.259\\
 \textbf{Decision model} & 0.224 & 0.132 & 0.297\\
-\textbf{Decision model + topic sentence} & \textbf{0.237} & \textbf{0.182} & 0.304\\\bottomrule
+\textbf{Decision model + topic sentence} & \textbf{0.237} & \textbf{0.182} & 0.304\\\midrule
+\multicolumn{4}{@{}l}{\emph{Reranking the same 100 candidates from rank fusion}}\\
+Decision model & 0.229 & 0.130 & 0.296\\
+Small LM (Qwen2.5 1.5B) & 0.127 & 0.068 & 0.088\\
+LLM (GLM 5.3 Flash) + citation evidence & \textbf{0.242} & \textbf{0.135} & \textbf{0.310}\\\bottomrule
 \end{tabular}
 \end{center}
 \begin{itemize}
 \item \textbf{Q1.} Cocitation is the best single signal in all three tests. Papers that other researchers cite together are good reading suggestions.
 \item \textbf{Q2.} Combining helps. Rank fusion beats the hybrid in all tests. The Decision model with a topic sentence beats rank fusion in all three tests, and the gain is statistically reliable. With it, 64\% of Test 1 cases and 58\% of Test 2 cases have at least one correct paper in the first 10 suggestions.
-\item Language models were not better than the Decision model and took minutes per request instead of under 0.1 seconds, so we use one only to write a short summary of each suggested paper.
+\item Language models: given the same 100 candidates and the citation evidence of each one, the LLM ranks slightly better than the Decision model, but the difference is within statistical noise, and it needs about 200 seconds per request against 85 milliseconds. The small model ranks much worse. So the Decision model ranks, and a small model only writes a one sentence summary of each suggested paper.
 \item The review classifier reaches macro F1 of 0.469 on three classes, against 0.181 for always guessing the most common class.
 \end{itemize}
 
