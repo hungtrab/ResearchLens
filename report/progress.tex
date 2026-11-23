@@ -22,17 +22,19 @@ When students start a research topic, they usually find a few relevant papers an
 
 ResearchLens works from the papers the student has already saved. The input is this small library of saved papers. The output is a ranked list of other papers worth reading next. Each suggestion comes with a reason the student can check, for example ``12 papers cite this paper together with one of your saved papers'', together with what peer reviewers wrote about it.
 
-The project uses three topics of the course: link analysis (the citation network between papers), recommender systems (ranking papers for a reader) and opinion mining (classifying peer reviews as positive or negative). We ask two questions:
+This is a web mining problem in three ways. We crawl paper metadata from the web (Section~\ref{sec:data}). We treat citations between papers like hyperlinks between web pages and apply web link analysis to them: PageRank, HITS and cocitation (web structure mining). We mine the text of papers and of peer reviews posted on the web, including opinion mining of the reviews (web content mining). The suggestions themselves are a recommender system. We ask two questions:
 \begin{itemize}
 \item \textbf{Q1.} Which kind of evidence finds the right papers best: how popular a paper is, how similar its text is, how close it is in the citation network, or how often it is cited together with the saved papers?
 \item \textbf{Q2.} Does combining several kinds of evidence work better than the best single one?
 \end{itemize}
 
-\section{Datasets}
+\section{Datasets}\label{sec:data}
+Most of our data is collected from the web by our own programs, not downloaded as a ready made dataset.
 \begin{itemize}
-\item \textbf{Papers and citations} from OpenAlex, an open catalog of scientific papers, plus papers from PeerRead: 3,595 papers on AI and machine learning, with titles, abstracts and 13,481 citation links between them. This is the collection we recommend from.
-\item \textbf{Peer reviews} from PeerRead (ICLR 2017): 1,320 reviews with the reviewer's score. We use the score to label each review as critical, mixed or positive, and train a classifier on these labels.
-\item \textbf{SciFact}: a public benchmark of 300 scientific questions with known relevant abstracts. We use it only to check that the search box works well.
+\item \textbf{Papers and citations (web API harvesting).} Our collector queries the OpenAlex Web API, an open catalog of scientific papers, with eight topic queries (for example ``graph neural networks'' and ``recommender systems'') and pages through the results. It rebuilds each abstract from the API's word index and keeps the list of cited papers. Together with papers from PeerRead this gives 3,595 papers on AI and machine learning with 13,481 citation links between them. This is the collection we recommend from.
+\item \textbf{Conference catalog (web crawling).} Our crawler reads the official program websites of ICML, NeurIPS, ICLR and CVPR by parsing their HTML pages, reads the ACL Anthology for ACL, EMNLP and NAACL, and fills the gaps from OpenAlex. It caches every page, retries failed requests, can resume after a stop and records the address of every fetch. It collected 129,596 papers from eight conferences between 2020 and 2026, which students can search and import.
+\item \textbf{Peer reviews.} PeerRead, a public collection of reviews first posted on OpenReview (ICLR 2017): 1,320 reviews with the reviewer's score. We use the score to label each review as critical, mixed or positive, and train a classifier on these labels.
+\item \textbf{SciFact}: a public benchmark of 300 scientific questions with known relevant abstracts, used only to check that the search box works well.
 \end{itemize}
 
 \section{Current experiment results}
