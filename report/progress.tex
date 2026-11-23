@@ -2,11 +2,12 @@
 \usepackage{fontspec}
 \setmainfont{Latin Modern Roman}
 \usepackage[margin=2.2cm]{geometry}
-\usepackage{booktabs,enumitem}
+\usepackage{booktabs,enumitem,url}
 \usepackage[hidelinks]{hyperref}
 \setlist{itemsep=1pt,topsep=2pt,leftmargin=*}
-\setlength{\parskip}{3pt}
+\setlength{\parskip}{4pt}
 \setlength{\parindent}{0pt}
+\newcommand{\RepoURL}{\url{https://github.com/hungtrab/ResearchLens}}
 
 \begin{document}
 \begin{center}
@@ -17,51 +18,73 @@ Instructor: Dr. Nguyễn Kiêm Hiếu. Hanoi, 23 November 2026
 \end{center}
 
 \section{Problem statement}
-Given a few papers a researcher has saved, recommend which paper to read next, and show why: papers that cite it together with a saved paper, its citation links to the library, and its peer reviews. The project covers link analysis, recommender systems and opinion mining.
+When students start a research topic, they usually find a few relevant papers and then do not know which paper to read next. Search engines help only if they already know the right keywords.
+
+ResearchLens works from the papers the student has already saved. The input is this small library of saved papers. The output is a ranked list of other papers worth reading next. Each suggestion comes with a reason the student can check, for example ``12 papers cite this paper together with one of your saved papers'', together with what peer reviewers wrote about it.
+
+The project uses three topics of the course: link analysis (the citation network between papers), recommender systems (ranking papers for a reader) and opinion mining (classifying peer reviews as positive or negative). We ask two questions:
 \begin{itemize}
-\item \textbf{RQ1.} Which signal recovers hidden papers best: popularity, TF-IDF content, Personalized PageRank (PPR) or cocitation?
-\item \textbf{RQ2.} Does a combination of signals beat the best single signal?
+\item \textbf{Q1.} Which kind of evidence finds the right papers best: how popular a paper is, how similar its text is, how close it is in the citation network, or how often it is cited together with the saved papers?
+\item \textbf{Q2.} Does combining several kinds of evidence work better than the best single one?
 \end{itemize}
 
 \section{Datasets}
 \begin{itemize}
-\item \textbf{OpenAlex + PeerRead}: 3,595 AI and ML papers with 13,481 citation edges; 75.80\% have an abstract.
-\item \textbf{PeerRead} (ICLR 2017): 1,320 scored reviews, split 1,082 / 123 / 115.
-\item \textbf{SciFact} (BEIR): 5,183 abstracts and 300 queries, to check search.
+\item \textbf{Papers and citations} from OpenAlex, an open catalog of scientific papers, plus papers from PeerRead: 3,595 papers on AI and machine learning, with titles, abstracts and 13,481 citation links between them. This is the collection we recommend from.
+\item \textbf{Peer reviews} from PeerRead (ICLR 2017): 1,320 reviews with the reviewer's score. We use the score to label each review as critical, mixed or positive, and train a classifier on these labels.
+\item \textbf{SciFact}: a public benchmark of 300 scientific questions with known relevant abstracts. We use it only to check that the search box works well.
 \end{itemize}
 
 \section{Current experiment results}
-We hide citations and ask each method to recover them. E2: cut at 2020, hide one third of the references of 219 later papers. E2b: predict what 250 authors cite for the first time after 2020. E3: random holdout of 442 edges. Metric: nDCG@10.
+\subsection*{How we measure}
+We have no real users yet, so we test with citations. Take a paper, hide some of the papers it cites, give the rest to the system as if they were a student's saved library, and check whether the hidden papers come back near the top of the list. We run three versions of this test:
+\begin{itemize}
+\item \textbf{Test 1, past to future}: only papers up to 2020 are visible; for 219 papers written later we hide one third of their references.
+\item \textbf{Test 2, an author's next reading}: from what 250 authors wrote up to 2020, predict the papers they cite for the first time after 2020. This is the closest to a real reader.
+\item \textbf{Test 3, random}: hide 442 random citation links from 120 papers.
+\end{itemize}
+The score is nDCG@10, between 0 and 1: it is higher when the hidden papers appear in the first 10 suggestions, and higher still when they appear near the top.
 
+\subsection*{Approaches}
+\begin{enumerate}
+\item \textbf{Single signals.} Popularity in the network (PageRank); text similarity to the saved papers (TF-IDF); closeness in the citation network (Personalized PageRank); and cocitation, which counts how many papers cite a candidate together with a saved paper.
+\item \textbf{Simple combinations.} A weighted sum of text similarity and network closeness (``hybrid''), and rank fusion, which merges the ranked list of cocitation with the hybrid list.
+\item \textbf{A learned ranker.} A gradient boosting model looks at all signals at once and learns how to weigh them. We train it on 2,081 practice tests built automatically from older years of the data, so no manual labels are needed. Optionally, the student can also type one sentence about their topic.
+\item \textbf{Language models as rankers.} We also asked a small model (Qwen2.5) and a large one (GLM 5.3 Flash) to rank the same candidate papers.
+\end{enumerate}
+
+\subsection*{Results}
 \begin{center}\small
 \begin{tabular}{@{}lrrr@{}}\toprule
-Method & E2 & E2b & E3\\\midrule
-Content (TF-IDF) & 0.110 & 0.068 & 0.070\\
-PPR & 0.121 & 0.047 & 0.174\\
-Hybrid (0.7 content + 0.3 PPR) & 0.143 & 0.070 & 0.112\\
+Approach (nDCG@10, higher is better) & Test 1 & Test 2 & Test 3\\\midrule
+Text similarity & 0.110 & 0.068 & 0.070\\
+Network closeness & 0.121 & 0.047 & 0.174\\
 Cocitation & 0.173 & 0.099 & \textbf{0.305}\\
-Fusion (RRF of cocitation and hybrid) & 0.207 & 0.113 & 0.259\\
-Decision model (gradient boosting) & 0.224 & 0.132 & 0.297\\
-Decision model + topic sentence & \textbf{0.237} & \textbf{0.182} & 0.304\\\bottomrule
+Hybrid (text + network) & 0.143 & 0.070 & 0.112\\
+Rank fusion (cocitation + hybrid) & 0.207 & 0.113 & 0.259\\
+Learned ranker & 0.224 & 0.132 & 0.297\\
+Learned ranker + topic sentence & \textbf{0.237} & \textbf{0.182} & 0.304\\\bottomrule
 \end{tabular}
 \end{center}
-
 \begin{itemize}
-\item \textbf{RQ1:} cocitation is the best single signal on all three tasks.
-\item \textbf{RQ2:} fusion beats the hybrid on all three tasks, but loses to cocitation alone on E3. A gradient boosting model trained on 2,081 tasks beats fusion on all three; with a topic sentence, all three gains have 95\% intervals above zero.
-\item Language models used as rankers (Qwen2.5, GLM 5.3 Flash) did not beat the decision model and are more than 1,000 times slower.
-\item Reviews: TF-IDF with logistic regression reaches macro F1 0.469 (majority class 0.181). Search: BM25 nDCG@10 0.651 on SciFact.
+\item \textbf{Q1.} Cocitation is the best single signal in all three tests. Papers that other researchers cite together are good reading suggestions.
+\item \textbf{Q2.} Combining helps. Rank fusion beats the hybrid in all tests. The learned ranker with a topic sentence beats rank fusion in all three tests, and the gain is statistically reliable. With it, 64\% of Test 1 cases and 58\% of Test 2 cases have at least one correct paper in the first 10 suggestions.
+\item Language models were not better than the learned ranker and took minutes per request instead of under 0.1 seconds, so we use one only to write a short summary of each suggested paper.
+\item The review classifier reaches macro F1 of 0.469 on three classes, against 0.181 for always guessing the most common class.
 \end{itemize}
 
-\section{System: current stage}
-\textbf{Requirements.} Search and save papers, recommend with evidence, show the citation graph and reviews, organize projects, read PDFs with notes. Runs on one CPU machine.
+\textbf{Code repository:} \RepoURL
 
-\textbf{Design and implementation.} FastAPI backend, HTML and JavaScript interface, SQLite for libraries and notes. TF-IDF, BM25 and the citation graph are built in memory; NetworkX computes PageRank and communities. All views are working, and 574 automated tests pass.
+\section{System: current stage}
+\textbf{Requirements.} A student can search and save papers, get suggestions with reasons, see the citation network, read reviews, group papers into projects and read PDFs with notes. It should run on an ordinary laptop without a GPU.
+
+\textbf{Design and implementation.} A Python backend (FastAPI) holds the paper collection, the citation network and the ranking models in memory, and stores each student's library in SQLite. A browser interface shows search, the library and suggestions, the citation graph, reviews, projects and the PDF reader. These parts work locally, and 574 automated tests pass.
 
 \section{Next steps for the final report and presentation}
 \begin{enumerate}
-\item Repeat the time cutoff at other years to settle fusion versus cocitation.
-\item Collect relevance labels from independent readers for project suggestions.
-\item Finish the final report, the slides and the demo.
+\item Build and deploy a web demo that the instructor and the class can open in a browser and try with their own papers.
+\item Repeat Test 1 with other cut years, to check that the results hold beyond 2020.
+\item Ask a few students to judge the suggestions, to see whether the test scores match what real readers find useful.
+\item Write the final report and prepare the presentation.
 \end{enumerate}
 \end{document}
